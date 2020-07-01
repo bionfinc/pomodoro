@@ -1,2 +1,2 @@
 # pomodoro posse group
-Pomodoro project for CS361
+Pomodoro app project for CS361
