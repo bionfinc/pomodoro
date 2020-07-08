@@ -15,6 +15,7 @@ Pomodoro app project for CS361!
 ## Setting environment variables
 
 ### Generating secret keys
+1. `python -m pip install Django`
 1. `python3`
 1. `from django.utils.crypto import get_random_string`
 1. `chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'`
@@ -23,7 +24,7 @@ Pomodoro app project for CS361!
 
 ### bash/zsh(macOS)
 1. Open terminal
-2. Type in `export SECRET_KEY=value` (replacing value with the secret key you are using)
+2. Type in `export SECRET_KEY='value'` (replacing value with the secret key you are using)
 
 ### Windows 8/10
 1. In Search, search for and then select: Edit environment variables for your account
