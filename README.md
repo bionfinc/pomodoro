@@ -19,7 +19,7 @@ Pomodoro app project for CS361!
 1. `from django.utils.crypto import get_random_string`
 1. `chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'`
 1. `SECRET_KEY = get_random_string(50, chars)`
-1. `print SECRET_KEY`
+1. `print(SECRET_KEY)`
 
 ### bash/zsh(macOS)
 1. Open terminal
