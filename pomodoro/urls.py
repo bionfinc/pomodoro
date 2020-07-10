@@ -24,7 +24,7 @@ from timer.views import index_view
   
 urlpatterns = [
     path('', home_view, name='home'),
-    path('index/', index_view, name ='index')
+    path('index/', index_view, name ='index'),
     path('createaccount/', create_account_view),
     path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html")),
     path('logout/', auth_views.LoginView.as_view(template_name="pages/home.html")),
