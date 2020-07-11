@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # own
     'pages',
     'accounts',
+    'timer',
 ]
 
 MIDDLEWARE = [
