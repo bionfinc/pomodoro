@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>Profile</h1>
+
+    <!-- Token for rotection against cross site request forgeries -->
+    {% csrf_token %}
+
+    <!-- Render entries as paragraphs <p>User Stuff...</p> -->
+    {{ form.as_p }}
+    <p><a href="change-default-times">Change default times</a></p>
+
+    <button><a href="../index">Back to timer</a></button>
+
+{% endblock %}
