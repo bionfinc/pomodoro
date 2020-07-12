@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     # third party
 
     # own
-    'pages',
-    'accounts',
-    'timer',
+    'pages.apps.PagesConfig',
+    'accounts.apps.AccountsConfig',
+    'timer.apps.TimerConfig',
 ]
 
 MIDDLEWARE = [
