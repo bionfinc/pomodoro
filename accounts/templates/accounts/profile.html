@@ -2,6 +2,8 @@
 
 {% block body %}
 
+    <button><a href="../index">Back to timer</a></button>
+
     <h1>Profile</h1>
 
     <!-- Token for rotection against cross site request forgeries -->
@@ -9,8 +11,15 @@
 
     <!-- Render entries as paragraphs <p>User Stuff...</p> -->
     {{ form.as_p }}
-    <p><a href="change-default-times">Change default times</a></p>
+    {% for UserProfile in UserProfile_list %}
+        <ul>
+            <li>
+                {{ UserProfile.id }} -- {{ UserProfile.score }}
+            </li>
+        </ul>
+    {% endfor %}
 
-    <button><a href="../index">Back to timer</a></button>
+
+    <p><a href="/profile/1/change-default-times">Change default times</a></p>
 
 {% endblock %}
