@@ -3,6 +3,8 @@ from django.contrib.auth import login, authenticate
 
 from accounts.forms import SignUpForm
 from .models import UserProfile
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -43,9 +45,5 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
-def change_default_times_view(request):
-    UserProfile_list = UserProfile.objects.all()
-    context = {
-        'UserProfile_list': UserProfile_list
-    }
-    return render(request, 'accounts/change_default_times.html', context)
+def change_default_times_view(request, UserProfile_id):
+    return HttpResponse('User ID: %s' % UserProfile_id)
