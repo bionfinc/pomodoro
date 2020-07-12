@@ -20,11 +20,12 @@ Pomodoro app project for CS361!
 1. `chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'`
 1. `SECRET_KEY = get_random_string(50, chars)`
 1. `print(SECRET_KEY)`
+1. `exit()`
 
 ### Add SECRET_KEY environment variable
 #### bash/zsh(macOS)
 1. Open terminal
-2. Type in `export SECRET_KEY='[value]'` (replacing [value] with the secret key you are using)
+2. `export SECRET_KEY='[value]'` (replacing [value] with the secret key you are using)
 
 #### Windows 8/10
 1. In Search, search for and then select: Edit environment variables for your account
@@ -37,13 +38,13 @@ Pomodoro app project for CS361!
 ### Adding new database models
 1. Add a class to the models.py file in the app
 1. If the app is not already listed under the INSTALLED_APPS section of the settings.py file, add it there
-1. Run `python3 manage.py makemigrations [app name]`
+1. `python3 manage.py makemigrations [app name]`
 1. You should get an output siimlar to `[app name]/migrations/0003_auto_20200712_1548.py`
-1. Next run `python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
-1. Lastly run `python3 manage.py migrate`
+1. `python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
+1. `python3 manage.py migrate`
 
 ### Updating existing database models
-1. Run `python3 manage.py makemigrations [app name]`
+1. `python3 manage.py makemigrations [app name]`
 1. You should get an output siimlar to `[app name]/migrations/0003_auto_20200712_1548.py`
 1. `python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
 1. `python3 manage.py migrate`
@@ -57,15 +58,25 @@ Pomodoro app project for CS361!
 ---
 
 ### Interacting with data in tables from the terminal
-You will always need to first run: `python3 manage.py shell`
+You will always need to first run:
+
+`python3 manage.py shell`
 
 #### To import a table
-1. `from [app name].models import [model name]`
+`from [app name].models import [model name]`
 
 #### To display data in table
-1. Show all items: `[model name].objects.all()`
+Show all items: 
 
-1. Display primary key for object: `[object name].pk` or `[object name].id`
+`[model name].objects.all()`
+
+Display primary key for object: 
+
+`[object name].pk` 
+
+or 
+
+`[object name].id`
 
 #### To add data to a table
 1. `[desired object name] = [model name]([attribute1]=[attribute1 value], [attribute2]=[attribute2 value], etc.)`
@@ -81,7 +92,7 @@ You will always need to first run: `python3 manage.py shell`
 1. Enter a password to use for the account
 
 #### Navigating to admin panel
-1. Run the server with `python3 manage.py runserver`
+1. `python3 manage.py runserver`
 1. Navigate to 127.0.0.1:8000/admin
 1. Enter the username and password used in the "Creating a superuser" step above
 
