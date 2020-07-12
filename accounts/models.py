@@ -5,7 +5,9 @@ from django.db import models
 class UserProfile(models.Model):
 
     def __str__(self):
-        return_value = 'PK: ' + str(self.pk) + ' Score: ' + self.score
+        PK_string = str(self.pk)
+        score_string = str(self.score)
+        return_value = 'PK: ' + PK_string + ' Score: ' + score_string
 
         return return_value
 
