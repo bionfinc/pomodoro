@@ -30,5 +30,6 @@ urlpatterns = [
     path('logout/', auth_views.LoginView.as_view(template_name="pages/home.html")),
     path('admin/', admin.site.urls),
     path('profile/', profile_view, name='profile'),
-    path('profile/change-default-times/', change_default_times_view, name='change-default-times')
+    path('profile/<int:UserProfile_id>/change-default-times/', change_default_times_view,
+         name='change-default-times')
 ]
