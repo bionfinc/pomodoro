@@ -55,8 +55,17 @@ function longBreakModeOn() {
 }
 
 function startTimer() {
-  // Call countdownTimer function every second (1000ms)
-  countdownClock = setInterval(function () { countdownTimer(); }, 1000);
+
+  // ensure timer is not zeroed out
+  if (timeRemaining < 1){
+    alert("You must reset the timer");
+  }
+  else {
+    // Call countdownTimer function every second (1000ms)
+    countdownClock = setInterval(function () { countdownTimer(); }, 1000);
+  }
+
+  
 }
 
 function pauseTimer() {
@@ -110,11 +119,22 @@ function countdownTimer() {
   displayTimer();
 
   // If time is up, stop the timer and display notification
-  if (timeRemaining < 1) {
+  if (timeRemaining == 0 && currentTimer == "Pomodoro") {
+    
     document.title = "Time is up!";
     pauseTimer();
+    
+    //increase score value if task is finished
+    var scoreSpan = document.getElementById('score-span');
+    var score = parseInt(scoreSpan.innerHTML);
+    scoreSpan.innerHTML = score + 10;
+
     setTimeout(function () {
-      alert("You crushed it!");
+      alert("Congrats! You won 10 points for completing your task!");
     }, 0)
+    
+  }
+  else if(timeRemaining == 0){
+    pauseTimer();
   }
 }
