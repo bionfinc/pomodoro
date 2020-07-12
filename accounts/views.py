@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 
 from accounts.forms import SignUpForm
+from .models import UserProfile
 
 
 # Create your views here.
@@ -35,8 +36,16 @@ def create_account_view(request, *args, **kwargs):
 
 
 def profile_view(request):
-    return render(request, 'accounts/profile.html')
+    UserProfile_list = UserProfile.objects.all()
+    context = {
+        'UserProfile_list': UserProfile_list
+    }
+    return render(request, 'accounts/profile.html', context)
 
 
 def change_default_times_view(request):
-    return render(request, 'accounts/change_default_times.html')
+    UserProfile_list = UserProfile.objects.all()
+    context = {
+        'UserProfile_list': UserProfile_list
+    }
+    return render(request, 'accounts/change_default_times.html', context)
