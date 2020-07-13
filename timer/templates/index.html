@@ -11,7 +11,7 @@
 </div>
 <br>
 <!-- Timer display -->
-<div>
+<div id="timer">
     <span id="minsValue">00</span><span>:</span><span id="secsValue">00</span>
 </div>
 <br>
@@ -21,6 +21,12 @@
     <button type="button" id="pauseButton">Pause</button>
     <button type="button" id="resetButton">Reset</button>
 </div>
+<br>
+<div id="taskName">
+    Task Name: {{taskName}}     <a href="{% url 'editTask' %}">Edit</a>
+</div>
+
+    
 {% load static %}
 <script src="{% static '/js/timer.js' %}" type="text/javascript"></script>
 {% endblock %}
