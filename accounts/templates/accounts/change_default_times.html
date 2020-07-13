@@ -9,13 +9,7 @@
         {% csrf_token %}
 
         <!-- Render entries as paragraphs <p>User Stuff...</p> -->
-        {{ form.as_p }}
-
-        Task length: <input type="text" id="task-length" name="task-length" value="{{ UserProfile.task_length }}"> <br>
-        Task length: <input type="text" id="short-rest-length" name="short-rest-length"
-                            value="{{ UserProfile.short_rest_length }}"> <br>
-        Task length: <input type="text" id="long-rest-length" name="long-rest-length"
-                            value="{{ UserProfile.long_rest_length }}"> <br>
+        {{ form }} <br>
 
         <button type="submit">Save</button>
     </form>
