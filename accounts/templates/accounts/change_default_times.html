@@ -3,7 +3,7 @@
 {% block body %}
 
     <h1>User: {{ UserProfile.pk }}, Change default times</h1>
-    <p><a href="../">Back to profile</a></p>
+    <p><a href="../../">Back to profile</a></p>
     <form method="post">
         <!-- Token for rotection against cross site request forgeries -->
         {% csrf_token %}
