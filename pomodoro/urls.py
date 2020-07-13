@@ -18,7 +18,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from pages.views import home_view
-from accounts.views import create_account_view
+from accounts.views import create_account_view, profile_view, change_default_times_view
 from timer.views import index_view, editTask_view
 
 urlpatterns = [
