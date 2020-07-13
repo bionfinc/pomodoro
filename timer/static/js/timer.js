@@ -6,6 +6,9 @@ document.getElementById("pomodoroModeButton").addEventListener("click", pomodoro
 document.getElementById("shortBreakModeButton").addEventListener("click", shortBreakModeOn);
 document.getElementById("longBreakModeButton").addEventListener("click", longBreakModeOn);
 
+var scoreSpan = document.getElementById('score-span');  //shows score
+var score;  
+
 var countdownMins = 0;
 var countdownSecs = 0;
 var timeRemaining;
@@ -29,29 +32,72 @@ function pomodoroModeOn() {
 }
 
 function shortBreakModeOn() {
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
+  
+  // check if Pomodoro mode is on and timer is running
+  if(currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0){
+    if (window.confirm("Are you sure you want to end your task early?")) { 
+      //deduct 10 points from score
+      score = parseInt(scoreSpan.innerHTML);
+      scoreSpan.innerHTML = score - 10;
 
-  // Reset time and timer display
-  countdownMins = shortBreakMinutes;
-  countdownSecs = 0;
-  resetTimer();
+      // In case the timer was running, stop countdownClock function
+      clearInterval(countdownClock);
 
-  // Set timer to Short Break
-  currentTimer = "Short Break";
+      // Reset time and timer display
+      countdownMins = shortBreakMinutes;
+      countdownSecs = 0;
+      resetTimer();
+
+      // Set timer to Short Break
+      currentTimer = "Short Break";
+    }
+  }
+  else{
+    // In case the timer was running, stop countdownClock function
+    clearInterval(countdownClock);
+
+    // Reset time and timer display
+    countdownMins = shortBreakMinutes;
+    countdownSecs = 0;
+    resetTimer();
+
+    // Set timer to Short Break
+    currentTimer = "Short Break";
+  }
 }
 
 function longBreakModeOn() {
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
+  // check if Pomodoro mode is on and timer is running
+  if(currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0){
+    if (window.confirm("Are you sure you want to end your task early?")) { 
+      //deduct 10 points from score
+      score = parseInt(scoreSpan.innerHTML);
+      scoreSpan.innerHTML = score - 10;
 
-  // Reset time and timer display
-  countdownMins = longBreakMinutes;
-  countdownSecs = 0;
-  resetTimer();
+      // In case the timer was running, stop countdownClock function
+      clearInterval(countdownClock);
 
-  // Set timer to Long Break
-  currentTimer = "Long Break";
+      // Reset time and timer display
+      countdownMins = longBreakMinutes;
+      countdownSecs = 0;
+      resetTimer();
+
+      // Set timer to Short Break
+      currentTimer = "Long Break";
+    }
+  }
+  else{
+    // In case the timer was running, stop countdownClock function
+    clearInterval(countdownClock);
+
+    // Reset time and timer display
+    countdownMins = longBreakMinutes;
+    countdownSecs = 0;
+    resetTimer();
+
+    // Set timer to Short Break
+    currentTimer = "Long Break";
+  }
 }
 
 function startTimer() {
@@ -116,8 +162,7 @@ function countdownTimer() {
     pauseTimer();
     
     //increase score value if task is finished
-    var scoreSpan = document.getElementById('score-span');
-    var score = parseInt(scoreSpan.innerHTML);
+    score = parseInt(scoreSpan.innerHTML);
     scoreSpan.innerHTML = score + 10;
 
     setTimeout(function () {
