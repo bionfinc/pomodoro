@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 
-from accounts.forms import SignUpForm
+from accounts.forms import SignUpForm, ChangeDefaultTimesForm
 from .models import UserProfile
 from django.contrib.auth.models import User
 
@@ -46,8 +46,15 @@ def profile_view(request):
 
 def change_default_times_view(request, UserProfile_id):
     user_profile = UserProfile.objects.get(pk=UserProfile_id)
+    form = ChangeDefaultTimesForm(request.POST or None, instance=user_profile)
+
+    if form.is_valid():
+        form.save()
+        return redirect('profile')
+
     context = {
-        'UserProfile': user_profile
+        'UserProfile': user_profile,
+        'form': form
     }
 
     return render(request, 'accounts/change_default_times.html', context)
