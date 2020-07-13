@@ -4,7 +4,6 @@ from django.contrib.auth import login, authenticate
 from accounts.forms import SignUpForm
 from .models import UserProfile
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 
 
 # Create your views here.
