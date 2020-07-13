@@ -46,4 +46,9 @@ def profile_view(request):
 
 
 def change_default_times_view(request, UserProfile_id):
-    return HttpResponse('User ID: %s' % UserProfile_id)
+    user_profile = UserProfile.objects.get(pk=UserProfile_id)
+    context = {
+        'UserProfile': user_profile
+    }
+
+    return render(request, 'accounts/change_default_times.html', context)
