@@ -55,6 +55,12 @@ function longBreakModeOn() {
 }
 
 function startTimer() {
+  // Check to see if the timer has already been completed and reset if it has
+  if (timeRemaining == 0)
+  {
+    resetTimer();
+  }
+
   // Call countdownTimer function every second (1000ms)
   countdownClock = setInterval(function () { countdownTimer(); }, 1000);
 }
