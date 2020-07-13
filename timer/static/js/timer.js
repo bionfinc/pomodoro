@@ -55,17 +55,8 @@ function longBreakModeOn() {
 }
 
 function startTimer() {
-
-  // ensure timer is not zeroed out
-  if (timeRemaining < 1){
-    alert("You must reset the timer");
-  }
-  else {
-    // Call countdownTimer function every second (1000ms)
-    countdownClock = setInterval(function () { countdownTimer(); }, 1000);
-  }
-
-  
+  // Call countdownTimer function every second (1000ms)
+  countdownClock = setInterval(function () { countdownTimer(); }, 1000);
 }
 
 function pauseTimer() {
