@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <button><a href="../index">Back to timer</a></button>
+    <button><a href="{% url 'index' %}">Back to timer</a></button>
 
     <h1>Profile</h1>
 
@@ -20,6 +20,6 @@
     {% endfor %}
 
 
-    <p><a href="/profile/1/change-default-times">Change default times</a></p>
+    <p><a href="{% url 'change-default-times' 1 %}">Change default times</a></p>
 
 {% endblock %}
