@@ -31,5 +31,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/', profile_view, name='profile'),
     path('profile/<int:UserProfile_id>/change-default-times/', change_default_times_view,
-         name='change-default-times')
+         name='change-default-times'),
 ]
