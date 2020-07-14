@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'accounts.apps.AccountsConfig',
     'timer.apps.TimerConfig',
+    'usersessions.apps.UserSessionsConfig',
 ]
 
 MIDDLEWARE = [
