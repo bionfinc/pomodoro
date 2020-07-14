@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django import forms
 from datetime import datetime
+from accounts.models import UserProfile
+from django.contrib.auth.models import User
 
 class EditTaskName(forms.Form):
     taskName = forms.CharField(label="New Task Name")
@@ -12,8 +14,17 @@ def index_view(request):
     if 'taskName' not in request.session:          # Takes advantage of user sessions, checks to see if the taskName is in their session
         now = datetime.now()
         request.session['taskName'] = 'Task:' + now.strftime("%Y-%m-%d_%H:%M:%S")               # creates a default taskName if they dont have one
+
+    # score = 0
+    if request.user.is_authenticated:
+        score = request.user.userprofile.score
+    else:
+        score = 0
+    
+
     return render(request,'index.html', {
-        'taskName': request.session['taskName']
+        'taskName': request.session['taskName'],
+        'score' : score
     })
 
 # get taskName first then edit it via post
@@ -33,3 +44,29 @@ def editTask_view(request):
     return render(request, "editTask.html", {
         'form': EditTaskName
     })
+
+
+# AJAX for adding points to the score
+
+def add_points(request):
+    if request.user.is_authenticated:
+        request.user.userprofile.score = request.user.userprofile.score + 10
+        request.user.userprofile.save()
+        return HttpResponse(request.user.userprofile.score)
+    else:
+        return HttpResponse('0')
+    
+    
+   
+
+# AJAX for deducting points from the score
+def deduct_points(request):
+    
+    if request.user.is_authenticated:
+        request.user.userprofile.score = request.user.userprofile.score - 10
+        request.user.userprofile.save()
+        return HttpResponse(request.user.userprofile.score)
+    else:
+        return HttpResponse('0')
+    
+

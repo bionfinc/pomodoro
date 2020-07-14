@@ -7,7 +7,7 @@ document.getElementById("shortBreakModeButton").addEventListener("click", shortB
 document.getElementById("longBreakModeButton").addEventListener("click", longBreakModeOn);
 
 var scoreSpan = document.getElementById('score-span');  //shows score
-var score;  
+var score;
 
 var countdownMins = 0;
 var countdownSecs = 0;
@@ -32,13 +32,18 @@ function pomodoroModeOn() {
 }
 
 function shortBreakModeOn() {
-  
+
   // check if Pomodoro mode is on and timer is running
-  if(currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0){
-    if (window.confirm("Are you sure you want to end your task early?")) { 
+  if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
+    if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points")) {
+
       //deduct 10 points from score
-      score = parseInt(scoreSpan.innerHTML);
-      scoreSpan.innerHTML = score - 10;
+      $.ajax({
+        url: '/deductPoints',
+        success: function (data) {
+            $("#score_span").html(data)
+        }
+      });
 
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
@@ -52,7 +57,7 @@ function shortBreakModeOn() {
       currentTimer = "Short Break";
     }
   }
-  else{
+  else {
     // In case the timer was running, stop countdownClock function
     clearInterval(countdownClock);
 
@@ -68,11 +73,16 @@ function shortBreakModeOn() {
 
 function longBreakModeOn() {
   // check if Pomodoro mode is on and timer is running
-  if(currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0){
-    if (window.confirm("Are you sure you want to end your task early?")) { 
+  if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
+    if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points.")) {
+
       //deduct 10 points from score
-      score = parseInt(scoreSpan.innerHTML);
-      scoreSpan.innerHTML = score - 10;
+      $.ajax({
+        url: '/deductPoints',
+        success: function (data) {
+          $("#score_span").html(data)
+        }
+      });
 
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
@@ -86,7 +96,7 @@ function longBreakModeOn() {
       currentTimer = "Long Break";
     }
   }
-  else{
+  else {
     // In case the timer was running, stop countdownClock function
     clearInterval(countdownClock);
 
@@ -102,8 +112,7 @@ function longBreakModeOn() {
 
 function startTimer() {
   // Check to see if the timer has already been completed and reset if it has
-  if (timeRemaining == 0)
-  {
+  if (timeRemaining == 0) {
     resetTimer();
   }
 
@@ -119,7 +128,7 @@ function pauseTimer() {
 function resetTimer() {
   // Stop the countdownClockfunction
   pauseTimer();
-  
+
   // Reset the values 
   document.getElementById('minsValue').textContent = countdownMins;
   document.getElementById('secsValue').textContent = '00';
@@ -136,7 +145,7 @@ function displayTimer() {
 
   // Calculate the minute and second values
   var minutesValue = Math.floor(temp / 60);
-  var secondsValue = temp %  60;
+  var secondsValue = temp % 60;
 
   // Pad the number if needed (ex. 9 is padded to 09) to display properly
   var minutesString = padValue(minutesValue);
@@ -146,7 +155,7 @@ function displayTimer() {
   document.getElementById('minsValue').textContent = minutesString;
   document.getElementById('secsValue').textContent = secondsString;
   document.title = "(" + minutesString + ":" + secondsString + ") - " + currentTimer;
-  };
+};
 
 function padValue(integerValue) {
   if (integerValue > 9) {
@@ -158,25 +167,29 @@ function padValue(integerValue) {
 }
 
 function countdownTimer() {
-  timeRemaining --;
+  timeRemaining--;
   displayTimer();
 
   // If time is up, stop the timer and display notification
   if (timeRemaining == 0 && currentTimer == "Pomodoro") {
-    
+
     document.title = "Time is up!";
     pauseTimer();
-    
-    //increase score value if task is finished
-    score = parseInt(scoreSpan.innerHTML);
-    scoreSpan.innerHTML = score + 10;
+
+    // add points to score
+    $.ajax({
+      url: '/addPoints',
+      success: function (data) {
+        $("#score_span").html(data)
+      }
+    });
 
     setTimeout(function () {
       alert("Congrats! You won 10 points for completing your task!");
     }, 0)
-    
+
   }
-  else if(timeRemaining == 0){
+  else if (timeRemaining == 0) {
     pauseTimer();
   }
 }

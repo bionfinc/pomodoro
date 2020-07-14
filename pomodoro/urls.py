@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 
 from pages.views import home_view
 from accounts.views import create_account_view, profile_view, change_default_times_view
-from timer.views import index_view, editTask_view
+from timer.views import index_view, editTask_view, add_points, deduct_points
 
 urlpatterns = [
     path('', home_view, name='home'),
@@ -32,4 +32,6 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('profile/<int:UserProfile_id>/change-default-times/', change_default_times_view,
          name='change-default-times'),
+    path('addPoints/', add_points, name="addPoints"),
+    path('deductPoints/', deduct_points, name="deductPoints"),
 ]
