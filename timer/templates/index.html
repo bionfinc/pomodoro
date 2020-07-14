@@ -2,16 +2,13 @@
 
 {% block body %}
 
-<!-- Nav -->
-{% if user.username %}
-    Score: <span id="score_span">{{score}}</span> pts
-{% else %}
-    Login to keep track of your score
-{% endif %}
 <div>
-    
+    {% if user.username %}
+    Score: <span id="score_span">{{score}}</span> pts
+    {% else %}
+    Login to keep track of your score
+    {% endif %}
 </div>
-
 
 <h1>Pomodoro Posse Timer</h1>
 <!-- Buttons to select a Pomodoro, short break, or long break -->

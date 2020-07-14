@@ -6,9 +6,6 @@ document.getElementById("pomodoroModeButton").addEventListener("click", pomodoro
 document.getElementById("shortBreakModeButton").addEventListener("click", shortBreakModeOn);
 document.getElementById("longBreakModeButton").addEventListener("click", longBreakModeOn);
 
-var scoreSpan = document.getElementById('score-span');  //shows score
-var score;
-
 var countdownMins = 0;
 var countdownSecs = 0;
 var timeRemaining;

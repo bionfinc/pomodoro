@@ -15,11 +15,10 @@ def index_view(request):
         now = datetime.now()
         request.session['taskName'] = 'Task:' + now.strftime("%Y-%m-%d_%H:%M:%S")               # creates a default taskName if they dont have one
 
-    # score = 0
+    # add in user's current score if logged in
+    score = 0
     if request.user.is_authenticated:
         score = request.user.userprofile.score
-    else:
-        score = 0
     
 
     return render(request,'index.html', {
@@ -56,8 +55,6 @@ def add_points(request):
     else:
         return HttpResponse('0')
     
-    
-   
 
 # AJAX for deducting points from the score
 def deduct_points(request):
