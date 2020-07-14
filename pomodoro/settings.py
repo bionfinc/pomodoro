@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     # third party
 
     # own
-    'pages',
-    'accounts',
-    'timer',
+    'pages.apps.PagesConfig',
+    'accounts.apps.AccountsConfig',
+    'timer.apps.TimerConfig',
+    'usersessions.apps.UserSessionsConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pomodoro.wsgi.application'
 
+#Determine the page that login redirects to
+
+LOGIN_REDIRECT_URL = 'home'
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -89,13 +94,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',

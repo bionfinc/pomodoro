@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <button><a href="{% url 'index' %}">Back to timer</a></button>
+
+    <h1>Profile</h1>
+
+    <!-- Token for rotection against cross site request forgeries -->
+    {% csrf_token %}
+
+    <!-- Render entries as paragraphs <p>User Stuff...</p> -->
+    {{ form.as_p }}
+    {% for UserProfile in UserProfile_list %}
+        <ul>
+            <li>
+                {{ UserProfile.id }} -- {{ UserProfile.score }}
+            </li>
+        </ul>
+    {% endfor %}
+
+
+    <p><a href="{% url 'change-default-times' 1 %}">Change default times</a></p>
+
+{% endblock %}

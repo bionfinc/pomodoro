@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>User: {{ UserProfile.pk }}, Change default times</h1>
+    <p><a href="{% url 'profile' %}">Back to profile</a></p>
+    <form method="post">
+        <!-- Token for rotection against cross site request forgeries -->
+        {% csrf_token %}
+
+        <!-- Render entries as paragraphs <p>User Stuff...</p> -->
+        {{ form }} <br>
+
+        <button type="submit">Save</button>
+    </form>
+
+{% endblock %}
