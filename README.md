@@ -44,6 +44,7 @@ Pomodoro app project for CS361!
 1. `python3 manage.py migrate`
 
 ### Updating existing database models
+The below steps will need to be made in the Heroku CLI once the changes have been deployed to Heroku
 1. `python3 manage.py makemigrations [app name]`
 1. You should get an output siimlar to `[app name]/migrations/0003_auto_20200712_1548.py`
 1. `python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
@@ -100,3 +101,13 @@ or
 1. Navigate to the admin.py file of the app
 1. Add import statement for the model you would like to add: `from .models import [model name]`
 1. Add a line to register the model: `admin.site.register([model name])`
+
+---
+
+## Heroku
+### Installing Heroku
+1. Follow installation instructions here: https://devcenter.heroku.com/articles/heroku-cli#download-and-install
+
+### Accessing the Heroku CLI
+1. `heroku login`
+1. `heroku run bash -a pomodoro-posse`
