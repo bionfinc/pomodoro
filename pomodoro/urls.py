@@ -17,17 +17,15 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
-from pages.views import home_view
 from accounts.views import create_account_view, profile_view, change_default_times_view
 from timer.views import index_view, editTask_view, add_points, deduct_points
 
 urlpatterns = [
-    path('', home_view, name='home'),
-    path('index/', index_view, name='index'),
+    path('', index_view, name='index'),
     path('editTask/', editTask_view, name='editTask'),
     path('createaccount/', create_account_view, name='createaccount'),
     path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html"), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name="pages/home.html"), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(template_name="index.html"), name='logout'),
     path('admin/', admin.site.urls),
     path('profile/', profile_view, name='profile'),
     path('profile/<int:UserProfile_id>/change-default-times/', change_default_times_view,

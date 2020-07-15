@@ -25,7 +25,7 @@ def create_account_view(request, *args, **kwargs):
             login(request, user)
 
             # Return back to the main screen
-            return redirect('home')
+            return redirect('index')
     else:
         create_account_form = SignUpForm()
 
