@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'pomodoro.wsgi.application'
 
 #Determine the page that login redirects to
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'index'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
