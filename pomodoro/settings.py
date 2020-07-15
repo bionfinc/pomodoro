@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     # third party
 
     # own
-    'pages.apps.PagesConfig',
     'accounts.apps.AccountsConfig',
     'timer.apps.TimerConfig',
     'usersessions.apps.UserSessionsConfig',
