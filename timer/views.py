@@ -22,7 +22,7 @@ def index_view(request):
         score = request.user.userprofile.score
 
     if request.user.is_authenticated:
-        user = request.user.objects.get(username=request.user.username)
+        user = request.user
     else:
         user = False
 
