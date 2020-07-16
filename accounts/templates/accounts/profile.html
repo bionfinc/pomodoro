@@ -11,14 +11,14 @@
 
     <!-- Render entries as paragraphs <p>User Stuff...</p> -->
     {{ form.as_p }}
-    {% for UserProfile in UserProfile_list %}
-        <ul>
-            <li>
-                {{ UserProfile.id }} -- {{ UserProfile.score }}
-            </li>
-        </ul>
-    {% endfor %}
 
+    Username: {{ user.username }} <br>
+    Email: {{ user.email }} <br>
+    Score: {{ user.userprofile.score }} <br>
+    Date joined: {{ user.date_joined }} <br>
+    Default task length: {{ user.userprofile.task_length }} <br>
+    Default short rest length: {{ user.userprofile.short_rest_length }} <br>
+    Default long rest length: {{ user.userprofile.long_rest_length }} <br>
 
     <p><a href="{% url 'change-default-times' %}">Change default times</a></p>
 
