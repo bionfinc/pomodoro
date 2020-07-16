@@ -5,7 +5,7 @@ Pomodoro app project for CS361!
 https://pomodoro-posse.herokuapp.com/
 
 ## High level architecture
-![high level architecture](./images/Pomodoro.png "High level architecture")
+![high level architecture](static/images/Pomodoro.png "High level architecture")
 
 ## To run
 1. Ensure that the secret key variable has been set on your local environment

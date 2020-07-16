@@ -3,25 +3,26 @@
 <!doctype html>
 <html>
 <head>
-	<title>Pomodoro Posse</title>
+    <title>Pomodoro Posse</title>
+    <link rel="shortcut icon" type="image/png" href="{% static '../static/images/favicon.ico' %}"/>
 </head>
 <body>
-	<div>
-		{% if user.username %}
-			Hello {{ user.username }}		
-			<a href="{% url 'index' %}">Timer</a>
-			<a href="{% url 'profile' %}">Profile</a>
-			<a href="{% url 'logout' %}">Log Out</a>
-		{% else %}
-			<a href="{% url 'login' %}">Log In</a>
-			<a href="{% url 'createaccount' %}">Create Account</a>
-		{% endif %}
-	</div>
+<div>
+    {% if user.username %}
+        Hello {{ user.username }}
+        <a href="{% url 'index' %}">Timer</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+    {% else %}
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'createaccount' %}">Create Account</a>
+    {% endif %}
+</div>
 
-	{% block body %}
+{% block body %}
 
-	<p>Missing Body</p>
+    <p>Missing Body</p>
 
-	{% endblock %}
+{% endblock %}
 </body>
 </html>
