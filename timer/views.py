@@ -21,7 +21,10 @@ def index_view(request):
     if request.user.is_authenticated:
         score = request.user.userprofile.score
 
-    user = User.objects.get(username=request.user.username)
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = False
 
     return render(request, 'index.html', {
         'taskName': request.session['taskName'],
@@ -37,7 +40,8 @@ def editTask_view(request):
         if form.is_valid():                      # checks if the new name is valid
             taskName = form.cleaned_data['taskName']   # if its valid, get the task and add it to the list of tasks
             request.session['taskName'] = taskName             # changing the taskName for the user session
-            return HttpResponseRedirect(reverse('index'))     # returns the user to the timer, is not hard coded, uses the index name and reverses 
+            return HttpResponseRedirect(
+                reverse('index'))  # returns the user to the timer, is not hard coded, uses the index name and reverses
         else:                                       # if not, it sends them back to the for with their invalid input
             return render(request, 'editTask.html', {
                 'form': form
@@ -57,16 +61,13 @@ def add_points(request):
         return HttpResponse(request.user.userprofile.score)
     else:
         return HttpResponse('0')
-    
+
 
 # AJAX for deducting points from the score
 def deduct_points(request):
-    
     if request.user.is_authenticated:
         request.user.userprofile.score = request.user.userprofile.score - 10
         request.user.userprofile.save()
         return HttpResponse(request.user.userprofile.score)
     else:
         return HttpResponse('0')
-    
-

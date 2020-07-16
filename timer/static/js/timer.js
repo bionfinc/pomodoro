@@ -15,18 +15,36 @@ var countdownSecs = 0;
 var timeRemaining;
 var countdownClock;
 var currentTimer;
-var pomodoroMinutes = pomodoroButton.value;
-var shortBreakMinutes = shortBreakButton.value;
-var longBreakMinutes = longBreakButton.value;
+var pomodoroMinutes;
+var shortBreakMinutes;
+var longBreakMinutes;
+
+if (pomodoroButton.value <= 0) {
+    pomodoroMinutes = 25
+} else {
+    pomodoroMinutes = pomodoroButton.value
+}
+
+if (shortBreakButton.value <= 0) {
+    shortBreakMinutes = 5
+} else {
+    shortBreakMinutes = shortBreakButton.value;
+}
+
+if (longBreakButton.value <= 0) {
+    longBreakMinutes = 10
+} else {
+    longBreakMinutes = longBreakButton.value;
+}
 
 function pomodoroModeOn() {
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
+    // In case the timer was running, stop countdownClock function
+    clearInterval(countdownClock);
 
-  // Reset time and timer display
-  countdownMins = pomodoroMinutes;
-  countdownSecs = 0;
-  resetTimer();
+    // Reset time and timer display
+    countdownMins = pomodoroMinutes;
+    countdownSecs = 0;
+    resetTimer();
 
   // Set timer to Pomodoro
   currentTimer = "Pomodoro";
