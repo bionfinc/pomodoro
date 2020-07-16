@@ -1,6 +1,8 @@
 # pomodoro posse group
 Pomodoro app project for CS361!
 
+## Live Heroku site:
+https://pomodoro-posse.herokuapp.com/
 
 ## High level architecture
 ![high level architecture](./images/Pomodoro.png "High level architecture")
