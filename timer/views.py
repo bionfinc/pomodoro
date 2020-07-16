@@ -71,3 +71,11 @@ def deduct_points(request):
         return HttpResponse(request.user.userprofile.score)
     else:
         return HttpResponse('0')
+
+# check logged in status
+def is_logged_in(request):
+    if request.user.is_authenticated:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+

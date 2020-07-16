@@ -20,31 +20,31 @@ var shortBreakMinutes;
 var longBreakMinutes;
 
 if (pomodoroButton.value <= 0) {
-    pomodoroMinutes = 25
+  pomodoroMinutes = 25
 } else {
-    pomodoroMinutes = pomodoroButton.value
+  pomodoroMinutes = pomodoroButton.value
 }
 
 if (shortBreakButton.value <= 0) {
-    shortBreakMinutes = 5
+  shortBreakMinutes = 5
 } else {
-    shortBreakMinutes = shortBreakButton.value;
+  shortBreakMinutes = shortBreakButton.value;
 }
 
 if (longBreakButton.value <= 0) {
-    longBreakMinutes = 10
+  longBreakMinutes = 10
 } else {
-    longBreakMinutes = longBreakButton.value;
+  longBreakMinutes = longBreakButton.value;
 }
 
 function pomodoroModeOn() {
-    // In case the timer was running, stop countdownClock function
-    clearInterval(countdownClock);
+  // In case the timer was running, stop countdownClock function
+  clearInterval(countdownClock);
 
-    // Reset time and timer display
-    countdownMins = pomodoroMinutes;
-    countdownSecs = 0;
-    resetTimer();
+  // Reset time and timer display
+  countdownMins = pomodoroMinutes;
+  countdownSecs = 0;
+  resetTimer();
 
   // Set timer to Pomodoro
   currentTimer = "Pomodoro";
@@ -54,27 +54,55 @@ function shortBreakModeOn() {
 
   // check if Pomodoro mode is on and timer is running
   if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-    if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points")) {
 
-      //deduct 10 points from score
-      $.ajax({
-        url: '/deductPoints',
-        success: function (data) {
-            $("#score_span").html(data)
-        }
-      });
-
-      // In case the timer was running, stop countdownClock function
-      clearInterval(countdownClock);
-
-      // Reset time and timer display
-      countdownMins = shortBreakMinutes;
-      countdownSecs = 0;
-      resetTimer();
-
-      // Set timer to Short Break
-      currentTimer = "Short Break";
+    //format prompt message depending if user is logged in or not
+    function checkLoggedIn() {
+      return new Promise(resolve => {
+        $.ajax({
+          url: '/isLoggedIn',
+          success: function (data) {
+            //logged in
+            if (data == 'True') {
+              resolve("Are you sure you want to end your task early? You'll lose 10 points");
+            }
+            //not logged in
+            else {
+              resolve("Are you sure you want to end your task early?");
+            }
+          }
+        });
+      })
     }
+
+    //show window prompt message
+    async function showMessage() {
+      const message = await checkLoggedIn();
+
+      if (window.confirm(message)) {
+
+        //deduct 10 points from score
+        $.ajax({
+          url: '/deductPoints',
+          success: function (data) {
+            $("#score_span").html(data)
+          }
+        });
+
+        // In case the timer was running, stop countdownClock function
+        clearInterval(countdownClock);
+
+        // Reset time and timer display
+        countdownMins = shortBreakMinutes;
+        countdownSecs = 0;
+        resetTimer();
+
+        // Set timer to Short Break
+        currentTimer = "Short Break";
+      }
+    }
+
+    showMessage();
+
   }
   else {
     // In case the timer was running, stop countdownClock function
@@ -93,16 +121,58 @@ function shortBreakModeOn() {
 function longBreakModeOn() {
   // check if Pomodoro mode is on and timer is running
   if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-    if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points.")) {
+    
 
-      //deduct 10 points from score
-      $.ajax({
-        url: '/deductPoints',
-        success: function (data) {
-          $("#score_span").html(data)
+      //format prompt message depending if user is logged in or not
+      function checkLoggedIn() {
+        return new Promise(resolve => {
+          $.ajax({
+            url: '/isLoggedIn',
+            success: function (data) {
+              //logged in
+              if (data == 'True') {
+                resolve("Are you sure you want to end your task early? You'll lose 10 points");
+              }
+              //not logged in
+              else {
+                resolve("Are you sure you want to end your task early?");
+              }
+            }
+          });
+        })
+      }
+
+      //show window prompt message
+      async function showMessage() {
+        const message = await checkLoggedIn();
+
+        if (window.confirm(message)) {
+
+          //deduct 10 points from score
+          $.ajax({
+            url: '/deductPoints',
+            success: function (data) {
+              $("#score_span").html(data)
+            }
+          });
+
+          // In case the timer was running, stop countdownClock function
+          clearInterval(countdownClock);
+
+          // Reset time and timer display
+          countdownMins = shortBreakMinutes;
+          countdownSecs = 0;
+          resetTimer();
+
+          // Set timer to Short Break
+          currentTimer = "Short Break";
         }
-      });
+      }
 
+      showMessage();
+    
+  }
+    else {
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
 
@@ -115,100 +185,114 @@ function longBreakModeOn() {
       currentTimer = "Long Break";
     }
   }
-  else {
-    // In case the timer was running, stop countdownClock function
+
+  function startTimer() {
+    // Check to see if the timer has already been completed and reset if it has
+    if (timeRemaining == 0) {
+      resetTimer();
+    }
+
+    // Call countdownTimer function every second (1000ms)
+    countdownClock = setInterval(function () { countdownTimer(); }, 1000);
+  }
+
+  function pauseTimer() {
+    // Stop countdownClock function
     clearInterval(countdownClock);
-
-    // Reset time and timer display
-    countdownMins = longBreakMinutes;
-    countdownSecs = 0;
-    resetTimer();
-
-    // Set timer to Short Break
-    currentTimer = "Long Break";
-  }
-}
-
-function startTimer() {
-  // Check to see if the timer has already been completed and reset if it has
-  if (timeRemaining == 0) {
-    resetTimer();
   }
 
-  // Call countdownTimer function every second (1000ms)
-  countdownClock = setInterval(function () { countdownTimer(); }, 1000);
-}
-
-function pauseTimer() {
-  // Stop countdownClock function
-  clearInterval(countdownClock);
-}
-
-function resetTimer() {
-  // Stop the countdownClockfunction
-  pauseTimer();
-
-  // Reset the values
-  document.getElementById('minsValue').textContent = countdownMins;
-  document.getElementById('secsValue').textContent = '00';
-  timeRemaining = (countdownMins * 60) + countdownSecs;
-
-  // Display the reset time and title
-  displayTimer();
-  document.title = "Pomodoro Posse Timer";
-}
-
-function displayTimer() {
-
-  var temp = timeRemaining;
-
-  // Calculate the minute and second values
-  var minutesValue = Math.floor(temp / 60);
-  var secondsValue = temp % 60;
-
-  // Pad the number if needed (ex. 9 is padded to 09) to display properly
-  var minutesString = padValue(minutesValue);
-  var secondsString = padValue(secondsValue);
-
-  // Update the countdown values on the screen and title
-  document.getElementById('minsValue').textContent = minutesString;
-  document.getElementById('secsValue').textContent = secondsString;
-  document.title = "(" + minutesString + ":" + secondsString + ") - " + currentTimer;
-};
-
-function padValue(integerValue) {
-  if (integerValue > 9) {
-    return integerValue.toString();
-  }
-  else {
-    return '0' + integerValue.toString();
-  }
-}
-
-function countdownTimer() {
-  timeRemaining--;
-  displayTimer();
-
-  // If time is up, stop the timer and display notification
-  if (timeRemaining == 0 && currentTimer == "Pomodoro") {
-
-    document.title = "Time is up!";
+  function resetTimer() {
+    // Stop the countdownClockfunction
     pauseTimer();
 
-    // add points to score
-    $.ajax({
-      url: '/addPoints',
-      success: function (data) {
-        $("#score_span").html(data)
+    // Reset the values
+    document.getElementById('minsValue').textContent = countdownMins;
+    document.getElementById('secsValue').textContent = '00';
+    timeRemaining = (countdownMins * 60) + countdownSecs;
+
+    // Display the reset time and title
+    displayTimer();
+    document.title = "Pomodoro Posse Timer";
+  }
+
+  function displayTimer() {
+
+    var temp = timeRemaining;
+
+    // Calculate the minute and second values
+    var minutesValue = Math.floor(temp / 60);
+    var secondsValue = temp % 60;
+
+    // Pad the number if needed (ex. 9 is padded to 09) to display properly
+    var minutesString = padValue(minutesValue);
+    var secondsString = padValue(secondsValue);
+
+    // Update the countdown values on the screen and title
+    document.getElementById('minsValue').textContent = minutesString;
+    document.getElementById('secsValue').textContent = secondsString;
+    document.title = "(" + minutesString + ":" + secondsString + ") - " + currentTimer;
+  }
+
+  function padValue(integerValue) {
+    if (integerValue > 9) {
+      return integerValue.toString();
+    }
+    else {
+      return '0' + integerValue.toString();
+    }
+  }
+
+  function countdownTimer() {
+    timeRemaining--;
+    displayTimer();
+
+    // If time is up, stop the timer and display notification
+    if (timeRemaining == 0 && currentTimer == "Pomodoro") {
+
+      document.title = "Time is up!";
+      pauseTimer();
+
+      //format prompt message depending if user is logged in
+      function checkLoggedIn() {
+        return new Promise(resolve => {
+          $.ajax({
+            url: '/isLoggedIn',
+            success: function (data) {
+              console.log(data);
+              //logged in
+              if (data == 'True') {
+                resolve("Congrats! You won 10 points for completing your task!");
+              }
+              //not logged in
+              else {
+                resolve("Congrats on finishing your task! Log in to track rewards for completed tasks.");
+              }
+            }
+          });
+        })
       }
-    });
 
-    setTimeout(function () {
-      alert("Congrats! You won 10 points for completing your task!");
-    }, 0)
+      //display alert message
+      async function showMessage() {
+        const message = await checkLoggedIn();
+        // add points to score
+        $.ajax({
+          url: '/addPoints',
+          success: function (data) {
+            $("#score_span").html(data)
+          }
+        });
 
+        setTimeout(function () {
+          alert(message);
+        }, 0)
+      }
+
+      showMessage();
+      
+    }
+    else if (timeRemaining == 0) {
+      pauseTimer();
+    }
   }
-  else if (timeRemaining == 0) {
-    pauseTimer();
-  }
-}
+
