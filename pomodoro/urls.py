@@ -28,7 +28,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name="index.html"), name='logout'),
     path('admin/', admin.site.urls),
     path('profile/', profile_view, name='profile'),
-    path('profile/<int:UserProfile_id>/change-default-times/', change_default_times_view,
+    path('profile/change-default-times/', change_default_times_view,
          name='change-default-times'),
     path('addPoints/', add_points, name="addPoints"),
     path('deductPoints/', deduct_points, name="deductPoints"),
