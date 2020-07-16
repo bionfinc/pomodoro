@@ -2,18 +2,22 @@ document.addEventListener("DOMContentLoaded", pomodoroModeOn);
 document.getElementById("startButton").addEventListener("click", startTimer);
 document.getElementById("pauseButton").addEventListener("click", pauseTimer);
 document.getElementById("resetButton").addEventListener("click", resetTimer);
-document.getElementById("pomodoroModeButton").addEventListener("click", pomodoroModeOn);
-document.getElementById("shortBreakModeButton").addEventListener("click", shortBreakModeOn);
-document.getElementById("longBreakModeButton").addEventListener("click", longBreakModeOn);
+
+var pomodoroButton = document.getElementById("pomodoroModeButton");
+pomodoroButton.addEventListener("click", pomodoroModeOn);
+var shortBreakButton = document.getElementById("shortBreakModeButton");
+shortBreakButton.addEventListener("click", shortBreakModeOn);
+var longBreakButton = document.getElementById("longBreakModeButton");
+longBreakButton.addEventListener("click", longBreakModeOn);
 
 var countdownMins = 0;
 var countdownSecs = 0;
 var timeRemaining;
 var countdownClock;
 var currentTimer;
-var pomodoroMinutes = 25;
-var shortBreakMinutes = 5;
-var longBreakMinutes = 10;
+var pomodoroMinutes = pomodoroButton.value;
+var shortBreakMinutes = shortBreakButton.value;
+var longBreakMinutes = longBreakButton.value;
 
 function pomodoroModeOn() {
   // In case the timer was running, stop countdownClock function
@@ -126,7 +130,7 @@ function resetTimer() {
   // Stop the countdownClockfunction
   pauseTimer();
 
-  // Reset the values 
+  // Reset the values
   document.getElementById('minsValue').textContent = countdownMins;
   document.getElementById('secsValue').textContent = '00';
   timeRemaining = (countdownMins * 60) + countdownSecs;

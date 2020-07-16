@@ -11,19 +11,22 @@ class EditTaskName(forms.Form):
 
 # Create your views here.
 def index_view(request):
-    if 'taskName' not in request.session:          # Takes advantage of user sessions, checks to see if the taskName is in their session
+    if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
         now = datetime.now()
-        request.session['taskName'] = 'Task:' + now.strftime("%Y-%m-%d_%H:%M:%S")               # creates a default taskName if they dont have one
+        request.session['taskName'] = 'Task:' + now.strftime(
+            "%Y-%m-%d_%H:%M:%S")  # creates a default taskName if they dont have one
 
     # add in user's current score if logged in
     score = 0
     if request.user.is_authenticated:
         score = request.user.userprofile.score
-    
 
-    return render(request,'index.html', {
+    user = User.objects.get(username=request.user.username)
+
+    return render(request, 'index.html', {
         'taskName': request.session['taskName'],
-        'score' : score
+        'score': score,
+        'user': user
     })
 
 # get taskName first then edit it via post

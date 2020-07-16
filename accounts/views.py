@@ -37,15 +37,15 @@ def create_account_view(request, *args, **kwargs):
 
 
 def profile_view(request):
-    UserProfile_list = UserProfile.objects.all()
+    user = User.objects.get(username=request.user.username)
     context = {
-        'UserProfile_list': UserProfile_list
+        'user': user
     }
     return render(request, 'accounts/profile.html', context)
 
 
-def change_default_times_view(request, UserProfile_id):
-    user_profile = UserProfile.objects.get(pk=UserProfile_id)
+def change_default_times_view(request):
+    user_profile = User.objects.get(username=request.user.username).userprofile
     form = ChangeDefaultTimesForm(request.POST or None, instance=user_profile)
 
     if form.is_valid():
