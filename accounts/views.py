@@ -37,9 +37,9 @@ def create_account_view(request, *args, **kwargs):
 
 
 def profile_view(request):
-    UserProfile_list = UserProfile.objects.all()
+    user = User.objects.get(username=request.user.username)
     context = {
-        'UserProfile_list': UserProfile_list
+        'user': user
     }
     return render(request, 'accounts/profile.html', context)
 
