@@ -44,8 +44,8 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
-def change_default_times_view(request, UserProfile_id):
-    user_profile = UserProfile.objects.get(pk=UserProfile_id)
+def change_default_times_view(request):
+    user_profile = User.objects.get(username=request.user.username).userprofile
     form = ChangeDefaultTimesForm(request.POST or None, instance=user_profile)
 
     if form.is_valid():
