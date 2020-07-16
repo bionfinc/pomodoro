@@ -54,16 +54,29 @@ function shortBreakModeOn() {
 
   // check if Pomodoro mode is on and timer is running
   if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-    if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points")) {
+    if (pomodoroButton.value != false) {
+      if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points")) {
 
-      //deduct 10 points from score
-      $.ajax({
-        url: '/deductPoints',
-        success: function (data) {
+        //deduct 10 points from score
+        $.ajax({
+          url: '/deductPoints',
+          success: function (data) {
             $("#score_span").html(data)
-        }
-      });
+          }
+        });
 
+        // In case the timer was running, stop countdownClock function
+        clearInterval(countdownClock);
+
+        // Reset time and timer display
+        countdownMins = shortBreakMinutes;
+        countdownSecs = 0;
+        resetTimer();
+
+        // Set timer to Short Break
+        currentTimer = "Short Break";
+      }
+    } else {
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
 
@@ -76,33 +89,33 @@ function shortBreakModeOn() {
       currentTimer = "Short Break";
     }
   }
-  else {
-    // In case the timer was running, stop countdownClock function
-    clearInterval(countdownClock);
-
-    // Reset time and timer display
-    countdownMins = shortBreakMinutes;
-    countdownSecs = 0;
-    resetTimer();
-
-    // Set timer to Short Break
-    currentTimer = "Short Break";
-  }
 }
-
 function longBreakModeOn() {
   // check if Pomodoro mode is on and timer is running
   if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-    if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points.")) {
+    if (pomodoroButton.value != false) {
+      if (window.confirm("Are you sure you want to end your task early? You'll lose 10 points.")) {
 
-      //deduct 10 points from score
-      $.ajax({
-        url: '/deductPoints',
-        success: function (data) {
-          $("#score_span").html(data)
-        }
-      });
+        //deduct 10 points from score
+        $.ajax({
+          url: '/deductPoints',
+          success: function (data) {
+            $("#score_span").html(data)
+          }
+        });
 
+        // In case the timer was running, stop countdownClock function
+        clearInterval(countdownClock);
+
+        // Reset time and timer display
+        countdownMins = longBreakMinutes;
+        countdownSecs = 0;
+        resetTimer();
+
+        // Set timer to Short Break
+        currentTimer = "Long Break";
+      }
+    } else {
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
 
@@ -114,18 +127,6 @@ function longBreakModeOn() {
       // Set timer to Short Break
       currentTimer = "Long Break";
     }
-  }
-  else {
-    // In case the timer was running, stop countdownClock function
-    clearInterval(countdownClock);
-
-    // Reset time and timer display
-    countdownMins = longBreakMinutes;
-    countdownSecs = 0;
-    resetTimer();
-
-    // Set timer to Short Break
-    currentTimer = "Long Break";
   }
 }
 
