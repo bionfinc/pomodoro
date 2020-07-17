@@ -160,12 +160,12 @@ function longBreakModeOn() {
           clearInterval(countdownClock);
 
           // Reset time and timer display
-          countdownMins = shortBreakMinutes;
+          countdownMins = longBreakMinutes;
           countdownSecs = 0;
           resetTimer();
 
           // Set timer to Short Break
-          currentTimer = "Short Break";
+          currentTimer = "Long Break";
         }
       }
 
