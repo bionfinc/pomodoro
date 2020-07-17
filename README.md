@@ -113,3 +113,11 @@ or
 ### Accessing the Heroku CLI
 1. `heroku login`
 1. `heroku run bash -a pomodoro-posse`
+
+---
+
+## Wireframes/Mockup
+### Figma
+Everyone should have edit access to the Figma project through their email they shared for calendar invitations. If you are not comfortable editing the wireframes let Mike know what you would like added or changed and he will do his best to incorporate your ideas.
+
+https://www.figma.com/proto/ycNuRwDg2LLANTTFoCF0Tf/pomodoro?node-id=10%3A779&scaling=scale-down
