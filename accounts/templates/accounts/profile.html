@@ -5,6 +5,13 @@
     <a href="{% url 'index' %}">Back to timer</a>
 
     <h1>Profile</h1>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <img src="../../../static/images/rank1.png" class="rank">
+        </div>
+        <div class="col-4"></div>
+    </div>
 
     <!-- Token for rotection against cross site request forgeries -->
     {% csrf_token %}
