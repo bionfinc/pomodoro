@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party
+    'bootstrap4',
 
     # own
     'accounts.apps.AccountsConfig',
