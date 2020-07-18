@@ -8,7 +8,8 @@ https://pomodoro-posse.herokuapp.com/
 ![high level architecture](static/images/Pomodoro.png "High level architecture")
 
 ## To run
-1. Ensure that the secret key variable has been set on your local environment
+1. Ensure that the secret key variable has been set on your local environment (shown in the "Setting SECRET_KEY environment variable" section below)
+1. Install dependencies `$ pip install -r requirements.txt`
 1. Navigate to the root directory of the project
 1. Run `python3 manage.py runserver`
 
@@ -16,8 +17,8 @@ https://pomodoro-posse.herokuapp.com/
 
 ## Setting SECRET_KEY environment variable
 ### Generating secret keys
-1. `python -m pip install Django`
-1. `python3`
+1. `$ python -m pip install Django`
+1. `$ python3`
 1. `from django.utils.crypto import get_random_string`
 1. `chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'`
 1. `SECRET_KEY = get_random_string(50, chars)`
@@ -27,7 +28,7 @@ https://pomodoro-posse.herokuapp.com/
 ### Add SECRET_KEY environment variable
 #### bash/zsh(macOS)
 1. Open terminal
-2. `export SECRET_KEY='[value]'` (replacing [value] with the secret key you are using)
+2. `$ export SECRET_KEY='[value]'` (replacing [value] with the secret key you are using)
 
 #### Windows 8/10
 1. In Search, search for and then select: Edit environment variables for your account
@@ -40,17 +41,17 @@ https://pomodoro-posse.herokuapp.com/
 ### Adding new database models
 1. Add a class to the models.py file in the app
 1. If the app is not already listed under the INSTALLED_APPS section of the settings.py file, add it there
-1. `python3 manage.py makemigrations [app name]`
+1. `$ python3 manage.py makemigrations [app name]`
 1. You should get an output siimlar to `[app name]/migrations/0003_auto_20200712_1548.py`
-1. `python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
-1. `python3 manage.py migrate`
+1. `$ python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
+1. `$ python3 manage.py migrate`
 
 ### Updating existing database models
 The below steps will need to be made in the Heroku CLI once the changes have been deployed to Heroku
-1. `python3 manage.py makemigrations [app name]`
+1. `$ python3 manage.py makemigrations [app name]`
 1. You should get an output siimlar to `[app name]/migrations/0003_auto_20200712_1548.py`
-1. `python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
-1. `python3 manage.py migrate`
+1. `$ python3 manage.py sqlmigrate [app name] [migration number]` (migration number in the above step is shown as '0003')
+1. `$ python3 manage.py migrate`
 1. If you were in the python shell when the updates were made, then run `exit()`
 
 ### Changing the name displayed for database model rows
@@ -63,7 +64,7 @@ The below steps will need to be made in the Heroku CLI once the changes have bee
 ### Interacting with data in tables from the terminal
 You will always need to first run:
 
-`python3 manage.py shell`
+`$ python3 manage.py shell`
 
 #### To import a table
 `from [app name].models import [model name]`
@@ -89,13 +90,13 @@ or
 
 ### Admin panel
 #### Creating a superuser
-1. `python3 manage.py createsuperuser`
+1. `$ python3 manage.py createsuperuser`
 1. Press enter or type in a custom username and press enter
 1. Enter your email
 1. Enter a password to use for the account
 
 #### Navigating to admin panel
-1. `python3 manage.py runserver`
+1. `$ python3 manage.py runserver`
 1. Navigate to 127.0.0.1:8000/admin
 1. Enter the username and password used in the "Creating a superuser" step above
 
@@ -111,8 +112,8 @@ or
 1. Follow installation instructions here: https://devcenter.heroku.com/articles/heroku-cli#download-and-install
 
 ### Accessing the Heroku CLI
-1. `heroku login`
-1. `heroku run bash -a pomodoro-posse`
+1. `$ heroku login`
+1. `$ heroku run bash -a pomodoro-posse`
 
 ---
 
