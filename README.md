@@ -11,6 +11,7 @@ https://pomodoro-posse.herokuapp.com/
 1. Ensure that the secret key variable has been set on your local environment (shown in the "Setting SECRET_KEY environment variable" section below)
 1. Navigate to the root directory of the project
 1. Install dependencies with `$ pip install -r requirements.txt`
+1. Generate database `$ python manage.py migrate`
 1. Run `$ python3 manage.py runserver`
 
 ---
