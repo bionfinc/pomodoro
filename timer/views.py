@@ -5,18 +5,18 @@ from django import forms
 from datetime import datetime
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
+from usersessions.models import UserSession
 
 class EditTaskName(forms.Form):
     taskName = forms.CharField(label="New Task Name")
 
+class EditUserSessionName(forms.Form):
+    userSessionName = forms.CharField(label="New Session Name")
+
+
 # Create your views here.
 def index_view(request):
-    if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
-        now = datetime.now()
-        request.session['taskName'] = 'Task:' + now.strftime(
-            "%Y-%m-%d_%H:%M:%S")  # creates a default taskName if they dont have one
-
-    # add in user's current score if logged in
+        # add in user's current score if logged in
     score = 0
     if request.user.is_authenticated:
         score = request.user.userprofile.score
@@ -26,8 +26,26 @@ def index_view(request):
     else:
         user = False
 
+    if request.user.is_authenticated:
+        if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
+            now = datetime.now()
+            request.session['taskName'] = 'Task: ' + now.strftime(
+                "%Y-%m-%d_%H:%M:%S")  # creates a default taskName if they dont have one
+            
+        if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
+            now = datetime.now()
+            request.session['userSessionName'] = 'Session: ' + now.strftime(
+                "%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
+            userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
+            request.session['userSessionId'] = userSessionObject.id
+    else:
+        return render(request, 'index.html', {
+        'score': score,
+        'user': user
+    })
     return render(request, 'index.html', {
         'taskName': request.session['taskName'],
+        'userSessionName': request.session['userSessionName'],
         'score': score,
         'user': user
     })
@@ -50,7 +68,29 @@ def editTask_view(request):
     return render(request, "editTask.html", {
         'form': EditTaskName
     })
+# get taskName first then edit it via post
 
+def editUserSession_view(request):
+    #if its a post, it checks the validity of the form content
+    if request.method == "POST":
+        form = EditUserSessionName(request.POST)        # contains user's submitted form userSession
+        if form.is_valid():                      # checks if the new name is valid
+            userSessionName = form.cleaned_data['userSessionName']   # if its valid, get the task and add it to the list of tasks
+            userSessionId = request.session['userSessionId']  # gets the id of the current session
+            userSessionObject = UserSession.objects.get(id = userSessionId) # gets the user session object with matching id
+            userSessionObject.session_name = userSessionName # sets the user session objects name to the user inputed name
+            userSessionObject.save() # updates the database with the new name
+            request.session['userSessionName'] = userSessionName             # changing the userSession for the user session
+            return HttpResponseRedirect(
+                reverse('index'))  # returns the user to the timer, is not hard coded, uses the index name and reverses
+        else:                                       # if not, it sends them back to the for with their invalid input
+            return render(request, 'editUserSession.html', {
+                'form': form
+            })
+    # if it wasnt a post (was a get) render them an empty form
+    return render(request, "editUserSession.html", {
+        'form': EditUserSessionName
+    })
 
 # AJAX for adding points to the score
 
