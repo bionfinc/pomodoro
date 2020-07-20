@@ -29,9 +29,17 @@ def index_view(request):
     if request.user.is_authenticated:
         if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
             now = datetime.now()
+            request.session['defaultTaskName'] = True
+            request.session['taskNumber'] = 1
             request.session['taskName'] = 'Task: ' + now.strftime(
-                "%Y-%m-%d_%H:%M:%S")  # creates a default taskName if they dont have one
-            
+                "%Y-%m-%d: #1")  # creates a default taskName if they dont have one
+        # elif request.session['defaultTaskName']:
+        #     now = datetime.now()
+        #     request.session['taskNumber'] += 1
+        #     request.session['taskName'] = 'Task: ' + now.strftime(
+        #         "%Y-%m-%d: #" + str(request.session['taskNumber']))  # creates a default taskName if they dont have one
+
+
         if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
             now = datetime.now()
             request.session['userSessionName'] = 'Session: ' + now.strftime(
@@ -58,6 +66,7 @@ def editTask_view(request):
         if form.is_valid():                      # checks if the new name is valid
             taskName = form.cleaned_data['taskName']   # if its valid, get the task and add it to the list of tasks
             request.session['taskName'] = taskName             # changing the taskName for the user session
+            request.session['defaultTaskName'] = False
             return HttpResponseRedirect(
                 reverse('index'))  # returns the user to the timer, is not hard coded, uses the index name and reverses
         else:                                       # if not, it sends them back to the for with their invalid input
