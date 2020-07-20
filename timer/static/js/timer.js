@@ -260,7 +260,7 @@ function padValue(integerValue) {
 function countdownTimer() {
   timeRemaining--;
   displayTimer();
-  console.log(timerState)
+  //console.log(timerState)
   // If time is up, stop the timer and display notification
   if (timeRemaining == 0 && currentTimer == "Pomodoro") {
 
