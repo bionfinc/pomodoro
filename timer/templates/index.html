@@ -6,7 +6,7 @@
         {% if user.username %}
             Score: <span id="score_span">{{ score }}</span> pts
         {% else %}
-            Login to keep track of your score
+            Login to keep track of your score, sessions, and tasks.
         {% endif %}
     </div>
 
@@ -32,8 +32,23 @@
         <button type="button" id="resetButton">Reset</button>
     </div>
     <br>
+
+    <div>
+        {% if user.username %}
+            Score: <span id="score_span">{{ score }}</span> pts
+        {% else %}
+            Login to keep track of your score, sessions, and tasks
+        {% endif %}
+    </div>
+    <div id="userSessionName">
+        {% if user.username %}
+        Session Name: {{ userSessionName }} <a href="{% url 'editUserSession' %}">Edit</a>
+        {% endif %}
+    </div>
     <div id="taskName">
+        {% if user.username %}
         Task Name: {{ taskName }} <a href="{% url 'editTask' %}">Edit</a>
+        {% endif %}
     </div>
 
 

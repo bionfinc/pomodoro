@@ -11,9 +11,9 @@ class UserSession(models.Model):
 		null=True
 	)
 	session_time_start = models.DateTimeField()
-	session_time_end = models.DateTimeField()
-	category = models.CharField(max_length=100) # TODO This might need a seperate table 
-	description = models.TextField()
+	session_time_end = models.DateTimeField(null=True)
+	category = models.CharField(max_length=100, null=True) # TODO This might need a seperate table 
+	description = models.TextField(null=True)
 	session_name = models.CharField(max_length=100)
 
 
@@ -27,9 +27,9 @@ class Task(models.Model):
 	task_time = models.IntegerField()
 	task_name = models.CharField(max_length=100)
 	time_start = models.DateTimeField()
-	time_end = models.DateTimeField()
-	task_description = models.TextField()
-	subcategory = models.CharField(max_length=100)
+	time_end = models.DateTimeField(null=True)
+	task_description = models.TextField(null=True)
+	subcategory = models.CharField(max_length=100, null=True)
 
 
 # TODO Model description
