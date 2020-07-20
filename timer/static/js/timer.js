@@ -40,89 +40,25 @@ if (longBreakButton.value <= 0) {
 
 function pomodoroModeOn() {
   // In case the timer was running, stop countdownClock function
+  if (currentTimer != 'Pomodoro'){
   clearInterval(countdownClock);
 
   // Reset time and timer display
   countdownMins = pomodoroMinutes;
   countdownSecs = 0;
+  timerState = ''; // clear timer state
+  console.log(timerState);
   resetTimer();
 
   // Set timer to Pomodoro
   currentTimer = "Pomodoro";
+  }
 }
 
 function shortBreakModeOn() {
-
-  // check if Pomodoro mode is on and timer is running
-  if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-
-    //format prompt message depending if user is logged in or not
-    function checkLoggedIn() {
-      return new Promise(resolve => {
-        $.ajax({
-          url: '/isLoggedIn',
-          success: function (data) {
-            //logged in
-            if (data == 'True') {
-              resolve("Are you sure you want to end your task early? You'll lose 10 points");
-            }
-            //not logged in
-            else {
-              resolve("Are you sure you want to end your task early?");
-            }
-          }
-        });
-      })
-    }
-
-    //show window prompt message
-    async function showMessage() {
-      const message = await checkLoggedIn();
-
-      if (window.confirm(message)) {
-
-        //deduct 10 points from score
-        $.ajax({
-          url: '/deductPoints',
-          success: function (data) {
-            $("#score_span").html(data)
-          }
-        });
-
-        // In case the timer was running, stop countdownClock function
-        clearInterval(countdownClock);
-
-        // Reset time and timer display
-        countdownMins = shortBreakMinutes;
-        countdownSecs = 0;
-        resetTimer();
-
-        // Set timer to Short Break
-        currentTimer = "Short Break";
-      }
-    }
-
-    showMessage();
-
-  }
-  else {
-    // In case the timer was running, stop countdownClock function
-    clearInterval(countdownClock);
-
-    // Reset time and timer display
-    countdownMins = shortBreakMinutes;
-    countdownSecs = 0;
-    resetTimer();
-
-    // Set timer to Short Break
-    currentTimer = "Short Break";
-  }
-}
-
-function longBreakModeOn() {
-  // check if Pomodoro mode is on and timer is running
-  if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-    
+  if (currentTimer != 'Short Break'){
+    // check if Pomodoro mode is on and timer is running
+    if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
 
       //format prompt message depending if user is logged in or not
       function checkLoggedIn() {
@@ -161,18 +97,94 @@ function longBreakModeOn() {
           clearInterval(countdownClock);
 
           // Reset time and timer display
-          countdownMins = longBreakMinutes;
+          countdownMins = shortBreakMinutes;
           countdownSecs = 0;
+          timerState = ''; // clear timer state
+          console.log(timerState);
           resetTimer();
 
           // Set timer to Short Break
-          currentTimer = "Long Break";
+          currentTimer = "Short Break";
         }
       }
 
       showMessage();
-    
+
+    }
+    else {
+      // In case the timer was running, stop countdownClock function
+      clearInterval(countdownClock);
+
+      // Reset time and timer display
+      countdownMins = shortBreakMinutes;
+      countdownSecs = 0;
+      timerState = ''; // clear timer state
+      console.log(timerState);
+      resetTimer();
+
+      // Set timer to Short Break
+      currentTimer = "Short Break";
+    }
   }
+}
+
+function longBreakModeOn() {
+  if (currentTimer != 'Long Break'){
+    // check if Pomodoro mode is on and timer is running
+    if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
+      
+
+        //format prompt message depending if user is logged in or not
+        function checkLoggedIn() {
+          return new Promise(resolve => {
+            $.ajax({
+              url: '/isLoggedIn',
+              success: function (data) {
+                //logged in
+                if (data == 'True') {
+                  resolve("Are you sure you want to end your task early? You'll lose 10 points");
+                }
+                //not logged in
+                else {
+                  resolve("Are you sure you want to end your task early?");
+                }
+              }
+            });
+          })
+        }
+
+        //show window prompt message
+        async function showMessage() {
+          const message = await checkLoggedIn();
+
+          if (window.confirm(message)) {
+
+            //deduct 10 points from score
+            $.ajax({
+              url: '/deductPoints',
+              success: function (data) {
+                $("#score_span").html(data)
+              }
+            });
+
+            // In case the timer was running, stop countdownClock function
+            clearInterval(countdownClock);
+
+            // Reset time and timer display
+            countdownMins = longBreakMinutes;
+            countdownSecs = 0;
+            timerState = ''; // clear timer state
+            console.log(timerState);
+            resetTimer();
+
+            // Set timer to Short Break
+            currentTimer = "Long Break";
+          }
+        }
+
+        showMessage();
+      
+    }
     else {
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
@@ -180,12 +192,15 @@ function longBreakModeOn() {
       // Reset time and timer display
       countdownMins = longBreakMinutes;
       countdownSecs = 0;
+      timerState = ''; // clear timer state
+      console.log(timerState);
       resetTimer();
 
       // Set timer to Short Break
       currentTimer = "Long Break";
     }
   }
+}
 
 function startTimer() {
   console.log(timerState);
