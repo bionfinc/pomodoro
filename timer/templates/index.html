@@ -2,58 +2,71 @@
 
 {% block body %}
 
-    <div>
+    <!-- <div>
         {% if user.username %}
             Score: <span id="score_span">{{ score }}</span> pts
         {% else %}
             Login to keep track of your score, sessions, and tasks.
         {% endif %}
-    </div>
+    </div> -->
 
-    <h1>Pomodoro Posse Timer</h1>
     <!-- Buttons to select a Pomodoro, short break, or long break -->
-    <div>
-        <button type="button" id="pomodoroModeButton" value="{{ user.userprofile.task_length }}">Pomodoro</button>
-        <button type="button" id="shortBreakModeButton" value="{{ user.userprofile.short_rest_length }}">Short Break
-        </button>
-        <button type="button" id="longBreakModeButton" value="{{ user.userprofile.long_rest_length }}">Long Break
-        </button>
-    </div>
-    <br>
-    <!-- Timer display -->
-    <div id="timer">
-        <span id="minsValue">00</span><span>:</span><span id="secsValue">00</span>
-    </div>
-    <br>
-    <!-- Buttons to Play, Pause, and Reset the timer -->
-    <div>
-        <button type="button" id="startButton">Start</button>
-        <button type="button" id="pauseButton">Pause</button>
-        <button type="button" id="resetButton">Reset</button>
-    </div>
-    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
 
-    <div>
-        {% if user.username %}
-            Score: <span id="score_span">{{ score }}</span> pts
-        {% else %}
-            Login to keep track of your score, sessions, and tasks
-        {% endif %}
+            </div>
+            <div class="col-8 d-flex justify-content-center">
+                <div class="card p-5">
+                    <div class="d-flex justify-content-center">
+                       
+                            <button type="button" id="pomodoroModeButton"  value="{{ user.userprofile.task_length }}">Pomodoro</button>
+                            <button type="button" id="shortBreakModeButton"  value="{{ user.userprofile.short_rest_length }}">Short Break
+                            </button>
+                            <button type="button" id="longBreakModeButton" value="{{ user.userprofile.long_rest_length }}">Long Break
+                            </button>
+                        
+                        
+                    </div>
+                    <br>
+                    <!-- Timer display -->
+                    <div id="timer" class="d-flex justify-content-center">
+                        <span id="minsValue">00</span><span>:</span><span id="secsValue">00</span>
+                    </div>
+                    <br>
+                    <!-- Buttons to Play, Pause, and Reset the timer -->
+                    <div class="d-flex justify-content-center">
+                        <button type="button" id="startButton">Start</button>
+                        <button type="button" id="pauseButton">Pause</button>
+                        <button type="button" id="resetButton">Reset</button>
+                    </div>
+                    <br>
+                
+                    
+                    <div id="userSessionName">
+                        {% if user.username %}
+                        Session Name: {{ userSessionName }} <a href="{% url 'editUserSession' %}">Edit</a>
+                        {% endif %}
+                    </div>
+                    <div id="taskName">
+                        {% if user.username %}
+                        Task Name: {{ taskName }} <a href="{% url 'editTask' %}">Edit</a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
     </div>
-    <div id="userSessionName">
-        {% if user.username %}
-        Session Name: {{ userSessionName }} <a href="{% url 'editUserSession' %}">Edit</a>
-        {% endif %}
-    </div>
-    <div id="taskName">
-        {% if user.username %}
-        Task Name: {{ taskName }} <a href="{% url 'editTask' %}">Edit</a>
-        {% endif %}
-    </div>
+    
 
 
     {% load static %}
     <script src="{% static '/js/timer.js' %}" type="text/javascript"></script>
+    <script src="{% static '/js/buttons.js' %}" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"
             integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
             crossorigin="anonymous"></script>

@@ -1,4 +1,36 @@
-body {
+/* body {
     text-align: center;
     font-family: Roboto;
+} */
+
+#timer{
+    font-size: 6rem;
 }
+
+/* button:focus{
+    color: #fff;
+      background-color: #343a40;
+      border-color: #343a40;
+  } */
+
+  #pomodoroModeButton, #shortBreakModeButton, #longBreakModeButton,
+  #startButton, #pauseButton, #resetButton {
+      background: white;
+      border: 1px solid black;
+      border-radius: 3px;
+      padding: 5px 10px;
+      margin-left: 5px;
+      margin-right: 5px;
+  }
+
+  #pomodoroModeButton:hover, #shortBreakModeButton:hover, #longBreakModeButton:hover,
+  #startButton:hover, #pauseButton:hover, #resetButton:hover {
+      background: rgb(228, 55, 55);
+      color: white
+  }
+
+  .button-selected {
+    background: rgb(228, 55, 55) !important;
+    color: white;
+    
+  }
