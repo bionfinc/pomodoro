@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 
 from accounts.views import create_account_view, profile_view, change_default_times_view
 from timer.views import index_view, editTask_view, add_points, deduct_points, is_logged_in, editUserSession_view
+from usersessions.views import tasks_view
 
 urlpatterns = [
     path('', index_view, name='index'),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('profile/change-default-times/', change_default_times_view,
          name='change-default-times'),
+    path('tasks/', tasks_view, name='tasks'),
     path('addPoints/', add_points, name="addPoints"),
     path('deductPoints/', deduct_points, name="deductPoints"),
     path('isLoggedIn/', is_logged_in, name="isLoggedIn"),
