@@ -2,22 +2,17 @@
 
 {% block body %}
 
-    <!-- <div>
-        {% if user.username %}
-            Score: <span id="score_span">{{ score }}</span> pts
-        {% else %}
-            Login to keep track of your score, sessions, and tasks.
-        {% endif %}
-    </div> -->
+
+
 
     <!-- Buttons to select a Pomodoro, short break, or long break -->
     <div class="container">
         <div class="row">
-            <div class="col-2">
+            <div class="col-md-2">
 
             </div>
-            <div class="col-8 d-flex justify-content-center">
-                <div class="card p-5">
+            <div class="col-12 col-md-8 d-flex justify-content-center">
+                <div class="card p-5 mt-4">
                     <div class="d-flex justify-content-center">
                        
                             <button type="button" id="pomodoroModeButton"  value="{{ user.userprofile.task_length }}">Pomodoro</button>
@@ -36,7 +31,12 @@
                     <br>
                     <!-- Buttons to Play, Pause, and Reset the timer -->
                     <div class="d-flex justify-content-center">
+                        {% if user.username %}
                         <button type="button" id="startButton">Start</button>
+                        {% else %}
+                        <button type="button" id="startButton">Start*</button>
+                        {% endif %}
+                        
                         <button type="button" id="pauseButton">Pause</button>
                         <button type="button" id="resetButton">Reset</button>
                     </div>
@@ -45,22 +45,31 @@
                     
                     <div id="userSessionName">
                         {% if user.username %}
-                        Session Name: {{ userSessionName }} <a href="{% url 'editUserSession' %}">Edit</a>
+                        Session: {{ userSessionName }} <a href="{% url 'editUserSession' %}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                     </div>
                     <div id="taskName">
                         {% if user.username %}
-                        Task Name: {{ taskName }} <a href="{% url 'editTask' %}">Edit</a>
+                        Task: {{ taskName }} <a href="{% url 'editTask' %}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                     </div>
                 </div>
-                
+               
             </div>
-            <div class="col-2">
+            
+            <div class="col-md-2">
 
             </div>
+
+        </div>
+        <div id="login-prompt" class="d-flex justify-content-center p-2">
+            {% if not user.username %}
+                *Login to keep track of your score, sessions, and tasks.*
+            {% endif %}
         </div>
     </div>
+
+  
     
 
 

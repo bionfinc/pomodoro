@@ -1,32 +1,48 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
+{% bootstrap_css %}
 {% block body %}
 
-    <a href="{% url 'index' %}">Back to timer</a>
 
-    <h1>Profile</h1>
+
+    
     <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
-            <img src="../../../static/images/rank1.png" class="rank">
+        <div class="col-md-2"></div>
+
+        <div class="col-12 col-md-8 d-flex justify-content-center">
+            <div class="card  p-3 mt-4">
+                <h1>Profile</h1>
+                <img style="width: 40px" src="../../../static/images/rank1.png" class="rank">
+                <!-- Token for rotection against cross site request forgeries -->
+                {% csrf_token %}
+
+                <div>
+                    Username: {{ user.username }} <br>
+                    Email: {{ user.email }} <br>
+                    Score: {{ user.userprofile.score }} <br>
+                    Date joined: {{ user.date_joined }} <br>
+                    Default task length: {{ user.userprofile.task_length }} <a href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
+                    Default short rest length: {{ user.userprofile.short_rest_length }} <a href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
+                    Default long rest length: {{ user.userprofile.long_rest_length }} <a href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
+                </div>
+
+                <div class="mt-3 d-flex justify-content-around">
+                        
+                    {% buttons %}
+                    <a class="btn-submit btn " href="{% url 'index' %}">Return To Timer</a>
+                    
+                    {% endbuttons %}
+                </div>
+
+            </div>
+            
         </div>
-        <div class="col-4"></div>
+        
+        <div class="col-md-2">
+
+        </div>
     </div>
 
-    <!-- Token for rotection against cross site request forgeries -->
-    {% csrf_token %}
-
-    <!-- Render entries as paragraphs <p>User Stuff...</p> -->
-    {{ form.as_p }}
-
-    Username: {{ user.username }} <br>
-    Email: {{ user.email }} <br>
-    Score: {{ user.userprofile.score }} <br>
-    Date joined: {{ user.date_joined }} <br>
-    Default task length: {{ user.userprofile.task_length }} <br>
-    Default short rest length: {{ user.userprofile.short_rest_length }} <br>
-    Default long rest length: {{ user.userprofile.long_rest_length }} <br>
-
-    <p><a href="{% url 'change-default-times' %}">Change default times</a></p>
+    
 
 {% endblock %}
