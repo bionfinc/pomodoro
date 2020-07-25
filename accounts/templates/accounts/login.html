@@ -1,17 +1,48 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
+{% bootstrap_css %}
 {% block body %}
 
-<h1>Login</h1>
+<div class="container">
+    <div class="row ">
+        <div class="col-md-2">
 
-<form method="post">
-	<!-- Token for rotection against cross site request forgeries -->
-    {% csrf_token %}
+        </div>
+        <div class="col-12 col-md-8 d-flex justify-content-center">
+            <div class="card p-3 d-flex justify-content-center mt-3">
+                <div class="d-flex justify-content-center">
+                    <h2>
+                        Login
+                    </h2>
+                </div>
+                <div class="d-flex justify-content-center">
+                    
+                    <form id="login-form" class="form" method="post">
+                        
+                        <!-- Token for rotection against cross site request forgeries -->
+                        {% csrf_token %}
+                        
+                        {% bootstrap_form form %}
+                        <div class="d-flex justify-content-center">
+                            {% buttons %}
+                            <button type="submit" class="btn-submit btn">Submit</button>
+                            {% endbuttons %}
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+        <div class="col-md-2">
 
-    <!-- Render entries as paragraphs <p>User Stuff...</p> -->
-    {{ form.as_p }}
+        </div>
+    </div>
+</div>
 
-    <button type="submit">Login</button>
-</form>
+
+
 
 {% endblock %}

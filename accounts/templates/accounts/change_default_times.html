@@ -1,17 +1,42 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
+{% bootstrap_css %}
 {% block body %}
 
-    <h1>User: {{ user.pk }}, Change default times</h1>
-    <p><a href="{% url 'profile' %}">Back to profile</a></p>
-    <form method="post">
-        <!-- Token for rotection against cross site request forgeries -->
-        {% csrf_token %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
 
-        <!-- Render entries as paragraphs <p>User Stuff...</p> -->
-        {{ form }} <br>
+        </div>
 
-        <button type="submit">Save</button>
-    </form>
+        <div class="col-12 col-md-8 mt-4 d-flex justify-content-center">
+            <div class="card p-3">
+                
+                <h1>Change Default Times</h1>
+                
+                <form method="post">
+                    <!-- Token for rotection against cross site request forgeries -->
+                    {% csrf_token %}
+            
+                    {% bootstrap_form form %} <br>
+            
+                    <div class="d-flex justify-content-around">
+                        
+                        {% buttons %}
+                        <a class="btn-submit btn " href="{% url 'profile' %}">Cancel</a>
+                        <button type="submit" class="btn-submit btn">Save</button>
+                        {% endbuttons %}
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+
+        </div>
+    </div>
+</div>
+
+    
 
 {% endblock %}

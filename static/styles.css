@@ -1,4 +1,169 @@
 body {
-    text-align: center;
-    font-family: Roboto;
+  background: rgb(228, 55, 55);
 }
+
+/* main timer on home page */
+#timer{
+    font-size: 6rem;
+}
+
+/* message alerting unlogged in users to log in  */
+#login-prompt{
+  color: white;
+}
+
+/* buttons for all forms */
+.btn-submit{
+    background: rgb(228, 55, 55);
+    color: white;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-color: black;
+}
+
+.btn:hover{
+  background: rgb(172, 36, 36);
+  border-color: black;
+}
+
+a.btn-submit:hover, button.btn-submit:hover {
+  color: white;
+}
+
+/* task and control buttons on home page */
+#pomodoroModeButton, #shortBreakModeButton, #longBreakModeButton,
+#startButton, #pauseButton, #resetButton {
+    background: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#startButton:hover, #pauseButton:hover, #resetButton:hover {
+  background: rgb(2, 177, 31);
+  color: white;
+}
+
+#pomodoroModeButton:hover, #shortBreakModeButton:hover, #longBreakModeButton:hover {
+    background: rgb(228, 55, 55);
+    color: white
+}
+
+.button-selected {
+    background: rgb(228, 55, 55) !important;
+    color: white;
+}
+
+.control-button-selected {
+  background: rgb(2, 177, 31) !important;
+  color: white;
+}
+
+/* user profile image */
+.fa-user-circle {
+    padding: 0 5px;
+    font-size: 30px;
+}
+
+/* naav menu links */
+
+.left-nav-menu {
+  color: rgb(33, 37, 41);
+  padding: 5px;
+}
+
+.left-nav-menu:hover {
+  color: rgb(22, 25, 27);
+  background: rgb(238, 236, 236);
+  
+  padding: 10px 5px;
+  
+}
+
+li a {
+    color: rgb(33, 37, 41);
+}
+
+li a:hover {
+    color: rgb(33, 37, 41);
+    text-decoration: none;
+    
+}
+
+ul i {
+    color: rgb(33, 37, 41);
+}
+
+/* dropdown profile menu */
+
+i:hover{
+    color: rgb(21, 23, 26)
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+    padding: 3px 5px;
+    
+}
+  
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    
+}
+  
+.dropdown-content a {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap; 
+    font-size: 14px;
+}
+
+.dropdown-content span {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    font-size: 14px; 
+}
+  
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {display: block;}
+  
+.dropdown:hover{
+    background: rgb(146, 118, 118);
+    background: rgb(238, 236, 236);
+}
+
+/* nav image of tomato */
+#nav-tomato {
+  width: 40px;
+  margin-right: 5px;
+}
+
+/* user login form */
+#login-form{
+  width: 300px;
+}
+
+/* edit icon */
+.fa-edit {
+  color:rgb(228, 55, 55);;
+}
+
+.fa-edit:hover {
+  color:rgb(172, 36, 36);
+}
+
