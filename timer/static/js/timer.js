@@ -231,6 +231,7 @@ function longBreakModeOn() {
 }
 
 function startTimer() {
+  // change button colors
   document.getElementById("startButton").classList.add("control-button-selected");
   document.getElementById("pauseButton").classList.remove("control-button-selected");
   
@@ -245,6 +246,25 @@ function startTimer() {
     // Call countdownTimer function every second (1000ms)
     countdownClock = setInterval(function () { countdownTimer(); }, 1000);
   } 
+
+  // save task data to db if task is started fresh only
+  if(timeRemaining == pomodoroMinutes * 60){
+    
+    $.ajax({
+      url: '/saveTaskData/',
+      method: 'post',
+      dataType: 'json',
+      data: JSON.stringify({
+          'task_name': $('#taskName').text(),
+          'task_time' : pomodoroMinutes
+        }),
+      success: function(data) {
+        console.log(data);
+      }
+    });
+
+  }
+
 }
 
 function pauseTimer() {
