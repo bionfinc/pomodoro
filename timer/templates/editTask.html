@@ -1,13 +1,35 @@
 {% extends 'base.html' %}
-{% block body %} 
-<h1>Edit Your Pomodoro Task Name</h1>
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% block body %}
 
-<form action="{% url 'editTask' %}" method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit">
-</form>
-<a href="{% url 'index' %}">Back to Timer</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-12 col-md-8 d-flex justify-content-center">
+            <div class="card p-3 mt-4">
+                <div class="d-flex justify-content-center">
+                    <h2>Edit Task Name</h2>
+                </div>
+                <form action="{% url 'editTask' %}" method="POST">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <div class="d-flex justify-content-center">
+                        {% buttons %}
+                        <a class="btn-submit btn " href="{% url 'index' %}">Cancel</a>
+                        <button type="submit" class="btn-submit btn">Save</button>
+                        {% endbuttons %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+
+
 
 
 {% endblock body %}

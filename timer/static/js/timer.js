@@ -39,6 +39,14 @@ if (longBreakButton.value <= 0) {
 }
 
 function pomodoroModeOn() {
+
+  // Set button color to selected
+  if (pomodoroButton.className != "button-selected"){
+    pomodoroButton.className = "button-selected";
+    shortBreakButton.className = "";
+    longBreakButton.className = "";
+  }
+
   // In case the timer was running, stop countdownClock function
   if (currentTimer != 'Pomodoro'){
   clearInterval(countdownClock);
@@ -84,6 +92,11 @@ function shortBreakModeOn() {
         const message = await checkLoggedIn();
 
         if (window.confirm(message)) {
+          // Set button color to selected
+          shortBreakButton.className = "button-selected";
+          pomodoroButton.className = "";
+          longBreakButton.className = "";
+          
 
           //deduct 10 points from score
           $.ajax({
@@ -112,6 +125,11 @@ function shortBreakModeOn() {
 
     }
     else {
+      //set button color
+      shortBreakButton.className = "button-selected";
+      pomodoroButton.className = "";
+      longBreakButton.className = "";
+
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
 
@@ -159,6 +177,11 @@ function longBreakModeOn() {
 
           if (window.confirm(message)) {
 
+            //set button color
+            longBreakButton.className = "button-selected";
+            pomodoroButton.className = "";
+            shortBreakButton.className = "";
+
             //deduct 10 points from score
             $.ajax({
               url: '/deductPoints',
@@ -186,6 +209,11 @@ function longBreakModeOn() {
       
     }
     else {
+      //set button color
+      longBreakButton.className = "button-selected";
+      pomodoroButton.className = "";
+      shortBreakButton.className = "";
+
       // In case the timer was running, stop countdownClock function
       clearInterval(countdownClock);
 
@@ -203,6 +231,9 @@ function longBreakModeOn() {
 }
 
 function startTimer() {
+  document.getElementById("startButton").classList.add("control-button-selected");
+  document.getElementById("pauseButton").classList.remove("control-button-selected");
+  
   console.log(timerState);
   // Check to see if the timer has already been completed and reset if it has
   if (timeRemaining == 0) {
@@ -217,7 +248,12 @@ function startTimer() {
 }
 
 function pauseTimer() {
+  
+  
+
   if (timerState == 'STARTED') {
+    document.getElementById("pauseButton").classList.add("control-button-selected");
+    document.getElementById("startButton").classList.remove("control-button-selected");
     console.log(timerState);
   // Stop countdownClock function
   clearInterval(countdownClock);
@@ -242,6 +278,10 @@ function resetTimer() {
   document.title = "Pomodoro Posse Timer";
   timerState = 'STOPPED';
   console.log(timerState);
+
+  document.getElementById("pauseButton").classList.remove("control-button-selected");
+  document.getElementById("startButton").classList.remove("control-button-selected");
+
   }
 }
 
