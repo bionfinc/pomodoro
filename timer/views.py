@@ -5,7 +5,10 @@ from django import forms
 from datetime import datetime
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
-from usersessions.models import UserSession
+from usersessions.models import UserSession, Task
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 class EditTaskName(forms.Form):
     taskName = forms.CharField(label="New Task Name")
@@ -28,7 +31,7 @@ def index_view(request):
 
     if request.user.is_authenticated:
         if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
-            now = datetime.now()
+            now = timezone.now()
             request.session['defaultTaskName'] = True
             request.session['taskNumber'] = 1
             request.session['taskName'] = 'Task: ' + now.strftime(
@@ -41,7 +44,7 @@ def index_view(request):
 
 
         if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
-            now = datetime.now()
+            now = timezone.now()
             request.session['userSessionName'] = 'Session: ' + now.strftime(
                 "%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
             userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
@@ -127,4 +130,25 @@ def is_logged_in(request):
         return HttpResponse(True)
     else:
         return HttpResponse(False)
+
+# save task info to db when "Start" button clicked
+@csrf_exempt
+def save_task_info(request):
+    if request.user.is_authenticated:
+        # pull data from ajax call
+        task_name = json.loads(request.body)['task_name']
+        task_time = json.loads(request.body)['task_time']
+
+        # create instance of current session to use as FK for Task db
+        session_id = UserSession.objects.get(id = request.session['userSessionId'])
+
+        # create new entry in Task db
+        newTask = Task.objects.create(usersession=session_id, task_name=task_name, task_time=task_time, time_start=timezone.now())
+        return HttpResponse(status=200)
+    else:
+        errMessage = 'Error: user not logged in.'
+        print(errMessage)
+        return HttpResponse(errMessage)
+
+
 

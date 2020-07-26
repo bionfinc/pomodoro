@@ -43,14 +43,14 @@
                     <br>
                 
                     
-                    <div id="userSessionName">
+                    <div>
                         {% if user.username %}
-                        Session: {{ userSessionName }} <a href="{% url 'editUserSession' %}"><i class="fas fa-edit"></i></a>
+                        Session: <span id="userSessionName">{{ userSessionName }} </span><a href="{% url 'editUserSession' %}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                     </div>
-                    <div id="taskName">
+                    <div>
                         {% if user.username %}
-                        Task: {{ taskName }} <a href="{% url 'editTask' %}"><i class="fas fa-edit"></i></a>
+                        Task: <span id="taskName">{{ taskName }}</span> <a href="{% url 'editTask' %}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                     </div>
                 </div>
@@ -75,7 +75,7 @@
 
     {% load static %}
     <script src="{% static '/js/timer.js' %}" type="text/javascript"></script>
-    <script src="{% static '/js/buttons.js' %}" type="text/javascript"></script>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.js"
             integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
             crossorigin="anonymous"></script>
