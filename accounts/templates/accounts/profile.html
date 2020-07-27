@@ -61,9 +61,10 @@
                                                 plant_cost: getUpgradeCost({{ user.userprofile.plant1_stage }})
                                             },
                                             success: function (data) {
-                                                $("#score_span").html(data)
-                                                generateButtonText(1, {{ user.userprofile.plant1_stage }} +1);
-                                                getPlantImage(1, {{ user.userprofile.plant1_stage }} +1);
+                                                let json = JSON.parse(data)
+                                                $("#score_span").html(json['score'])
+                                                generateButtonText(1, json['new_stage']);
+                                                getPlantImage(1, json['new_stage']);
                                             }
                                         })
                                 });
@@ -89,9 +90,10 @@
                                                 plant_cost: getUpgradeCost({{ user.userprofile.plant2_stage }})
                                             },
                                             success: function (data) {
-                                                $("#score_span").html(data)
-                                                generateButtonText(2, {{ user.userprofile.plant2_stage }} +1);
-                                                getPlantImage(2, {{ user.userprofile.plant2_stage }} +1);
+                                                let json = JSON.parse(data)
+                                                $("#score_span").html(json['score'])
+                                                generateButtonText(2, json['new_stage']);
+                                                getPlantImage(2, json['new_stage']);
                                             }
                                         })
                                 });
@@ -117,9 +119,10 @@
                                                 plant_cost: getUpgradeCost({{ user.userprofile.plant3_stage }})
                                             },
                                             success: function (data) {
-                                                $("#score_span").html(data)
-                                                generateButtonText(3, {{ user.userprofile.plant3_stage }} +1);
-                                                getPlantImage(3, {{ user.userprofile.plant3_stage }} +1);
+                                                let json = JSON.parse(data)
+                                                $("#score_span").html(json['score'])
+                                                generateButtonText(3, json['new_stage']);
+                                                getPlantImage(3, json['new_stage']);
                                             }
                                         })
                                 });
