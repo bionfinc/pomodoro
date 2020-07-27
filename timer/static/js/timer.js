@@ -249,14 +249,15 @@ function startTimer() {
 
   // save task data to db if task is started fresh only
   if(timeRemaining == pomodoroMinutes * 60){
-    
+    let currentCategory = document.getElementById('taskCategory').value;
     $.ajax({
       url: '/saveTaskData/',
       method: 'post',
       dataType: 'json',
       data: JSON.stringify({
           'task_name': $('#taskName').text(),
-          'task_time' : pomodoroMinutes
+          'task_time' : pomodoroMinutes,
+          'category' : currentCategory,
         }),
       success: function(data) {
         console.log(data);
