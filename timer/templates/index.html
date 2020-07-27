@@ -53,6 +53,17 @@
                         Task: <span id="taskName">{{ taskName }}</span> <a href="{% url 'editTask' %}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                     </div>
+                    <div>
+                        {% if user.username %}
+                        Task Category: 
+                        <select name="taskCategory" id="taskCategory">
+                            <option value="general">General</option>
+                            <option value="homework">Homework</option>
+                            <option value="studying">Studying</option>
+                            <option value="work">Work</option>
+                        </select>
+                        {% endif %}
+                    </div>
                 </div>
                
             </div>
