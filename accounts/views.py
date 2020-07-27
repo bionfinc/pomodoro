@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from django.http import HttpResponse, HttpRequest
-from accounts.forms import SignUpForm, ChangeDefaultTimesForm
-from .models import UserProfile
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from accounts.forms import SignUpForm, ChangeDefaultTimesForm
+import json
 
 
 # Create your views here.
@@ -98,6 +98,10 @@ def upgrade(request):
                 request.user.userprofile.award_count = request.user.userprofile.award_count + 1
 
         request.user.userprofile.save()
-        return HttpResponse(request.user.userprofile.score)
+
+        data = {'score': request.user.userprofile.score, 'new_stage': new_stage}
+        json_data = json.dumps(data)
+
+        return HttpResponse(json_data)
     else:
-        return HttpResponse('0')
+        return HttpResponse('FALSE')
