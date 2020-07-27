@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
 {% block body %}
 
 
@@ -64,7 +66,42 @@
                         </select>
                         {% endif %}
                     </div>
+                    <div id="userSessionDescription">
+                        {% if user.username %}
+                        Session Description: <span id="description">{{ description }}</span> <a data-target="#addDescription" data-toggle="modal" href="#addDescription"><i class="fas fa-edit"></i></a>
+                        {% endif %}
+                    </div>
                 </div>
+
+                <!-- userSession Modal -->
+                <div class="modal" id="addDescription">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header border-0">
+                                <h4 class="modal-title">Edit session description</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <form>
+                                    <input type="text">
+                                    <!-- Cancel/Save buttons -->
+                                    <div> <br> </div>
+                                    <div>
+                                        {% buttons %}
+                                        <button type="button" class="btn-submit btn" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn-submit btn">Save</button>
+                                        {% endbuttons %}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                
             </div>
             
