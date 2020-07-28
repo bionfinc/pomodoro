@@ -8,18 +8,19 @@
 
 <head>
     <title>Pomodoro Posse</title>
-    <link rel="shortcut icon" type="image/png" href="{% static '../static/images/favicon.ico' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="{% static '../static/images/favicon.ico' %}"/>
     <script src="https://kit.fontawesome.com/cd776babcb.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/styles.css">
-    
+
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-sm navbar-light bg-light align-items-center">
-        <image id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}"></image>
-        <a class="navbar-brand" href="/">Pomodoro Posse</a>
-        {% if user.username %}
+<nav class="navbar navbar-expand-sm navbar-light bg-light align-items-center">
+    <img id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}" alt="tomato">
+    <a class="navbar-brand" href="/">Pomodoro Posse</a>
+    {% if user.username %}
         <ul class="navbar-nav justify-content-start align-items-center ">
             <li class="nav-item">
                 <a class="left-nav-menu" href="{% url 'index' %}">Timer</a>
@@ -31,23 +32,23 @@
                 <a class="left-nav-menu" href="{% url 'index' %}">Tasks</a>
             </li>
         </ul>
-        {% endif %}
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav  ">
-                
-                {% if user.username %}
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav  ">
+
+            {% if user.username %}
                 <div class="dropdown" style="float:right;">
                     <span id="score_span">{{ user.userprofile.score }} </span> pts
                     <i class="dropbtn fas fa-user-circle"></i>
                     <div class="dropdown-content">
                         <span>Signed in as <strong>{{ user.username }}</strong></span>
-                      <a href="/profile">Your Profile</a>
-                      <a href="/logout">Logout</a>
-                      
+                        <a href="/profile">Your Profile</a>
+                        <a href="/logout">Logout</a>
+
                     </div>
                 </div>
                 {% else %}
@@ -57,17 +58,17 @@
                 <li class="nav-item px-2">
                     <a href="{% url 'createaccount' %}">Create Account</a>
                 </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
 
-   
-    {% block body %}
+
+{% block body %}
 
     <p>Missing Body</p>
 
-    {% endblock %}
+{% endblock %}
 </body>
 
 </html>
