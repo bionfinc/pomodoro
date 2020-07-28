@@ -1,0 +1,63 @@
+<!-- Page system referenced from https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
+
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container">
+ 
+    <div class="row mt-4">
+        <form method="GET" action="" >
+            <input type="search" name="search" placeholder="Search Session..."> 
+        </form>
+    </div>
+        
+    <div class="row">
+        <div class="card">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Session</th>
+                    <th scope="col">Date Started</th>
+                    <th scope="col">Total Time</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for session in sessions %}
+                        <tr>
+                            <td>{{ session.session_name }}</td>
+                            <td>{{ session.first_time_start }}</td>                
+                            <td>{{ session.total_time }}</td>
+                            <td>{{ session.total_points }}</td>
+                            <td><a href=".">Details</a>   <a href=".">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="pagination justify-content-end">
+            <span class="step-links">
+                {% if sessions.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ sessions.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ sessions.number }} of {{ sessions.paginator.num_pages }}.
+                </span>
+        
+                {% if sessions.has_next %}
+                    <a href="?page={{ sessions.next_page_number }}">next</a>
+                    <a href="?page={{ sessions.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
