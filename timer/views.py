@@ -144,11 +144,45 @@ def save_task_info(request):
 
         # create new entry in Task db
         newTask = Task.objects.create(usersession=session_id, task_name=task_name, task_time=task_time, time_start=timezone.now(), category=category)
+        request.session['taskId'] = newTask.id  # save the id for the task in the database to the session as taskId
         return HttpResponse(status=200)
     else:
         errMessage = 'Error: user not logged in.'
         print(errMessage)
         return HttpResponse(errMessage)
+        
+# Update task category in the db when task category is changed
+@csrf_exempt
+def update_task_category(request):
+    if request.user.is_authenticated:
+        # get the current task id from the django session
+        # currTaskId = request.session['taskId']
 
+        # create instance of current task by using its id stored in the the django session
+        currentTask = Task.objects.get(id = request.session['taskId'])
+
+        # pull current category from ajax call
+        category = json.loads(request.body)['category']
+        # update the current task category
+        currentTask.category = category
+
+        # update/save the changed category to the database
+        currentTask.save()
+
+        # ##### old ### pull data from ajax call
+        # task_name = json.loads(request.body)['task_name']
+        # task_time = json.loads(request.body)['task_time']
+        # category = json.loads(request.body)['category']
+        # # create instance of current session to use as FK for Task db
+        # session_id = UserSession.objects.get(id = request.session['userSessionId'])
+
+        # create new entry in Task db
+        #newTask = Task.objects.create(usersession=session_id, task_name=task_name, task_time=task_time, time_start=timezone.now(), category=category)
+        #request.session['taskId'] = newTask.pk
+        return HttpResponse(status=200)
+    else:
+        errMessage = 'Error: user not logged in.'
+        print(errMessage)
+        return HttpResponse(errMessage)
 
 
