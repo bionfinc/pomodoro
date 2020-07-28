@@ -167,3 +167,8 @@ i:hover{
   color:rgb(172, 36, 36);
 }
 
+/* modal */
+.modal-header{
+  color: white;
+  background:rgb(172, 36, 36);
+}

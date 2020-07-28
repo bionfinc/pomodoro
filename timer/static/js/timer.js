@@ -23,7 +23,7 @@ var timerState = '';
 if (pomodoroButton.value <= 0) {
   pomodoroMinutes = 25
 } else {
-  pomodoroMinutes = pomodoroButton.value
+  pomodoroMinutes = pomodoroButton.value;
 }
 
 if (shortBreakButton.value <= 0) {
@@ -63,6 +63,74 @@ function pomodoroModeOn() {
   }
 }
 
+
+function confirmShortBreak() {
+
+  $('#shortBreakModal').modal('hide');
+
+  // Set button color to selected
+  shortBreakButton.className = "button-selected";
+  pomodoroButton.className = "";
+  longBreakButton.className = "";
+  
+
+  //deduct 10 points from score
+  $.ajax({
+    url: '/deductPoints',
+    success: function (data) {
+      $("#score_span").html(data)
+    }
+  });
+
+  // In case the timer was running, stop countdownClock function
+  clearInterval(countdownClock);
+
+  // Reset time and timer display
+  countdownMins = shortBreakMinutes;
+  countdownSecs = 0;
+  timerState = ''; // clear timer state
+  console.log(timerState);
+  resetTimer();
+
+  // Set timer to Short Break
+  currentTimer = "Short Break";
+
+ 
+  
+}
+
+function confirmLongBreak() {
+
+  $('#longBreakModal').modal('hide');
+
+  //set button color
+  longBreakButton.className = "button-selected";
+  pomodoroButton.className = "";
+  shortBreakButton.className = "";
+
+  //deduct 10 points from score
+  $.ajax({
+    url: '/deductPoints',
+    success: function (data) {
+      $("#score_span").html(data)
+    }
+  });
+
+  // In case the timer was running, stop countdownClock function
+  clearInterval(countdownClock);
+
+  // Reset time and timer display
+  countdownMins = longBreakMinutes;
+  countdownSecs = 0;
+  timerState = ''; // clear timer state
+  console.log(timerState);
+  resetTimer();
+
+  // Set timer to Short Break
+  currentTimer = "Long Break";
+}
+
+
 function shortBreakModeOn() {
   if (currentTimer != 'Short Break'){
     // check if Pomodoro mode is on and timer is running
@@ -90,39 +158,17 @@ function shortBreakModeOn() {
       //show window prompt message
       async function showMessage() {
         const message = await checkLoggedIn();
-
-        if (window.confirm(message)) {
-          // Set button color to selected
-          shortBreakButton.className = "button-selected";
-          pomodoroButton.className = "";
-          longBreakButton.className = "";
-          
-
-          //deduct 10 points from score
-          $.ajax({
-            url: '/deductPoints',
-            success: function (data) {
-              $("#score_span").html(data)
-            }
-          });
-
-          // In case the timer was running, stop countdownClock function
-          clearInterval(countdownClock);
-
-          // Reset time and timer display
-          countdownMins = shortBreakMinutes;
-          countdownSecs = 0;
-          timerState = ''; // clear timer state
-          console.log(timerState);
-          resetTimer();
-
-          // Set timer to Short Break
-          currentTimer = "Short Break";
-        }
+        $('#short-break-modal-text').text(message);
+        
+        $('#shortBreakModal').modal()
+        pauseTimer();
+        $('#shortBreakModal').on('hide.bs.modal', function (e) {
+          if(timerState != "STOPPED"){
+            startTimer();
+          }
+        });
       }
-
       showMessage();
-
     }
     else {
       //set button color
@@ -174,36 +220,16 @@ function longBreakModeOn() {
         //show window prompt message
         async function showMessage() {
           const message = await checkLoggedIn();
-
-          if (window.confirm(message)) {
-
-            //set button color
-            longBreakButton.className = "button-selected";
-            pomodoroButton.className = "";
-            shortBreakButton.className = "";
-
-            //deduct 10 points from score
-            $.ajax({
-              url: '/deductPoints',
-              success: function (data) {
-                $("#score_span").html(data)
-              }
-            });
-
-            // In case the timer was running, stop countdownClock function
-            clearInterval(countdownClock);
-
-            // Reset time and timer display
-            countdownMins = longBreakMinutes;
-            countdownSecs = 0;
-            timerState = ''; // clear timer state
-            console.log(timerState);
-            resetTimer();
-
-            // Set timer to Short Break
-            currentTimer = "Long Break";
+          $('#long-break-modal-text').text(message);
+          
+          $('#longBreakModal').modal()
+          pauseTimer();
+          $('#longBreakModal').on('hide.bs.modal', function (e) {
+            if(timerState != "STOPPED"){
+              startTimer();
+            }
+          });
           }
-        }
 
         showMessage();
       
@@ -352,11 +378,11 @@ function countdownTimer() {
             console.log(data);
             //logged in
             if (data == 'True') {
-              resolve("Congrats! You won 10 points for completing your task!");
+              resolve("You won 10 points for completing your task!");
             }
             //not logged in
             else {
-              resolve("Congrats on finishing your task! Log in to track rewards for completed tasks.");
+              resolve("Log in to track rewards for completing your tasks.");
             }
           }
         });
@@ -375,7 +401,9 @@ function countdownTimer() {
       });
 
       setTimeout(function () {
-        alert(message);
+        $('#finished-task-modal-text').text(message);
+        $('#finished-task-modal').modal()
+        // alert(message);
       }, 0)
     }
 
