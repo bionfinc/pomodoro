@@ -1,48 +1,150 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% bootstrap_css %}
+
 {% block body %}
+    <script src="../../static/js/profile.js" type="text/javascript"></script>
+    <div class="container">
+        <div class="row mt-4 p-4 justify-content-center">
+            <div class="col-md-8">
+                <div class="card text-center">
+                    <img class="mx-auto" style="width: 40px" src="../../../static/images/tomatoheader.png">
+                    <h1>Profile</h1>
+                    <!-- Token for protection against cross site request forgeries -->
+                    {% csrf_token %}
 
+                    <div>
+                        Username: {{ user.username }} <br>
+                        Email: {{ user.email }} <br>
+                        Score: {{ user.userprofile.score }} <br>
+                        Date joined: {{ user.date_joined }} <br>
+                        Default task length: {{ user.userprofile.task_length }} <a
+                            href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
+                        Default short rest length: {{ user.userprofile.short_rest_length }} <a
+                            href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
+                        Default long rest length: {{ user.userprofile.long_rest_length }} <a
+                            href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
+                    </div>
 
-<div class="container">
-    
-    <div class="row">
-        <div class="col-md-2"></div>
+                    <div class="mt-3 d-flex justify-content-around">
+                        {% buttons %}
+                            <a class="btn-submit btn " href="{% url 'index' %}">Return To Timer</a>
+                        {% endbuttons %}
+                    </div>
 
-        <div class="col-12 col-md-8 d-flex justify-content-center">
-            <div class="card  p-3 mt-4">
-                <h1>Profile</h1>
-                <img style="width: 40px" src="../../../static/images/rank1.png" class="rank">
-                <!-- Token for rotection against cross site request forgeries -->
-                {% csrf_token %}
-
-                <div>
-                    Username: {{ user.username }} <br>
-                    Email: {{ user.email }} <br>
-                    Score: {{ user.userprofile.score }} <br>
-                    Date joined: {{ user.date_joined }} <br>
-                    Default task length: {{ user.userprofile.task_length }} <a href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
-                    Default short rest length: {{ user.userprofile.short_rest_length }} <a href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
-                    Default long rest length: {{ user.userprofile.long_rest_length }} <a href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
                 </div>
-
-                <div class="mt-3 d-flex justify-content-around">
-                        
-                    {% buttons %}
-                    <a class="btn-submit btn " href="{% url 'index' %}">Return To Timer</a>
-                    
-                    {% endbuttons %}
-                </div>
-
             </div>
-            
-        </div>
-        
-        <div class="col-md-2">
-
         </div>
     </div>
-</div>
-    
+
+    <div class="container col-md-8">
+        <div class="row">
+            <div class="card col-md-12 text-center">
+                <div class="card-title"><h2>Garden</h2></div>
+            </div>
+            <div class="card-group">
+                <div class="col-sm card text-center border-0" id="plant1">
+                    <img src="" id="plant-image1">
+                    <script>getPlantImage(1, {{ user.userprofile.plant1_stage }});</script>
+                    <div class="card-footer border-0">
+                        <button id="plant-button1" type="submit" data-catid="1">
+                            <script type="text/javascript">
+
+                                $('#plant-button1').click(function () {
+                                    let id;
+                                    id = $(this).attr("data-catid");
+                                    $.ajax(
+                                        {
+                                            url: '/upgrade',
+                                            data: {
+                                                plant_id: id,
+                                                plant_cost: getUpgradeCost({{ user.userprofile.plant1_stage }})
+                                            },
+                                            success: function (data) {
+                                                let json = JSON.parse(data)
+                                                $("#score_span").html(json['score'])
+                                                generateButtonText(1, json['new_stage']);
+                                                getPlantImage(1, json['new_stage']);
+                                            }
+                                        })
+                                });
+                            </script>
+                            <script>generateButtonText(1, {{ user.userprofile.plant1_stage }});</script>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm card text-center border-0" id="plant2">
+                    <img src="" id="plant-image2">
+                    <script>getPlantImage(2, {{ user.userprofile.plant2_stage }});</script>
+                    <div class="card-footer border-0">
+                        <button id="plant-button2" type="submit" data-catid="2">
+                            <script type="text/javascript">
+                                $('#plant-button2').click(function () {
+                                    let id;
+                                    id = $(this).attr("data-catid");
+                                    $.ajax(
+                                        {
+                                            url: '/upgrade',
+                                            data: {
+                                                plant_id: id,
+                                                plant_cost: getUpgradeCost({{ user.userprofile.plant2_stage }})
+                                            },
+                                            success: function (data) {
+                                                let json = JSON.parse(data)
+                                                $("#score_span").html(json['score'])
+                                                generateButtonText(2, json['new_stage']);
+                                                getPlantImage(2, json['new_stage']);
+                                            }
+                                        })
+                                });
+                            </script>
+                            <script>generateButtonText(2, {{ user.userprofile.plant2_stage }});</script>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm card text-center border-0" id="plant3">
+                    <img src="" id="plant-image3">
+                    <script>getPlantImage(3, {{ user.userprofile.plant3_stage }});</script>
+                    <div class="card-footer border-0">
+                        <button id="plant-button3" type="submit" data-catid="3">
+                            <script type="text/javascript">
+                                $('#plant-button3').click(function () {
+                                    let id;
+                                    id = $(this).attr("data-catid");
+                                    $.ajax(
+                                        {
+                                            url: '/upgrade',
+                                            data: {
+                                                plant_id: id,
+                                                plant_cost: getUpgradeCost({{ user.userprofile.plant3_stage }})
+                                            },
+                                            success: function (data) {
+                                                let json = JSON.parse(data)
+                                                $("#score_span").html(json['score'])
+                                                generateButtonText(3, json['new_stage']);
+                                                getPlantImage(3, json['new_stage']);
+                                            }
+                                        })
+                                });
+                            </script>
+                            <script>generateButtonText(3, {{ user.userprofile.plant3_stage }});</script>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mt-4 p-4 justify-content-center">
+            <div class="col-md-8">
+                <div class="card text-center">
+                    <h2 class="card-title">Dinner table</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}
