@@ -24,6 +24,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Actions</th>
                 </tr>
+
                 </thead>
                 <tbody>
                     {% for task in tasks_page %}
@@ -33,7 +34,14 @@
                             <td>{{ task.total_task_time }}</td>
                             <td>{{ task.sessions_count }}</td>
                             <td>{{ task.category }}</td>
-                            <td><a href=".">Details</a>   <a href=".">Delete</a></td>
+                            <td>
+                                <form action="." method="GET">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button class="btn btn-secondary" name="action" value="details">Details</button>
+                                        <button class="btn btn-secondary" name="action" value="delete">Delete</button>
+                                    </div>
+                                </form>  
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

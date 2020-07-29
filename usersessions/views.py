@@ -45,8 +45,6 @@ def tasks_view(request):
     return render(request, 'usersessions/tasks.html', context)
 
 
-
-
 def sessions_view(request):
     user = User.objects.get(username=request.user.username)
 
