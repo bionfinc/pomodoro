@@ -63,74 +63,6 @@ function pomodoroModeOn() {
   }
 }
 
-
-function confirmShortBreak() {
-
-  $('#shortBreakModal').modal('hide');
-
-  // Set button color to selected
-  shortBreakButton.className = "button-selected";
-  pomodoroButton.className = "";
-  longBreakButton.className = "";
-  
-
-  //deduct 10 points from score
-  $.ajax({
-    url: '/deductPoints',
-    success: function (data) {
-      $("#score_span").html(data)
-    }
-  });
-
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
-
-  // Reset time and timer display
-  countdownMins = shortBreakMinutes;
-  countdownSecs = 0;
-  timerState = ''; // clear timer state
-  console.log(timerState);
-  resetTimer();
-
-  // Set timer to Short Break
-  currentTimer = "Short Break";
-
- 
-  
-}
-
-function confirmLongBreak() {
-
-  $('#longBreakModal').modal('hide');
-
-  //set button color
-  longBreakButton.className = "button-selected";
-  pomodoroButton.className = "";
-  shortBreakButton.className = "";
-
-  //deduct 10 points from score
-  $.ajax({
-    url: '/deductPoints',
-    success: function (data) {
-      $("#score_span").html(data)
-    }
-  });
-
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
-
-  // Reset time and timer display
-  countdownMins = longBreakMinutes;
-  countdownSecs = 0;
-  timerState = ''; // clear timer state
-  console.log(timerState);
-  resetTimer();
-
-  // Set timer to Short Break
-  currentTimer = "Long Break";
-}
-
-
 function shortBreakModeOn() {
   if (currentTimer != 'Short Break'){
     // check if Pomodoro mode is on and timer is running
@@ -144,7 +76,7 @@ function shortBreakModeOn() {
             success: function (data) {
               //logged in
               if (data == 'True') {
-                resolve("Are you sure you want to end your task early? You'll lose 10 points");
+                resolve("Are you sure you want to end your task early? You'll lose 10 points.");
               }
               //not logged in
               else {
@@ -206,7 +138,7 @@ function longBreakModeOn() {
               success: function (data) {
                 //logged in
                 if (data == 'True') {
-                  resolve("Are you sure you want to end your task early? You'll lose 10 points");
+                  resolve("Are you sure you want to end your task early? You'll lose 10 points.");
                 }
                 //not logged in
                 else {
@@ -257,9 +189,6 @@ function longBreakModeOn() {
 }
 
 function startTimer() {
-  // change button colors
-  document.getElementById("startButton").classList.add("control-button-selected");
-  document.getElementById("pauseButton").classList.remove("control-button-selected");
   
   console.log(timerState);
   // Check to see if the timer has already been completed and reset if it has
@@ -291,6 +220,10 @@ function startTimer() {
     });
 
   }
+
+  // change button colors
+  document.getElementById("startButton").classList.add("control-button-selected");
+  document.getElementById("pauseButton").classList.remove("control-button-selected");
 
 }
 
@@ -416,4 +349,70 @@ function countdownTimer() {
     timerState == 'STOPPED'
     console.log(timerState)
   }
+}
+
+// handles if user decides to quit a task early for a short break
+function confirmShortBreak() {
+
+  $('#shortBreakModal').modal('hide');
+
+  // Set button color to selected
+  shortBreakButton.className = "button-selected";
+  pomodoroButton.className = "";
+  longBreakButton.className = "";
+  
+
+  //deduct 10 points from score
+  $.ajax({
+    url: '/deductPoints',
+    success: function (data) {
+      $("#score_span").html(data)
+    }
+  });
+
+  // In case the timer was running, stop countdownClock function
+  clearInterval(countdownClock);
+
+  // Reset time and timer display
+  countdownMins = shortBreakMinutes;
+  countdownSecs = 0;
+  timerState = ''; // clear timer state
+  console.log(timerState);
+  resetTimer();
+
+  // Set timer to Short Break
+  currentTimer = "Short Break";
+
+}
+
+//handles if a user quits a task early for a long break
+function confirmLongBreak() {
+
+  $('#longBreakModal').modal('hide');
+
+  //set button color
+  longBreakButton.className = "button-selected";
+  pomodoroButton.className = "";
+  shortBreakButton.className = "";
+
+  //deduct 10 points from score
+  $.ajax({
+    url: '/deductPoints',
+    success: function (data) {
+      $("#score_span").html(data)
+    }
+  });
+
+  // In case the timer was running, stop countdownClock function
+  clearInterval(countdownClock);
+
+  // Reset time and timer display
+  countdownMins = longBreakMinutes;
+  countdownSecs = 0;
+  timerState = ''; // clear timer state
+  console.log(timerState);
+  resetTimer();
+
+  // Set timer to Short Break
+  currentTimer = "Long Break";
 }

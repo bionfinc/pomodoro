@@ -160,7 +160,7 @@ i:hover{
 
 /* edit icon */
 .fa-edit {
-  color:rgb(228, 55, 55);;
+  color:rgb(228, 55, 55);
 }
 
 .fa-edit:hover {
@@ -168,7 +168,34 @@ i:hover{
 }
 
 /* modal */
-.modal-header{
+.modal-header-warning{
+  background: rgb(172, 36, 36);
+  color:white;
+}
+
+.modal-header-success{
+  background: rgb(2, 177, 31);
+  color:white;
+}
+
+.modal-btn{
+  background:rgb(228, 55, 55);;
   color: white;
-  background:rgb(172, 36, 36);
+  border: 0;
+}
+
+.modal-btn:hover {
+  background: rgb(172, 36, 36);
+  color: white;
+  border: 0;
+}
+
+.btn-secondary{
+  border:0;
+}
+
+.btn-secondary:hover{
+  color: white;
+  background: grey;
+  border:0;
 }
