@@ -19,8 +19,7 @@
                   <tr>
                     <th scope="col">Session</th>
                     <th scope="col">Date Started</th>
-                    <th scope="col">Total Time</th>
-                    <th scope="col">Points</th>
+                    <th scope="col">Date Ended</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -28,10 +27,16 @@
                     {% for session in sessions %}
                         <tr>
                             <td>{{ session.session_name }}</td>
-                            <td>{{ session.first_time_start }}</td>                
-                            <td>{{ session.total_time }}</td>
-                            <td>{{ session.total_points }}</td>
-                            <td><a href=".">Details</a>   <a href=".">Delete</a></td>
+                            <td>{{ session.session_time_start }}</td>                
+                            <td>{{ session.session_time_end }}</td>
+                            <td>
+                                <form action="." method="GET">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button class="btn btn-secondary" name="action" value="details">Details</button>
+                                        <button class="btn btn-secondary" name="action" value="delete">Delete</button>
+                                    </div>
+                                </form>  
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

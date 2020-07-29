@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
 from django.core.paginator import Paginator
 
 from usersessions.models import Task, UserSession
@@ -14,14 +14,24 @@ def tasks_view(request):
     page_num = request.GET.get('page')
 
     if searchquery != None:
-        tasks = Task.objects.filter(Q(task_name__icontains=searchquery) 
-                                  | Q(category__icontains=searchquery))
+        tasks = Task.objects.filter(
+                                Q(task_name__icontains=searchquery) 
+                                | Q(category__icontains=searchquery)
+                                )
     else:
         tasks = Task.objects.all()
 
+    tasks = tasks.values(
+                    'task_name', 
+                    'category'
+                ).annotate(
+                    sessions_count=Count('pk', distinct=True), 
+                    total_task_time=Sum('task_time')
+                )
+
     for task in tasks:
         # Determine the first start date for the task
-        task.first_time_start = Task.objects.filter(task_name__icontains=task.task_name).latest('time_start').time_start
+        task['first_time_start'] = Task.objects.filter(task_name__icontains=task.get('task_name')).earliest('time_start').time_start
 
     # Set up the page system for displaying data
     paginator = Paginator(tasks, 5) # Show 5 tasks per page.
@@ -29,12 +39,10 @@ def tasks_view(request):
 
     context = {
         'user': user,
-        'tasks': tasks_page
+        'tasks_page': tasks_page
     }
 
     return render(request, 'usersessions/tasks.html', context)
-
-
 
 
 def sessions_view(request):
@@ -48,11 +56,6 @@ def sessions_view(request):
 
     else:
         sessions = UserSession.objects.all()
-
-
-    for session in sessions:
-        # Determine the first start date for the session
-        session.first_time_start = UserSession.objects.filter(session_name__icontains=session.session_name).latest('session_time_start').session_time_start
 
     # Set up the page system for displaying data
     paginator = Paginator(sessions, 5) # Show 5 sessions per page.
