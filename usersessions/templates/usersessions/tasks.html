@@ -26,11 +26,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {% for task in tasks %}
+                    {% for task in tasks_page %}
                         <tr>
                             <td>{{ task.task_name }}</td>
                             <td>{{ task.first_time_start }}</td>                
-                            <td>{{ task.task_time }}</td>
+                            <td>{{ task.total_task_time }}</td>
                             <td>{{ task.sessions_count }}</td>
                             <td>{{ task.category }}</td>
                             <td><a href=".">Details</a>   <a href=".">Delete</a></td>
