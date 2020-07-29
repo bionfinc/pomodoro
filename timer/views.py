@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django import forms
+from django.forms import ModelForm
 from datetime import datetime
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
@@ -16,10 +17,13 @@ class EditTaskName(forms.Form):
 class EditUserSessionName(forms.Form):
     userSessionName = forms.CharField(label="New Session Name")
 
+class EditSessionDescription(forms.Form):
+    sessionDescription = forms.CharField(label="Edit Session Description")
+
 
 # Create your views here.
 def index_view(request):
-        # add in user's current score if logged in
+    # add in user's current score if logged in
     score = 0
     if request.user.is_authenticated:
         score = request.user.userprofile.score
@@ -28,6 +32,13 @@ def index_view(request):
         user = request.user
     else:
         user = False
+    
+    user_session_description = ''
+    # If logged in, check if the user has an active session. 
+    if request.user.is_authenticated:
+        if 'userSessionId' in request.session:  # If active session, get the current description
+            userSessionId = request.session['userSessionId']
+            user_session_description = UserSession.objects.get(id=userSessionId).description
 
     if request.user.is_authenticated:
         if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
@@ -49,16 +60,20 @@ def index_view(request):
                 "%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
             userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
             request.session['userSessionId'] = userSessionObject.id
+
     else:
         return render(request, 'index.html', {
         'score': score,
-        'user': user
+        'user': user,
+        'description': user_session_description
+
     })
     return render(request, 'index.html', {
         'taskName': request.session['taskName'],
         'userSessionName': request.session['userSessionName'],
         'score': score,
-        'user': user
+        'user': user,
+        'description': user_session_description
     })
 
 # get taskName first then edit it via post
@@ -104,6 +119,35 @@ def editUserSession_view(request):
         'form': EditUserSessionName
     })
 
+def editSessionDescription_view(request):
+    if request.method == "POST":
+        # Form instance populated from the request
+        form = EditSessionDescription(request.POST)                             
+        if form.is_valid():
+            # Get the cleaned data from the form (Django's cleaned_data contains only the fields that have passed validation tests)                                                            
+            sessionDescription = form.cleaned_data['sessionDescription']
+            # Get the current UserSession Id that is saved in the sessions cookie
+            userSessionId = request.session['userSessionId']
+            # Get the object for current the UserSession (contains the column names and entry values)
+            userSessionObject = UserSession.objects.get(id=userSessionId)
+            # Update the session description
+            userSessionObject.description = sessionDescription
+            # Save the update to the database
+            userSessionObject.save()
+            return HttpResponseRedirect(reverse('index'))  # Successfully updated the database, return to the timer page
+        else:                                      
+            return render(request, 'editSessionDescription.html', {'form': form }) # Unsuccessful, go back to try again
+    # Show the form for the user to Edit
+    context = {'form': EditSessionDescription}
+    # If there is a current session, pre-populate with the saved session description
+    if request.user.is_authenticated:
+        if 'userSessionId' in request.session:
+            userSessionId = request.session['userSessionId']
+            obj = UserSession.objects.get(id=userSessionId).description
+            form = EditSessionDescription(initial={'sessionDescription': obj})
+            context = {'form': form}
+    return render(request, "editSessionDescription.html", context)
+    
 # AJAX for adding points to the score
 
 def add_points(request):

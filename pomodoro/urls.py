@@ -20,12 +20,13 @@ from django.contrib.auth import views as auth_views
 from usersessions.views import tasks_view, sessions_view
 from accounts.views import create_account_view, profile_view, change_default_times_view, upgrade
 from timer.views import index_view, editTask_view, add_points, deduct_points, is_logged_in, editUserSession_view, \
-    save_task_info
+    save_task_info, editSessionDescription_view
 
 urlpatterns = [
     path('', index_view, name='index'),
     path('editTask/', editTask_view, name='editTask'),
     path('editUserSession/', editUserSession_view, name='editUserSession'),
+    path('editSessionDescription/', editSessionDescription_view, name='editSessionDescription'),
     path('createaccount/', create_account_view, name='createaccount'),
     path('login/', auth_views.LoginView.as_view(template_name="accounts/login.html"), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name="index.html"), name='logout'),
