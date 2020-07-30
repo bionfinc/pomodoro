@@ -167,3 +167,25 @@ i:hover{
   color:rgb(172, 36, 36);
 }
 
+/* search sessions/tasks */
+.btn-search {
+  background:rgb(2, 177, 31);
+  color: white;
+  
+}
+
+.btn-search:hover{
+  background: rgb(2, 153, 27);
+  border: 1px solid rgb(2, 153, 27);
+  color: white
+}
+
+/* pagination for sessions/tasks */
+
+.pagination{
+  color: white;
+}
+
+.step-links a{
+  color: rgb(4, 105, 21);
+}
