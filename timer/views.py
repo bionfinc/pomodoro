@@ -188,11 +188,29 @@ def save_task_info(request):
 
         # create new entry in Task db
         newTask = Task.objects.create(usersession=session_id, task_name=task_name, task_time=task_time, time_start=timezone.now(), category=category)
+        request.session['taskId'] = newTask.id  # save the id for the task in the database to the session as taskId
         return HttpResponse(status=200)
     else:
         errMessage = 'Error: user not logged in.'
         print(errMessage)
         return HttpResponse(errMessage)
-
+        
+# Update task category in the db when task category is changed
+@csrf_exempt
+def update_task_category(request):
+    if request.user.is_authenticated:
+        # create instance of current task by using its id stored in the the django session
+        currentTask = Task.objects.get(id = request.session['taskId'])
+        # pull current category from ajax call
+        category = json.loads(request.body)['category']
+        # update the current task category
+        currentTask.category = category
+        # update/save the changed category to the database
+        currentTask.save()
+        return HttpResponse(status=200)
+    else:
+        errMessage = 'Error: user not logged in.'
+        print(errMessage)
+        return HttpResponse(errMessage)
 
 
