@@ -4,15 +4,15 @@
 {% bootstrap_javascript jquery='full' %}
 
 <!doctype html>
-<html>
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
 
-<head>
+<head >
     <title>Pomodoro Posse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="{% static '../static/images/favicon.ico' %}"/>
     <script src="https://kit.fontawesome.com/cd776babcb.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/styles.css">
-
+    
 </head>
 
 <body>
@@ -51,17 +51,7 @@
 
                     </div>
                 </div>
-
-                <!-- <div class="dropdown" style="float:right;">
-                    <a class="dropbtn" href="/profile"><i class="fas fa-user-circle"></i></a>
-                    <div class="dropdown-content">
-                      <a href="#">Link 1</a>
-                      <a href="#">Link 2</a>
-                      <a href="#">Link 3</a>
-                    </div>
-                </div> -->
-
-            {% else %}
+                {% else %}
                 <li class="nav-item px-2">
                     <a href="{% url 'login' %}">Log In</a>
                 </li>
