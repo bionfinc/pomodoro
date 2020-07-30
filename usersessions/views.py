@@ -13,6 +13,10 @@ def tasks_view(request):
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
 
+    #TODO add user validation
+    if request.POST.__contains__('delete'):
+        Task.objects.filter(task_name__exact=request.POST.get('delete')).delete()
+
     if searchquery != None:
         tasks = Task.objects.filter(
                                 Q(task_name__icontains=searchquery) 
@@ -31,7 +35,7 @@ def tasks_view(request):
 
     for task in tasks:
         # Determine the first start date for the task
-        task['first_time_start'] = Task.objects.filter(task_name__icontains=task.get('task_name')).earliest('time_start').time_start
+        task['first_time_start'] = Task.objects.filter(task_name__exact=task.get('task_name')).earliest('time_start').time_start
 
     # Set up the page system for displaying data
     paginator = Paginator(tasks, 5) # Show 5 tasks per page.
@@ -69,7 +73,9 @@ def sessions_view(request):
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
 
-    print(request.POST.get('details'))
+    #TODO add user validation
+    if request.POST.__contains__('delete'):
+        UserSession.objects.get(pk=request.POST.get('delete')).delete()
 
     if searchquery != None:
         sessions = UserSession.objects.filter(session_name__icontains=searchquery)
