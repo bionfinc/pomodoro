@@ -11,10 +11,11 @@
             <div class="d-flex justify-content-center mt-4">
                 <div class="card p-2">
                     <div>
-                        Session Name: {{ session.session_name }} <br>
+                        <h2>{{ session.session_name }}</h1>
                         Start Time: {{ session.session_time_start }} <br>
                         End Time: {{ session.session_time_end }} <br>
                         Description: {{ session.description }} <br>
+                        <a href="/sessions" class="btn btn-search" role="button">Back to Sessions</a>
                     </div>
                 </div>
             </div>

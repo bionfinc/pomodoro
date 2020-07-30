@@ -11,11 +11,12 @@
             <div class="d-flex justify-content-center mt-4">
                 <div class="card p-2">
                     <div>
-                        Task Name: {{ task.task_name }} <br>
+                        <h2>{{ task.task_name }}</h1>
                         Start Time: {{ task.time_start }} <br>
                         End Time: {{ task.time_end }} <br>
-                        Task Time: {{ task.description }} <br>
+                        Task Time: {{ task.task_time }} min <br>
                         Category: {{ task.category }} <br>
+                        <a href="/tasks" class="btn btn-search" role="button">Back to Tasks</a>
                     </div>
                 </div>
             </div>
