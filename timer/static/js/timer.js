@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", pomodoroModeOn);
 document.getElementById("startButton").addEventListener("click", startTimer);
 document.getElementById("pauseButton").addEventListener("click", pauseTimer);
 document.getElementById("resetButton").addEventListener("click", resetTimer);
+document.getElementById("taskCategory").addEventListener("change", updateCategory);
 
 var pomodoroButton = document.getElementById("pomodoroModeButton");
 pomodoroButton.addEventListener("click", pomodoroModeOn);
@@ -387,5 +388,25 @@ function countdownTimer() {
     pauseTimer();
     timerState == 'STOPPED'
     console.log(timerState)
+  }
+}
+
+// update the task category in the db
+function updateCategory() {
+  console.log('updateCategory() called...')
+  // save task category to db only if a promodoro task 
+  if(currentTimer == "Pomodoro"){
+    let currentCategory = document.getElementById('taskCategory').value;
+    $.ajax({
+      url: '/updateTaskCategory/',
+      method: 'post',
+      dataType: 'json',
+      data: JSON.stringify({
+          'category' : currentCategory,
+        }),
+      success: function(data) {
+        console.log(data);
+      }
+    });
   }
 }
