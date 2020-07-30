@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", pomodoroModeOn);
 document.getElementById("startButton").addEventListener("click", startTimer);
 document.getElementById("pauseButton").addEventListener("click", pauseTimer);
 document.getElementById("resetButton").addEventListener("click", resetTimer);
+if (document.getElementById("taskCategory") != null){
+  document.getElementById("taskCategory").addEventListener("change", updateCategory);
+}
 
 var pomodoroButton = document.getElementById("pomodoroModeButton");
 pomodoroButton.addEventListener("click", pomodoroModeOn);
@@ -192,10 +195,10 @@ function startTimer() {
   
   console.log(timerState);
   // Check to see if the timer has already been completed and reset if it has
-  if (timeRemaining == 0) {
+  if (timeRemaining === 0) {
     resetTimer();
   }
-  if (timerState == 'STOPPED' || timerState == 'PAUSED'){
+  if (timerState === 'STOPPED' || timerState === 'PAUSED'){
     timerState = 'STARTED';
     console.log(timerState)
     // Call countdownTimer function every second (1000ms)
@@ -210,21 +213,25 @@ function startTimer() {
   //ajax call to save task data
   function saveTaskData(){
     return new Promise((resolve) => {
-      let currentCategory = document.getElementById('taskCategory').value;
-      $.ajax({
-        url: '/saveTaskData/',
-        method: 'post',
-        dataType: 'json',
-        data: JSON.stringify({
-            'task_name': $('#taskName').text(),
-            'task_time' : pomodoroMinutes,
-            'category' : currentCategory,
-          }),
-        success: function(data) {
-          resolve();
-          console.log(data);
+      if(timeRemaining === pomodoroMinutes * 60){
+        if (document.getElementById("taskCategory") != null) {
+          let currentCategory = document.getElementById('taskCategory').value;
+          $.ajax({
+            url: '/saveTaskData/',
+            method: 'post',
+            dataType: 'json',
+            data: JSON.stringify({
+                'task_name': $('#taskName').text(),
+                'task_time' : pomodoroMinutes,
+                'category' : currentCategory,
+              }),
+            success: function(data) {
+              resolve();
+              console.log(data);
+            }
+          });
         }
-      });
+      }
     });
   }
 
@@ -355,12 +362,12 @@ function countdownTimer() {
     }
 
     showMessage();
-    timerState == 'STOPPED'
+    timerState = ''
     console.log(timerState)
   }
   else if (timeRemaining == 0) {
     pauseTimer();
-    timerState == 'STOPPED'
+    timerState = ''
     console.log(timerState)
   }
 }
@@ -429,4 +436,25 @@ function confirmLongBreak() {
 
   // Set timer to Short Break
   currentTimer = "Long Break";
+
+}
+// update the task category in the db
+
+function updateCategory() {
+  console.log('updateCategory() called...')
+  // save task category to db only if a promodoro task 
+  if(currentTimer == "Pomodoro" && timerState != 'STOPPED' && timerState != ''){
+    let currentCategory = document.getElementById('taskCategory').value;
+    $.ajax({
+      url: '/updateTaskCategory/',
+      method: 'post',
+      dataType: 'json',
+      data: JSON.stringify({
+          'category' : currentCategory,
+        }),
+      success: function(data) {
+        console.log(data);
+      }
+    });
+  }
 }

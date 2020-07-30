@@ -5,69 +5,81 @@
 {% block body %}
 
 <div class="container">
- 
-    <div class="row mt-4">
-        <form method="GET" action="">
-            <input type="search" name="search" placeholder="Search Task or Category..."> 
-        </form> 
-    </div>
-        
+
     <div class="row">
-        <div class="card">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Task</th>
-                    <th scope="col">Date Started</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Pomodoro Number</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Actions</th>
-                </tr>
-
-                </thead>
-                <tbody>
-                    {% for task in tasks_page %}
-                        <tr>
-                            <td>{{ task.task_name }}</td>
-                            <td>{{ task.first_time_start }}</td>                
-                            <td>{{ task.total_task_time }}</td>
-                            <td>{{ task.sessions_count }}</td>
-                            <td>{{ task.category }}</td>
-                            <td>
-                                <form action="." method="GET">
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button class="btn btn-secondary" name="action" value="details">Details</button>
-                                        <button class="btn btn-secondary" name="action" value="delete">Delete</button>
-                                    </div>
-                                </form>  
-                            </td>
+        <div class="col-md-1"></div>
+        <div class="col-12 col-md-10">
+            <div class="d-flex justify-content-center mt-4">
+                <form class='form-inline' method="GET" action="">
+                    <input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Task or Category..."> 
+                    <button class="mx-2 btn btn-search" type="submit">Search</button>
+                </form> 
+            </div>
+                
+            <div>
+                <div class="card p-2">
+                    <table class="table-sm">
+                        <thead class="">
+                        <tr >
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Date Started</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Pomodoro Number</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Actions</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        
+                        </thead>
+                        <tbody>
+                            {% for task in tasks_page %}
+                                <tr>
+                                    <td >{{ task.task_name }}</td>
+                                    <td>{{ task.first_time_start }}</td>                
+                                    <td>{{ task.total_task_time }}</td>
+                                    <td>{{ task.sessions_count }}</td>
+                                    <td>{{ task.category }}</td>
+                                    <td>
+                                        <form action="." method="GET">
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button class="btn btn-secondary" name="action" value="details">Details</button>
+                                                <button class="btn btn-secondary" name="action" value="delete">Delete</button>
+                                            </div>
+                                        </form>  
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+            <div class=" mt-1">
+                <div class="pagination justify-content-start">
+                    <span class="step-links">
+                        {% if tasks.has_previous %}
+                            <a href="?page=1">&laquo; First</a>
+                            <a href="?page={{ tasks.previous_page_number }}">Previous</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}
+                        </span>
+                
+                        {% if tasks.has_next %}
+                            <a href="?page={{ tasks.next_page_number }}">Next</a>
+                            <a href="?page={{ tasks.paginator.num_pages }}">Last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
         </div>
+        
+    
+        <div class="col-md-1"></div>
     </div>
+    
 
-    <div class="row mt-2">
-        <div class="pagination justify-content-end">
-            <span class="step-links">
-                {% if tasks.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ tasks.previous_page_number }}">previous</a>
-                {% endif %}
-        
-                <span class="current">
-                    Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}.
-                </span>
-        
-                {% if tasks.has_next %}
-                    <a href="?page={{ tasks.next_page_number }}">next</a>
-                    <a href="?page={{ tasks.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    </div>
+    
 </div>
 
 {% endblock %}
