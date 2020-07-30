@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
 {% block body %}
 
 
@@ -64,8 +66,15 @@
                         </select>
                         {% endif %}
                     </div>
-                </div>
-               
+                    <div id="userSessionDescription">
+                        {% if user.username %}
+                            Session Description: <a href="{% url 'editSessionDescription' %}"><i class="fas fa-edit"></i></a> <br>
+                            {% if description %}
+                                <textarea class="form-control" style="height:100%;" readonly id="description" >{{ description }}</textarea> 
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>               
             </div>
             
             <div class="col-md-2">
