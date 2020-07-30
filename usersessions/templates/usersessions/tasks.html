@@ -39,12 +39,20 @@
                                     <td>{{ task.sessions_count }}</td>
                                     <td>{{ task.category }}</td>
                                     <td>
-                                        <form action="." method="GET">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button class="btn btn-secondary" name="action" value="details">Details</button>
-                                                <button class="btn btn-secondary" name="action" value="delete">Delete</button>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <form action="/task_detail" method="GET">
+                                                        <button class="btn btn-outline-secondary btn-sm"  name="action" value={{ task.task_name }}>Details</button>
+                                                    </form>
+                                                </div>
+                                                <div class="col">
+                                                    <form action="." method="POST"> {% csrf_token %}
+                                                        <button class="btn btn-outline-secondary btn-sm" name="delete" value={{ task.task_name }}>Delete</button>
+                                                    </form>  
+                                                </div>
                                             </div>
-                                        </form>  
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -53,21 +61,21 @@
                 </div>
             </div>
         
-            <div class=" mt-1">
+            <div class=" mt-2">
                 <div class="pagination justify-content-start">
                     <span class="step-links">
-                        {% if tasks.has_previous %}
+                        {% if tasks_page.has_previous %}
                             <a href="?page=1">&laquo; First</a>
-                            <a href="?page={{ tasks.previous_page_number }}">Previous</a>
+                            <a href="?page={{ tasks_page.previous_page_number }}">Previous</a>
                         {% endif %}
                 
                         <span class="current">
-                            Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}
+                            Page {{ tasks_page.number }} of {{ tasks_page.paginator.num_pages }}
                         </span>
                 
-                        {% if tasks.has_next %}
-                            <a href="?page={{ tasks.next_page_number }}">Next</a>
-                            <a href="?page={{ tasks.paginator.num_pages }}">Last &raquo;</a>
+                        {% if tasks_page.has_next %}
+                            <a href="?page={{ tasks_page.next_page_number }}">Next</a>
+                            <a href="?page={{ tasks_page.paginator.num_pages }}">Last &raquo;</a>
                         {% endif %}
                     </span>
                 </div>

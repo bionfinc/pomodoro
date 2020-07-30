@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-12 col-md-10">
+                
+            <div class="d-flex justify-content-center mt-4">
+                <div class="card p-2">
+                    <div>
+                        Session Name: {{ session.session_name }} <br>
+                        Start Time: {{ session.session_time_start }} <br>
+                        End Time: {{ session.session_time_end }} <br>
+                        Description: {{ session.description }} <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-1"></div>
+    </div>
+    
+</div>
+
+{% endblock %}
