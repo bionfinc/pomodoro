@@ -222,3 +222,13 @@ i:hover{
 .step-links a{
   color: rgb(4, 105, 21);
 }
+
+/* action buttons for sessions/tasks */
+
+.table-button{
+  margin-bottom: 0;
+}
+
+.button-form{
+  padding: 1px;
+}

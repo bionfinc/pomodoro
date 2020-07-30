@@ -13,17 +13,21 @@ def tasks_view(request):
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
 
-    #TODO add user validation
+    #TODO Make not delete multiple categories
     if request.POST.__contains__('delete'):
-        Task.objects.filter(task_name__exact=request.POST.get('delete')).delete()
+        Task.objects.filter(
+                                task_name__exact=request.POST.get('delete'),
+                                usersession__user__username__exact=user
+                            ).delete()
 
     if searchquery != None:
         tasks = Task.objects.filter(
                                 Q(task_name__icontains=searchquery) 
-                                | Q(category__icontains=searchquery)
+                                | Q(category__icontains=searchquery),
+                                usersession__user__username__exact=user
                                 )
     else:
-        tasks = Task.objects.all()
+        tasks = Task.objects.filter(usersession__user__username__exact=user)
 
     tasks = tasks.values(
                     'task_name', 
@@ -38,7 +42,7 @@ def tasks_view(request):
         task['first_time_start'] = Task.objects.filter(task_name__exact=task.get('task_name')).earliest('time_start').time_start
 
     # Set up the page system for displaying data
-    paginator = Paginator(tasks, 5) # Show 5 tasks per page.
+    paginator = Paginator(tasks, 10) # Show 10 tasks per page.
     tasks_page = paginator.get_page(page_num)
 
     context = {
@@ -78,13 +82,16 @@ def sessions_view(request):
         UserSession.objects.get(pk=request.POST.get('delete')).delete()
 
     if searchquery != None:
-        sessions = UserSession.objects.filter(session_name__icontains=searchquery)
+        sessions = UserSession.objects.filter(
+                                            session_name__icontains=searchquery,
+                                            user__username__exact=user
+                                        )
 
     else:
-        sessions = UserSession.objects.all()
+        sessions = UserSession.objects.filter(user__username__exact=user)
 
     # Set up the page system for displaying data
-    paginator = Paginator(sessions, 5) # Show 5 sessions per page.
+    paginator = Paginator(sessions, 10) # Show 10 sessions per page.
     tasks_page = paginator.get_page(page_num)
 
     context = {
