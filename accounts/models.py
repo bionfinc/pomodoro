@@ -17,6 +17,7 @@ class UserProfile(models.Model):
     ]
 
     AWARD_CHOICES = [
+        (0, 'empty_plate'),
         (1, 'tomato_basil_spaghetti'),
         (2, 'tomato_lasagna'),
         (3, 'tomato_pizza'),
@@ -25,9 +26,9 @@ class UserProfile(models.Model):
     ]
 
     def __str__(self):
-        PK_string = str(self.pk)
+        pk_string = str(self.pk)
         score_string = str(self.score)
-        return_value = 'PK: ' + PK_string + ' Score: ' + score_string
+        return_value = 'PK: ' + pk_string + ' Score: ' + score_string
 
         return return_value
 
@@ -42,11 +43,9 @@ class UserProfile(models.Model):
     plant2_stage = models.IntegerField(choices=PLANT_STAGE_CHOICES, default=1)
     plant3_stage = models.IntegerField(choices=PLANT_STAGE_CHOICES, default=1)
     award_count = models.IntegerField(default=0)
-    award1 = models.IntegerField(choices=AWARD_CHOICES, null=True, blank=True)
-    award2 = models.IntegerField(choices=AWARD_CHOICES, null=True, blank=True)
-    award3 = models.IntegerField(choices=AWARD_CHOICES, null=True, blank=True)
-    award4 = models.IntegerField(choices=AWARD_CHOICES, null=True, blank=True)
-    award5 = models.IntegerField(choices=AWARD_CHOICES, null=True, blank=True)
+    award1 = models.IntegerField(choices=AWARD_CHOICES, default=0)
+    award2 = models.IntegerField(choices=AWARD_CHOICES, default=0)
+    award3 = models.IntegerField(choices=AWARD_CHOICES, default=0)
 
 
 # Signal information sourced from https://docs.djangoproject.com/en/3.0/topics/signals/
