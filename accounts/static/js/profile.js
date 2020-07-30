@@ -163,3 +163,7 @@ function getAwardImage(award_type, award_number) {
             return;
     }
 }
+
+function updateProfileInformationScore(newScore) {
+    document.getElementById("profile-score").innerText = "Score: " + newScore
+}

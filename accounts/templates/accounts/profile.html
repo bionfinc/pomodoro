@@ -16,7 +16,7 @@
                     <div>
                         Username: {{ user.username }} <br>
                         Email: {{ user.email }} <br>
-                        Score: {{ user.userprofile.score }} <br>
+                        <div id="profile-score">Score: {{ user.userprofile.score }}</div>
                         Date joined: {{ user.date_joined }} <br>
                         Default task length: {{ user.userprofile.task_length }} <a
                             href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
@@ -67,6 +67,7 @@
                                                     if (json['award_list'][0] === "TRUE") {
                                                         getAwardImage(json['award_list'][1], 1);
                                                     }
+                                                    updateProfileInformationScore(json['score'])
                                                 }
                                             })
                                     });
@@ -99,6 +100,7 @@
                                                     if (json['award_list'][0] === "TRUE") {
                                                         getAwardImage(json['award_list'][1], 2);
                                                     }
+                                                    updateProfileInformationScore(json['score'])
                                                 }
                                             })
                                     });
@@ -131,6 +133,7 @@
                                                     if (json['award_list'][0] === "TRUE") {
                                                         getAwardImage(json['award_list'][1], 3);
                                                     }
+                                                    updateProfileInformationScore(json['score'])
                                                 }
                                             })
                                     });
