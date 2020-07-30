@@ -13,6 +13,10 @@ def tasks_view(request):
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
 
+    #TODO add user validation
+    if request.POST.__contains__('delete'):
+        Task.objects.filter(task_name__exact=request.POST.get('delete')).delete()
+
     if searchquery != None:
         tasks = Task.objects.filter(
                                 Q(task_name__icontains=searchquery) 
@@ -31,7 +35,7 @@ def tasks_view(request):
 
     for task in tasks:
         # Determine the first start date for the task
-        task['first_time_start'] = Task.objects.filter(task_name__icontains=task.get('task_name')).earliest('time_start').time_start
+        task['first_time_start'] = Task.objects.filter(task_name__exact=task.get('task_name')).earliest('time_start').time_start
 
     # Set up the page system for displaying data
     paginator = Paginator(tasks, 5) # Show 5 tasks per page.
@@ -45,11 +49,33 @@ def tasks_view(request):
     return render(request, 'usersessions/tasks.html', context)
 
 
+def task_detail_view(request):
+    user = User.objects.get(username=request.user.username)
+    task_name = request.GET.get('action')
+
+    #TODO add user validation
+
+    #TODO does not get the right individual task, probably better to get a collective
+
+    task = Task.objects.filter(task_name__icontains=task_name).earliest('time_start')
+  
+    context = {
+        'user': user,
+        'task': task
+    }
+
+    return render(request, 'usersessions/task_detail.html', context)
+
+
 def sessions_view(request):
     user = User.objects.get(username=request.user.username)
 
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
+
+    #TODO add user validation
+    if request.POST.__contains__('delete'):
+        UserSession.objects.get(pk=request.POST.get('delete')).delete()
 
     if searchquery != None:
         sessions = UserSession.objects.filter(session_name__icontains=searchquery)
@@ -67,3 +93,19 @@ def sessions_view(request):
     }
 
     return render(request, 'usersessions/sessions.html', context)
+
+
+def session_detail_view(request):
+    user = User.objects.get(username=request.user.username)
+    session_num = request.GET.get('action')
+
+    #TODO add user validation
+
+    session = UserSession.objects.get(pk=session_num)
+  
+    context = {
+        'user': user,
+        'session': session
+    }
+
+    return render(request, 'usersessions/session_detail.html', context)
