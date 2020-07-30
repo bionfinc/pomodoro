@@ -1,9 +1,12 @@
+import json
+import random
+
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
 from accounts.forms import SignUpForm, ChangeDefaultTimesForm
-import json
 
 
 # Create your views here.
@@ -63,6 +66,7 @@ def change_default_times_view(request):
 def upgrade(request):
     plant_number = int(request.GET["plant_id"])
     upgrade_cost = int(request.GET["plant_cost"])
+    award_list = ["FALSE"]
 
     if request.user.is_authenticated and request.user.userprofile.score >= upgrade_cost:
         request.user.userprofile.score = request.user.userprofile.score - upgrade_cost
@@ -75,7 +79,7 @@ def upgrade(request):
             else:
                 new_stage = 1
                 request.user.userprofile.plant1_stage = new_stage
-                request.user.userprofile.award_count = request.user.userprofile.award_count + 1
+                award_list = award(request)
 
         elif plant_number == 2:
             plant_stage = request.user.userprofile.plant2_stage
@@ -85,7 +89,7 @@ def upgrade(request):
             else:
                 new_stage = 1
                 request.user.userprofile.plant2_stage = new_stage
-                request.user.userprofile.award_count = request.user.userprofile.award_count + 1
+                award_list = award(request)
 
         elif plant_number == 3:
             plant_stage = request.user.userprofile.plant3_stage
@@ -95,13 +99,27 @@ def upgrade(request):
             else:
                 new_stage = 1
                 request.user.userprofile.plant3_stage = new_stage
-                request.user.userprofile.award_count = request.user.userprofile.award_count + 1
+                award_list = award(request)
 
         request.user.userprofile.save()
 
-        data = {'score': request.user.userprofile.score, 'new_stage': new_stage}
+        data = {'score': request.user.userprofile.score, 'new_stage': new_stage, 'award_list': award_list}
         json_data = json.dumps(data)
 
         return HttpResponse(json_data)
     else:
         return HttpResponse('FALSE')
+
+
+def award(request):
+    award_count = request.user.userprofile.award_count = request.user.userprofile.award_count + 1
+    award_type = random.randint(1, 5)
+    if award_count == 1:
+        request.user.userprofile.award1 = award_type
+    if award_count == 2:
+        request.user.userprofile.award2 = award_type
+    if award_count == 3:
+        request.user.userprofile.award3 = award_type
+
+    request.user.userprofile.save()
+    return ["TRUE", award_type]
