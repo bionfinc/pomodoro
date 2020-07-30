@@ -240,10 +240,10 @@ function startTimer() {
   
   console.log(timerState);
   // Check to see if the timer has already been completed and reset if it has
-  if (timeRemaining == 0) {
+  if (timeRemaining === 0) {
     resetTimer();
   }
-  if (timerState == 'STOPPED' || timerState == 'PAUSED'){
+  if (timerState === 'STOPPED' || timerState === 'PAUSED'){
     timerState = 'STARTED';
     console.log(timerState)
     // Call countdownTimer function every second (1000ms)
@@ -251,24 +251,24 @@ function startTimer() {
   } 
 
   // save task data to db if task is started fresh only
-  if(timeRemaining == pomodoroMinutes * 60){
-    let currentCategory = document.getElementById('taskCategory').value;
-    $.ajax({
-      url: '/saveTaskData/',
-      method: 'post',
-      dataType: 'json',
-      data: JSON.stringify({
+  if(timeRemaining === pomodoroMinutes * 60){
+    if (document.getElementById("taskCategory") != null) {
+      let currentCategory = document.getElementById('taskCategory').value;
+      $.ajax({
+        url: '/saveTaskData/',
+        method: 'post',
+        dataType: 'json',
+        data: JSON.stringify({
           'task_name': $('#taskName').text(),
-          'task_time' : pomodoroMinutes,
-          'category' : currentCategory,
+          'task_time': pomodoroMinutes,
+          'category': currentCategory,
         }),
-      success: function(data) {
-        console.log(data);
-      }
-    });
-
+        success: function (data) {
+          console.log(data);
+        }
+      });
+    }
   }
-
 }
 
 function pauseTimer() {
