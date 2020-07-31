@@ -416,7 +416,7 @@ function updateCategory() {
 function updateTimeEnd(){
   console.log('updateTimeEndy() called...')
     // save task task to db only if a promodoro task 
-    if(currentTimer == "Pomodoro"){
+    if(currentTimer == "Pomodoro" && timerState != 'STOPPED' && timerState != ''){
       $.ajax({
         url: '/updateTaskTimeEnd',
         success: function(data) {
