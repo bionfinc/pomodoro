@@ -143,7 +143,6 @@ i:hover{
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover{
-    background: rgb(146, 118, 118);
     background: rgb(238, 236, 236);
 }
 
@@ -284,4 +283,10 @@ i:hover{
 
 b {
     font-weight: bold;
+}
+
+@media only screen and (max-width: 767px) {
+    .profile-information {
+        margin-top: 50px;
+    }
 }
