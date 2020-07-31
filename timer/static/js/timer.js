@@ -249,17 +249,18 @@ function startTimer() {
 }
 
 function pauseTimer() {
-  
-  
-
+  // update the task end time in db if user is logged in
+  if (checkLoggedInBool()){
+    updateTimeEnd();
+  };
   if (timerState == 'STARTED') {
     document.getElementById("pauseButton").classList.add("control-button-selected");
     document.getElementById("startButton").classList.remove("control-button-selected");
     console.log(timerState);
-  // Stop countdownClock function
-  clearInterval(countdownClock);
-  timerState = 'PAUSED';
-  console.log(timerState);
+    // Stop countdownClock function
+    clearInterval(countdownClock);
+    timerState = 'PAUSED';
+    console.log(timerState);
   } 
 }
 
@@ -457,4 +458,37 @@ function updateCategory() {
       }
     });
   }
+}
+
+// update the task time_end in the db
+function updateTimeEnd(){
+  console.log('updateTimeEndy() called...')
+    // save task task to db only if a promodoro task 
+    if(currentTimer == "Pomodoro" && timerState != 'STOPPED' && timerState != ''){
+      $.ajax({
+        url: '/updateTaskTimeEnd',
+        success: function(data) {
+          console.log('Updated Task time_end', data);
+        }
+      });
+    }
+}
+// checks if a user is logged in and returns true/false
+function checkLoggedInBool() {
+  return new Promise(resolve => {
+    $.ajax({
+      url: '/isLoggedIn',
+      success: function (data) {
+        console.log(data);
+        //logged in
+        if (data == 'True') {
+          return true;
+        }
+        //not logged in
+        else {
+          return false;
+        }
+      }
+    });
+  })
 }
