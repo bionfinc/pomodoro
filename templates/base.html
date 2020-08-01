@@ -56,8 +56,11 @@
                     <div class="dropdown-content">
                         <span>Signed in as <strong>{{ user.username }}</strong></span>
                         <a href="{% url 'profile' %}">Your Profile</a>
-                        <a class="profile-menu-links" href="{% url 'sessions' %}">Sessions</a>
-                        <a class="profile-menu-links" href="{% url 'tasks' %}">Tasks</a>
+                        <div id="profile-menu-links">
+                            <a href="{% url 'sessions' %}">Sessions</a>
+                            <a href="{% url 'tasks' %}">Tasks</a>
+                        </div>
+                        
                         <a href="{% url 'logout' %}">Logout</a>
 
                     </div>

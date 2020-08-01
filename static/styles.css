@@ -288,8 +288,8 @@ b {
     font-weight: bold;
 }
 
-.profile-menu-links{
-  display: none !important;
+#profile-menu-links{
+  display: none;
 }
 
 .navbar-collapse-logged-in {
@@ -322,8 +322,8 @@ b {
     flex-basis: 0%;
   }
 
-  .profile-menu-links{
-    display: block !important;
+  #profile-menu-links{
+    display: block;
   }
 
   .dropdown-content a {
