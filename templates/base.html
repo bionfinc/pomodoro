@@ -21,6 +21,7 @@
     <img id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}" alt="tomato">
     <a class="navbar-brand" href="/">Pomodoro Posse</a>
     {% if user.username %}
+    <div class="nav-left-menu-links">
         <ul class="navbar-nav justify-content-start align-items-center ">
             <li class="nav-item">
                 <a class="left-nav-menu" href="{% url 'index' %}">Timer</a>
@@ -32,22 +33,32 @@
                 <a class="left-nav-menu" href="{% url 'tasks' %}">Tasks</a>
             </li>
         </ul>
+    </div>
     {% endif %}
+    {% if user.username %}
+    <div class="collapse navbar-collapse-logged-in d-flex justify-content-end">
+    {% else %}  
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    {% endif %} 
         <ul class="navbar-nav  ">
 
             {% if user.username %}
                 <div class="dropdown" style="float:right;">
-                    <span id="score_span">{{ user.userprofile.score }} </span> pts
-                    <i class="dropbtn fas fa-user-circle"></i>
+                    <div class='d-flex align-items-center'>
+                        <span id="score_span">{{ user.userprofile.score }} </span>&nbsppts
+                        <i class="dropbtn fas fa-user-circle"></i>
+                    </div>
+                    
                     <div class="dropdown-content">
                         <span>Signed in as <strong>{{ user.username }}</strong></span>
-                        <a href="/profile">Your Profile</a>
-                        <a href="/logout">Logout</a>
+                        <a href="{% url 'profile' %}">Your Profile</a>
+                        <a class="profile-menu-links" href="{% url 'sessions' %}">Sessions</a>
+                        <a class="profile-menu-links" href="{% url 'tasks' %}">Tasks</a>
+                        <a href="{% url 'logout' %}">Logout</a>
 
                     </div>
                 </div>

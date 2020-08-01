@@ -107,7 +107,6 @@ i:hover{
     position: relative;
     display: inline-block;
     padding: 3px 5px;
-
 }
 
 .dropdown-content {
@@ -285,15 +284,57 @@ b {
     font-weight: bold;
 }
 
+.profile-menu-links{
+  display: none !important;
+}
+
+.navbar-collapse-logged-in {
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 @media only screen and (max-width: 767px) {
   .sm-column-reverse {
     display: flex;
     flex-direction: column-reverse;
   }
-    .garden-section {
-        margin-top: 50px;
-    }
-    .profile-information {
-        margin-top: 30px;
-    }
+  .garden-section {
+    margin-top: 50px;
+  }
+
+  .profile-information {
+     margin-top: 30px;
+  }
+
+  .left-nav-menu{
+    display: none;
+  }
+
+  .navbar-collapse-logged-in {
+    flex-basis: 0%;
+  }
+
+  .profile-menu-links{
+    display: block !important;
+  }
+
+  .dropdown-content a {
+    font-size: 18px;
+  }
+
+  .dropdown-content span { 
+      font-size: 18px;
+  }
+
+  .dropdown {
+    font-size: 18px;
+  }
+
+  li a {
+    font-size: 20px;
+}
 }
