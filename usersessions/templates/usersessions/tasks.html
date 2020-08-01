@@ -21,11 +21,11 @@
                     <table class="table-sm table-hover">
                         <thead class="">
                         <tr >
-                            <th scope="col">Task Name</th>
-                            <th scope="col">Date Started</th>
-                            <th scope="col">Total Time</th>
-                            <th scope="col">Pomodoros</th>
-                            <th scope="col">Category</th>
+                            <th class="pr-2" scope="col">Task Name</th>
+                            <th class="pr-2" scope="col">Date Started</th>
+                            <th class="pr-2" scope="col">Total Time</th>
+                            <th class="pr-2" scope="col">Pomodoros</th>
+                            <th class="pr-2" scope="col">Category</th>
                             <th scope="col">Actions</th>
                         </tr>
         
@@ -33,22 +33,27 @@
                         <tbody>
                             {% for task in tasks_page %}
                                 <tr>
-                                    <td >{{ task.task_name }}</td>
-                                    <td>{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"G:i" }}</td>
-                                    <td>{{ task.total_task_time }} min</td>
-                                    <td>{{ task.sessions_count }}</td>
-                                    <td>{{ task.category }}</td>
+                                    <td class="pr-2" >{{ task.task_name }}</td>
+                                    <td class="pr-2">{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"G:i" }}</td>
+                                    <td class="pr-2">
+                                        {% if task.total_task_time_min < 10 %}
+                                            {{ task.total_task_time_hr }}:0{{ task.total_task_time_min }}
+                                        {% else %}
+                                            {{ task.total_task_time_hr }}:{{ task.total_task_time_min }}
+                                        {% endif %}</td>
+                                    <td class="pr-2">{{ task.sessions_count }}</td>
+                                    <td class="pr-2">{{ task.category }}</td>
                                     <td>
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col button-form">
                                                     <form action="/task_detail" method="GET">
-                                                        <button class="btn btn-block btn-outline-secondary btn-sm"  name="action" value={{ task.task_name }}>Details</button>
+                                                        <button class="btn btn-block btn-outline-secondary btn-sm"  name="action" value="{{ task.task_name }}">Details</button>
                                                     </form>
                                                 </div>
                                                 <div class="col button-form">
                                                     <form action="." method="POST"> {% csrf_token %}
-                                                        <button class="btn btn-block btn-outline-secondary btn-sm" name="delete" value={{ task.task_name }}>Delete</button>
+                                                        <button class="btn btn-block btn-outline-secondary btn-sm" name="delete" value="{{ task.task_name }}">Delete</button>
                                                     </form>  
                                                 </div>
                                             </div>
