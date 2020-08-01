@@ -66,23 +66,46 @@
                 </div>
             </div>                   
 
-            <div class=" mt-2">
-                <div class="pagination justify-content-start">
-                    <span class="step-links">
+            <div class="mt-2">
+                <div class="pagination justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm">                        
                         {% if tasks_page.has_previous %}
-                            <a href="?page=1">&laquo; First</a>
-                            <a href="?page={{ tasks_page.previous_page_number }}">Previous</a>
+                        <li class="page-item">
+                        <a class="page-link" href="?page={{ tasks_page.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        {% else %}
+                        <li class="page-item disabled">
+                        <a class="page-link" href="?page=#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
                         {% endif %}
-                
-                        <span class="current">
-                            Page {{ tasks_page.number }} of {{ tasks_page.paginator.num_pages }}
-                        </span>
-                
+                        </li>
+
+                        {% for i in tasks_page.paginator.page_range %}
+                            {% if i == tasks_page.number %}
+                                <li class="page-item active">
+                            {% else %}
+                                <li class="page-item">
+                            {% endif %}
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endfor %}
+
                         {% if tasks_page.has_next %}
-                            <a href="?page={{ tasks_page.next_page_number }}">Next</a>
-                            <a href="?page={{ tasks_page.paginator.num_pages }}">Last &raquo;</a>
+                        <li class="page-item">
+                        <a class="page-link" href="?page={{ tasks_page.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        {% else %}
+                        <li class="page-item disabled">
+                        <a class="page-link" href="?page={{ tasks_page.number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
                         {% endif %}
-                    </span>
+                        </li>
+                    </ul>
+                </nav>
                 </div>
             </div>
         </div>

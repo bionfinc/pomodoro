@@ -228,3 +228,17 @@ i:hover{
 .button-form{
   padding: 1px;
 }
+
+.page-link{
+  color: black;
+}
+.page-link:hover{
+  background: rgb(2, 153, 27);
+  border: 1px solid rgb(2, 153, 27);
+  color: white
+}
+
+.page-item.active .page-link{
+  background-color:rgb(2, 177, 31);
+  border-color: gray;
+}

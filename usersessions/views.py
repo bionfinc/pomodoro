@@ -49,7 +49,7 @@ def tasks_view(request):
         task['total_task_time_min'] = task['total_task_time'] % 60
 
     # Set up the page system for displaying data
-    paginator = Paginator(tasks, 10) # Show 10 tasks per page.
+    paginator = Paginator(tasks, 2) # Show 10 tasks per page.
     tasks_page = paginator.get_page(page_num)
 
     context = {
