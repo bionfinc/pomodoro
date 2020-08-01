@@ -23,8 +23,8 @@
                         <tr >
                             <th scope="col">Task Name</th>
                             <th scope="col">Date Started</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Pomodoro Number</th>
+                            <th scope="col">Total Time</th>
+                            <th scope="col">Pomodoros</th>
                             <th scope="col">Category</th>
                             <th scope="col">Actions</th>
                         </tr>
@@ -34,8 +34,8 @@
                             {% for task in tasks_page %}
                                 <tr>
                                     <td >{{ task.task_name }}</td>
-                                    <td>{{ task.first_time_start }}</td>                
-                                    <td>{{ task.total_task_time }}</td>
+                                    <td>{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"g:i a" }}</td>                
+                                    <td>{{ task.total_task_time }} min</td>
                                     <td>{{ task.sessions_count }}</td>
                                     <td>{{ task.category }}</td>
                                     <td>

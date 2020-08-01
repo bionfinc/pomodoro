@@ -109,10 +109,13 @@ def session_detail_view(request):
     #TODO add user validation
 
     session = UserSession.objects.get(pk=session_num)
+
+    tasks = Task.objects.filter(usersession__pk=session_num)
   
     context = {
         'user': user,
-        'session': session
+        'session': session,
+        'tasks': tasks
     }
 
     return render(request, 'usersessions/session_detail.html', context)
