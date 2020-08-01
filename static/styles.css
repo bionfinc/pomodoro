@@ -72,7 +72,7 @@ a.btn-submit:hover, button.btn-submit:hover {
 /* naav menu links */
 
 .left-nav-menu {
-  color: rgb(33, 37, 41);
+  color: rgb(119, 124, 129);
   padding: 5px;
 }
 
@@ -96,6 +96,10 @@ li a:hover {
 
 ul i {
     color: rgb(33, 37, 41);
+}
+
+.active{
+  color: black;
 }
 
 /* dropdown profile menu */

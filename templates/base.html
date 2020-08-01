@@ -23,14 +23,14 @@
     {% if user.username %}
     <div class="nav-left-menu-links">
         <ul class="navbar-nav justify-content-start align-items-center ">
-            <li class="nav-item">
-                <a class="left-nav-menu" href="{% url 'index' %}">Timer</a>
+            <li class="nav-item ">
+                <a class="left-nav-menu {% if request.resolver_match.url_name == "index" %}active{% endif %}" href="{% url 'index' %}">Timer</a>
             </li>
             <li class="nav-item">
-                <a class="left-nav-menu" href="{% url 'sessions' %}">Sessions</a>
+                <a class="left-nav-menu {% if request.resolver_match.url_name == "sessions" %}active{% endif %}" href="{% url 'sessions' %}">Sessions</a>
             </li>
             <li class="nav-item">
-                <a class="left-nav-menu" href="{% url 'tasks' %}">Tasks</a>
+                <a class="left-nav-menu  {% if request.resolver_match.url_name == "tasks" %}active{% endif %}" href="{% url 'tasks' %}">Tasks</a>
             </li>
         </ul>
     </div>
@@ -63,10 +63,10 @@
                     </div>
                 </div>
                 {% else %}
-                <li class="nav-item px-2">
+                <li class="nav-item px-2 pt-3 pb-2 pt-sm-1 pb-sm-1">
                     <a href="{% url 'login' %}">Log In</a>
                 </li>
-                <li class="nav-item px-2">
+                <li class="nav-item px-2 sm-2 py-sm-1">
                     <a href="{% url 'createaccount' %}">Create Account</a>
                 </li>
             {% endif %}
