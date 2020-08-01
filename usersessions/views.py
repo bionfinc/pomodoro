@@ -90,13 +90,16 @@ def sessions_view(request):
     else:
         sessions = UserSession.objects.filter(user__username__exact=user)
 
+    #determine the number of tasks done in session
+    sessions = sessions.annotate(Count('task'))
+
     # Set up the page system for displaying data
     paginator = Paginator(sessions, 10) # Show 10 sessions per page.
-    tasks_page = paginator.get_page(page_num)
+    sessions_page = paginator.get_page(page_num)
 
     context = {
         'user': user,
-        'sessions': tasks_page
+        'sessions_page': sessions_page
     }
 
     return render(request, 'usersessions/sessions.html', context)

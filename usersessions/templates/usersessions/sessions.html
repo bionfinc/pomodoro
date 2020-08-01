@@ -26,15 +26,23 @@
                             <th scope="col">Session</th>
                             <th scope="col">Date Started</th>
                             <th scope="col">Date Ended</th>
+                            <th scope="col">Tasks</th>
                             <th scope="col">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                            {% for session in sessions %}
+                            {% for session in sessions_page %}
                                 <tr>
                                     <td>{{ session.session_name }}</td>
-                                    <td>{{ session.session_time_start }}</td>                
-                                    <td>{{ session.session_time_end }}</td>
+                                    <td>{{ session.session_time_start|date:"n-j-y" }}, {{ session.session_time_start|time:"G:i" }}</td>                
+                                    <td>
+                                        {% if session.session_time_end %}
+                                            {{ session.session_time_end|date:"n-j-y" }}, {{ session.session_time_end|time:"G:i" }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ session.task__count }}</td>
                                     <td>
                                         <div class="container">
                                             <div class="row">
@@ -61,18 +69,18 @@
             <div class=" mt-2">
                 <div class="pagination justify-content-start">
                     <span class="step-links">
-                        {% if sessions.has_previous %}
+                        {% if sessions_page.has_previous %}
                             <a href="?page=1">&laquo; First</a>
-                            <a href="?page={{ sessions.previous_page_number }}">Previous</a>
+                            <a href="?page={{ sessions_page.previous_page_number }}">Previous</a>
                         {% endif %}
                 
                         <span class="current">
-                            Page {{ sessions.number }} of {{ sessions.paginator.num_pages }}
+                            Page {{ sessions_page.number }} of {{ sessions_page.paginator.num_pages }}
                         </span>
                 
                         {% if sessions.has_next %}
-                            <a href="?page={{ sessions.next_page_number }}">Next</a>
-                            <a href="?page={{ sessions.paginator.num_pages }}">Last &raquo;</a>
+                            <a href="?page={{ sessions_page.next_page_number }}">Next</a>
+                            <a href="?page={{ sessions_page.paginator.num_pages }}">Last &raquo;</a>
                         {% endif %}
                     </span>
                 </div>
