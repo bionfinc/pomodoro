@@ -18,8 +18,8 @@
 <body>
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light align-items-center">
-    <img id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}" alt="tomato">
-    <a class="navbar-brand" href="/">Pomodoro Posse</a>
+    <a href="{% url 'index' %}"><img id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}" alt="tomato"></a>
+    <a class="navbar-brand" href="{% url 'index' %}">Pomodoro Posse</a>
     {% if user.username %}
     <div class="nav-left-menu-links">
         <ul class="navbar-nav justify-content-start align-items-center ">
