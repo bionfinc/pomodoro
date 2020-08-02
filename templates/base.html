@@ -18,44 +18,58 @@
 <body>
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light align-items-center">
-    <img id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}" alt="tomato">
-    <a class="navbar-brand" href="/">Pomodoro Posse</a>
+    <a href="{% url 'index' %}"><img id="nav-tomato" src="{% static '../static/images/tomatoheader.png' %}" alt="tomato"></a>
+    <a class="navbar-brand" href="{% url 'index' %}">Pomodoro Posse</a>
     {% if user.username %}
+    <div class="nav-left-menu-links">
         <ul class="navbar-nav justify-content-start align-items-center ">
-            <li class="nav-item">
-                <a class="left-nav-menu" href="{% url 'index' %}">Timer</a>
+            <li class="nav-item ">
+                <a class="left-nav-menu {% if request.resolver_match.url_name == "index" %}active{% endif %}" href="{% url 'index' %}">Timer</a>
             </li>
             <li class="nav-item">
-                <a class="left-nav-menu" href="{% url 'sessions' %}">Sessions</a>
+                <a class="left-nav-menu {% if request.resolver_match.url_name == "sessions" %}active{% endif %}" href="{% url 'sessions' %}">Sessions</a>
             </li>
             <li class="nav-item">
-                <a class="left-nav-menu" href="{% url 'tasks' %}">Tasks</a>
+                <a class="left-nav-menu  {% if request.resolver_match.url_name == "tasks" %}active{% endif %}" href="{% url 'tasks' %}">Tasks</a>
             </li>
         </ul>
+    </div>
     {% endif %}
+    {% if user.username %}
+    <div class="collapse navbar-collapse-logged-in d-flex justify-content-end">
+    {% else %}  
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    {% endif %} 
         <ul class="navbar-nav  ">
 
             {% if user.username %}
                 <div class="dropdown" style="float:right;">
-                    <span id="score_span">{{ user.userprofile.score }} </span> pts
-                    <i class="dropbtn fas fa-user-circle"></i>
+                    <div class='d-flex align-items-center'>
+                        <span id="score_span">{{ user.userprofile.score }} </span>&nbsppts
+                        <i class="dropbtn fas fa-user-circle"></i>
+                    </div>
+                    
                     <div class="dropdown-content">
                         <span>Signed in as <strong>{{ user.username }}</strong></span>
-                        <a href="/profile">Your Profile</a>
-                        <a href="/logout">Logout</a>
+                        <a href="{% url 'profile' %}">Your Profile</a>
+                        <div id="profile-menu-links">
+                            <a href="{% url 'sessions' %}">Sessions</a>
+                            <a href="{% url 'tasks' %}">Tasks</a>
+                        </div>
+                        
+                        <a href="{% url 'logout' %}">Logout</a>
 
                     </div>
                 </div>
                 {% else %}
-                <li class="nav-item px-2">
+                <li class="nav-item px-2 pt-3 pb-2 pt-sm-1 pb-sm-1">
                     <a href="{% url 'login' %}">Log In</a>
                 </li>
-                <li class="nav-item px-2">
+                <li class="nav-item px-2 sm-2 py-sm-1">
                     <a href="{% url 'createaccount' %}">Create Account</a>
                 </li>
             {% endif %}
