@@ -4,10 +4,118 @@
 
 {% block body %}
     <script src="../../static/js/profile.js" type="text/javascript"></script>
-    <div class="container">
-        <div class="row mt-4 p-4 justify-content-center">
-            <div class="col-12 col-md-6">
-                <div class="card text-center">
+    <div class="container-fluid">
+        <div class="row p-4 justify-content-center sm-column-reverse">
+            <div class="container col-12 col-md-7 col-lg-8 col-xl-9 garden-section">
+                <div class="card text-center col-12">
+                    <div class="card-title pt-3"><h2>Garden</h2></div>
+                    <div class="card-group garden">
+                        <div class="card text-center border-0" id="plant1">
+                            <img src="" id="plant-image1" alt="plant-1" class="mx-auto mt-auto">
+                            <script>getPlantImage(1, {{ user.userprofile.plant1_stage }});</script>
+                            <div class="border-0 m-0 p-0 w-100">
+                                <button id="plant-button1" type="button" class="btn btn-search" data-catid="1">
+                                    <script type="text/javascript">
+
+                                        $('#plant-button1').click(function () {
+                                            let id;
+                                            id = $(this).attr("data-catid");
+                                            $.ajax(
+                                                {
+                                                    url: '/upgrade',
+                                                    data: {
+                                                        plant_id: id,
+                                                        plant_cost: getUpgradeCost({{ user.userprofile.plant1_stage }})
+                                                    },
+                                                    success: function (data) {
+                                                        let json = JSON.parse(data)
+                                                        $("#score_span").html(json['score'])
+                                                        generateButtonText(1, json['new_stage']);
+                                                        getPlantImage(1, json['new_stage']);
+                                                        if (json['award_list'][0] === "TRUE") {
+                                                            getAwardImage(json['award_list'][1], 1);
+                                                        }
+                                                        updateProfileInformationScore(json['score'])
+                                                    }
+                                                })
+                                        });
+                                    </script>
+                                    <script>generateButtonText(1, {{ user.userprofile.plant1_stage }});</script>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm card text-center border-0" id="plant2">
+                            <img src="" id="plant-image2" alt="plant-2" class="mx-auto mt-auto">
+                            <script>getPlantImage(2, {{ user.userprofile.plant2_stage }});</script>
+                            <div class="border-0 m-0 p-0">
+                                <button id="plant-button2" type="button" class="btn btn-search" data-catid="2">
+                                    <script type="text/javascript">
+                                        $('#plant-button2').click(function () {
+                                            let id;
+                                            id = $(this).attr("data-catid");
+                                            $.ajax(
+                                                {
+                                                    url: '/upgrade',
+                                                    data: {
+                                                        plant_id: id,
+                                                        plant_cost: getUpgradeCost({{ user.userprofile.plant2_stage }})
+                                                    },
+                                                    success: function (data) {
+                                                        let json = JSON.parse(data)
+                                                        $("#score_span").html(json['score'])
+                                                        generateButtonText(2, json['new_stage']);
+                                                        getPlantImage(2, json['new_stage']);
+                                                        if (json['award_list'][0] === "TRUE") {
+                                                            getAwardImage(json['award_list'][1], 2);
+                                                        }
+                                                        updateProfileInformationScore(json['score'])
+                                                    }
+                                                })
+                                        });
+                                    </script>
+                                    <script>generateButtonText(2, {{ user.userprofile.plant2_stage }});</script>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm card text-center border-0" id="plant3">
+                            <img src="" id="plant-image3" alt="plant-3" class="mx-auto mt-auto">
+                            <script>getPlantImage(3, {{ user.userprofile.plant3_stage }});</script>
+                            <div class="button border-0 m-0 p-0">
+                                <button id="plant-button3" type="button" class="btn btn-search" data-catid="3">
+                                    <script type="text/javascript">
+                                        $('#plant-button3').click(function () {
+                                            let id;
+                                            id = $(this).attr("data-catid");
+                                            $.ajax(
+                                                {
+                                                    url: '/upgrade',
+                                                    data: {
+                                                        plant_id: id,
+                                                        plant_cost: getUpgradeCost({{ user.userprofile.plant3_stage }})
+                                                    },
+                                                    success: function (data) {
+                                                        let json = JSON.parse(data)
+                                                        $("#score_span").html(json['score'])
+                                                        generateButtonText(3, json['new_stage']);
+                                                        getPlantImage(3, json['new_stage']);
+                                                        if (json['award_list'][0] === "TRUE") {
+                                                            getAwardImage(json['award_list'][1], 3);
+                                                        }
+                                                        updateProfileInformationScore(json['score'])
+                                                    }
+                                                })
+                                        });
+                                    </script>
+                                    <script>generateButtonText(3, {{ user.userprofile.plant3_stage }});</script>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-5 col-lg-4 col-xl-3 profile-information">
+                <div class="card text-center p-3">
                     <img class="mx-auto" style="width: 40px" src="../../../static/images/tomatoheader.png" alt="tomato">
                     <h1>Profile</h1>
                     <!-- Token for protection against cross site request forgeries -->
@@ -16,7 +124,7 @@
                     <div>
                         Username: {{ user.username }} <br>
                         Email: {{ user.email }} <br>
-                        <div id="profile-score">Score: {{ user.userprofile.score }}</div>
+                        <div id="profile-score"><b>Score: {{ user.userprofile.score }}</b></div>
                         Date joined: {{ user.date_joined }} <br>
                         Default task length: {{ user.userprofile.task_length }} <a
                             href="{% url 'change-default-times' %}"><i class="fas fa-edit"></i></a><br>
@@ -28,7 +136,7 @@
 
                     <div class="mt-3 d-flex justify-content-around">
                         {% buttons %}
-                            <a class="btn-submit btn " href="{% url 'index' %}">Return To Timer</a>
+                            <a class="btn-search btn " href="{% url 'index' %}">Return To Timer</a>
                         {% endbuttons %}
                     </div>
 
@@ -37,137 +145,29 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="card text-center col-12">
-                <div class="card-title pt-3"><h2>Garden</h2></div>
-                <div class="card-group">
-                    <div class="card text-center border-0" id="plant1">
-                        <img src="" id="plant-image1" alt="plant-1">
-                        <script>getPlantImage(1, {{ user.userprofile.plant1_stage }});</script>
-                        <div class="card-footer border-0">
-                            <button id="plant-button1" type="submit" data-catid="1">
-                                <script type="text/javascript">
-
-                                    $('#plant-button1').click(function () {
-                                        let id;
-                                        id = $(this).attr("data-catid");
-                                        $.ajax(
-                                            {
-                                                url: '/upgrade',
-                                                data: {
-                                                    plant_id: id,
-                                                    plant_cost: getUpgradeCost({{ user.userprofile.plant1_stage }})
-                                                },
-                                                success: function (data) {
-                                                    let json = JSON.parse(data)
-                                                    $("#score_span").html(json['score'])
-                                                    generateButtonText(1, json['new_stage']);
-                                                    getPlantImage(1, json['new_stage']);
-                                                    if (json['award_list'][0] === "TRUE") {
-                                                        getAwardImage(json['award_list'][1], 1);
-                                                    }
-                                                    updateProfileInformationScore(json['score'])
-                                                }
-                                            })
-                                    });
-                                </script>
-                                <script>generateButtonText(1, {{ user.userprofile.plant1_stage }});</script>
-                            </button>
+    <div class="container-fluid">
+        <div class="row p-4">
+            <div class="col-12 col-md-12 col-lg-8 col-xl-9">
+                <div class="card text-center col-12">
+                    <div class="card-title pt-3"><h2>Dinner Table</h2></div>
+                    <div class="card-group">
+                        <div class="card text-center border-0 pb-5" id="award1">
+                            <img src="" id="award-image1" alt="award1">
+                            <script>getAwardImage({{ user.userprofile.award1 }}, 1);</script>
                         </div>
-                    </div>
-                    <div class="col-sm card text-center border-0" id="plant2">
-                        <img src="" id="plant-image2" alt="plant-2">
-                        <script>getPlantImage(2, {{ user.userprofile.plant2_stage }});</script>
-                        <div class="card-footer border-0">
-                            <button id="plant-button2" type="submit" data-catid="2">
-                                <script type="text/javascript">
-                                    $('#plant-button2').click(function () {
-                                        let id;
-                                        id = $(this).attr("data-catid");
-                                        $.ajax(
-                                            {
-                                                url: '/upgrade',
-                                                data: {
-                                                    plant_id: id,
-                                                    plant_cost: getUpgradeCost({{ user.userprofile.plant2_stage }})
-                                                },
-                                                success: function (data) {
-                                                    let json = JSON.parse(data)
-                                                    $("#score_span").html(json['score'])
-                                                    generateButtonText(2, json['new_stage']);
-                                                    getPlantImage(2, json['new_stage']);
-                                                    if (json['award_list'][0] === "TRUE") {
-                                                        getAwardImage(json['award_list'][1], 2);
-                                                    }
-                                                    updateProfileInformationScore(json['score'])
-                                                }
-                                            })
-                                    });
-                                </script>
-                                <script>generateButtonText(2, {{ user.userprofile.plant2_stage }});</script>
-                            </button>
+                        <div class="card text-center border-0 pb-5" id="award2">
+                            <img src="" id="award-image2" alt="award2">
+                            <script>getAwardImage({{ user.userprofile.award2}}, 2);</script>
                         </div>
-                    </div>
-                    <div class="col-sm card text-center border-0" id="plant3">
-                        <img src="" id="plant-image3" alt="plant-3">
-                        <script>getPlantImage(3, {{ user.userprofile.plant3_stage }});</script>
-                        <div class="card-footer border-0">
-                            <button id="plant-button3" type="submit" data-catid="3">
-                                <script type="text/javascript">
-                                    $('#plant-button3').click(function () {
-                                        let id;
-                                        id = $(this).attr("data-catid");
-                                        $.ajax(
-                                            {
-                                                url: '/upgrade',
-                                                data: {
-                                                    plant_id: id,
-                                                    plant_cost: getUpgradeCost({{ user.userprofile.plant3_stage }})
-                                                },
-                                                success: function (data) {
-                                                    let json = JSON.parse(data)
-                                                    $("#score_span").html(json['score'])
-                                                    generateButtonText(3, json['new_stage']);
-                                                    getPlantImage(3, json['new_stage']);
-                                                    if (json['award_list'][0] === "TRUE") {
-                                                        getAwardImage(json['award_list'][1], 3);
-                                                    }
-                                                    updateProfileInformationScore(json['score'])
-                                                }
-                                            })
-                                    });
-                                </script>
-                                <script>generateButtonText(3, {{ user.userprofile.plant3_stage }});</script>
-                            </button>
+                        <div class="card text-center border-0 pb-5" id="award3">
+                            <img src="" id="award-image3" alt="award3">
+                            <script>getAwardImage({{ user.userprofile.award3 }}, 3);</script>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="container">
-        <div class="row mt-4 p-4 justify-content-center">
-            <div class="card text-center col-12">
-                <div class="card-title pt-3"><h2>Dinner Table</h2></div>
-                <div class="card-group">
-                    <div class="card text-center border-0 pb-5" id="award1">
-                        <img src="" id="award-image1" alt="award1">
-                        <script>getAwardImage({{ user.userprofile.award1 }}, 1);</script>
-                    </div>
-                    <div class="card text-center border-0 pb-5" id="award2">
-                        <img src="" id="award-image2" alt="award2">
-                        <script>getAwardImage({{ user.userprofile.award2}}, 2);</script>
-                    </div>
-                    <div class="card text-center border-0 pb-5" id="award3">
-                        <img src="" id="award-image3" alt="award3">
-                        <script>getAwardImage({{ user.userprofile.award3 }}, 3);</script>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
 
 {% endblock %}

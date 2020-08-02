@@ -213,4 +213,15 @@ def update_task_category(request):
         print(errMessage)
         return HttpResponse(errMessage)
 
-
+# AJAX for updating task time_end in db
+def update_task_time_end(request):
+    if request.user.is_authenticated:
+        # create instance of current task by using its id stored in the the django session
+        currentTask = Task.objects.get(id = request.session['taskId'])
+        currentTask.time_end = timezone.now()
+        currentTask.save()
+        return HttpResponse(status=200)
+    else:
+        errMessage = 'Error: user not logged in.'
+        print(errMessage)
+        return HttpResponse(errMessage)
