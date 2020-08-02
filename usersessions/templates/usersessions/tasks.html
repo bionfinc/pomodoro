@@ -48,12 +48,14 @@
                                             <div class="row">
                                                 <div class="col button-form">
                                                     <form action="/task_detail" method="GET">
-                                                        <button class="btn btn-block btn-outline-secondary btn-sm"  name="action" value="{{ task.task_name }}">Details</button>
+                                                        <button class="btn btn-block btn-outline-secondary btn-sm"  name="detail_name" value="{{ task.task_name }}">Details</button>
+                                                        <input type="hidden" name="detail_cat" value="{{ task.category }}"></input>
                                                     </form>
                                                 </div>
                                                 <div class="col button-form">
                                                     <form action="." method="POST"> {% csrf_token %}
-                                                        <button class="btn btn-block btn-outline-secondary btn-sm" name="delete" value="{{ task.task_name }}">Delete</button>
+                                                        <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_name" value="{{ task.task_name }}">Delete</button>
+                                                        <input type="hidden" name="delete_cat" value="{{ task.category }}"></input>
                                                     </form>  
                                                 </div>
                                             </div>

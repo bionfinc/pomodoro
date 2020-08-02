@@ -13,12 +13,6 @@
                     <div>
                         <h2>{{ gen_task.task_name }}</h1>
                         <p><b>Start Time:</b> {{ gen_task.time_start|date:"n-j-y" }}, {{ gen_task.time_start|time:"G:i" }} <br>
-                        <b>End Time:</b> 
-                            {% if gen_task.time_end %}
-                                {{ gen_task.time_end|date:"n-j-y" }}, {{ gen_task.time_end|time:"G:i" }}
-                            {% else %}
-                                -
-                            {% endif %}<br>
                         <b>Category:</b> {{ gen_task.category }} <br></p>
                     </div>
 

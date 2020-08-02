@@ -8,21 +8,25 @@ from django.core.paginator import Paginator
 from usersessions.models import Task, UserSession
 
 
-# Create your views here.
+# View for the general task table page
 def tasks_view(request):
     user = User.objects.get(username=request.user.username)
 
+    # Get the GET request information
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
 
-    #TODO Make not delete multiple categories
-    if request.POST.__contains__('delete'):
-        print(request.POST.get('delete'))
+    # If a delete request then remove all tasks that have that exact name and category.
+    # Will only delete if also of the logged in user to protect against rigged POST requests
+    if request.POST.__contains__('delete_name'):
         Task.objects.filter(
-                                task_name__exact=request.POST.get('delete'),
-                                usersession__user__username__exact=user
+                                task_name__exact=request.POST.get('delete_name'),
+                                category__exact=request.POST.get('delete_cat'),
+                                usersession__user__username__exact=user,
                             ).delete()
 
+    # Display all of the users tasks, but groups by name and category. If the user specified a
+    # specific name or category it will be filtered to that.
     if searchquery != None:
         tasks = Task.objects.filter(
                                     Q(task_name__icontains=searchquery) 
@@ -32,6 +36,7 @@ def tasks_view(request):
     else:
         tasks = Task.objects.filter(usersession__user__username__exact=user)
 
+    # Determines cumulative values for the task groups
     tasks = tasks.values(
                     'task_name', 
                     'category'
@@ -40,9 +45,15 @@ def tasks_view(request):
                     total_task_time=Sum('task_time')
                 )
 
+    # Populate the task groups with additional information not acquirable from the SQL calls
     for task in tasks:
-        # Determine the first start date for the task
-        task['first_time_start'] = Task.objects.filter(task_name__exact=task.get('task_name')).earliest('time_start').time_start
+
+        # Determine the first start date for the task group
+        task['first_time_start'] = Task.objects.filter(
+                                                    task_name__exact=task.get('task_name'),
+                                                    category__exact=task.get('category'),
+                                                    usersession__user__username__exact=user
+                                                ).earliest('time_start').time_start
 
         # Format the total task time display
         task['total_task_time_hr'] = int(task['total_task_time'] / 60)
@@ -60,17 +71,23 @@ def tasks_view(request):
     return render(request, 'usersessions/tasks.html', context)
 
 
+# View for the task detail page
 def task_detail_view(request):
     user = User.objects.get(username=request.user.username)
-    task_name = request.GET.get('action')
+    
+    # Get the GET request information
+    task_name = request.GET.get('detail_name')
+    task_category = request.GET.get('detail_cat')
 
-    #TODO add user validation
+    # Gets all the tasks associated with this selection and account
+    subtasks = Task.objects.filter(
+                                    task_name__exact=task_name,
+                                    category__exact=task_category,
+                                    usersession__user__username__exact=user
+                                )
 
-    #TODO does not get the right individual task, probably better to get a collective
-
-    gen_task = Task.objects.filter(task_name__icontains=task_name).earliest('time_start')
-  
-    subtasks = Task.objects.filter(task_name__icontains=task_name)
+    # Get the first instance of this task group
+    gen_task = subtasks.earliest('time_start')
 
     context = {
         'user': user,
