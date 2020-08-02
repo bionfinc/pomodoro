@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-# TODO Model description
+# User session of pomodoro's intended to capture a period of activity
 class UserSession(models.Model):
 	user = models.ForeignKey(
 		User, 
@@ -15,7 +15,7 @@ class UserSession(models.Model):
 	session_name = models.CharField(max_length=100)
 
 
-# TODO Model description
+# Single pomodoro task performed
 class Task(models.Model):
 	usersession = models.ForeignKey(
 		UserSession, 
