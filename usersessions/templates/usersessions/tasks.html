@@ -1,122 +1,54 @@
-<!-- Page system referenced from https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
+{% extends 'usersessions/table_page.html' %}
 
-{% extends 'base.html' %}
+{% block search %}
+<input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Task or Category..."> 
+<button class="mx-2 btn btn-search" type="submit">Search</button>
+{% endblock %}
 
-{% block body %}
+{% block table %}
+<thead>
+    <tr >
+        <th class="pr-2" scope="col">Task Name</th>
+        <th class="pr-2" scope="col">Date Started</th>
+        <th class="pr-2" scope="col">Total Time</th>
+        <th class="pr-2" scope="col">Pomodoros</th>
+        <th class="pr-2" scope="col">Category</th>
+        <th scope="col">Actions</th>
+    </tr>
+</thead>
 
-<div class="container">
-
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-12 col-md-10">
-            <div class="d-flex justify-content-center mt-4">
-                <form class='form-inline' method="GET" action="">
-                    <input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Task or Category..."> 
-                    <button class="mx-2 btn btn-search" type="submit">Search</button>
-                </form> 
-            </div>
-                
-            <div>
-                <div class="card p-2">
-                    <table class="table-sm table-hover">
-                        <thead class="">
-                        <tr >
-                            <th class="pr-2" scope="col">Task Name</th>
-                            <th class="pr-2" scope="col">Date Started</th>
-                            <th class="pr-2" scope="col">Total Time</th>
-                            <th class="pr-2" scope="col">Pomodoros</th>
-                            <th class="pr-2" scope="col">Category</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-        
-                        </thead>
-                        <tbody>
-                            {% for task in tasks_page %}
-                                <tr>
-                                    <td class="pr-2" >{{ task.task_name }}</td>
-                                    <td class="pr-2">{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"G:i" }}</td>
-                                    <td class="pr-2">
-                                        {% if task.total_task_time_min < 10 %}
-                                            {{ task.total_task_time_hr }}:0{{ task.total_task_time_min }}
-                                        {% else %}
-                                            {{ task.total_task_time_hr }}:{{ task.total_task_time_min }}
-                                        {% endif %}</td>
-                                    <td class="pr-2">{{ task.sessions_count }}</td>
-                                    <td class="pr-2">{{ task.category }}</td>
-                                    <td>
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col button-form">
-                                                    <form action="/task_detail" method="GET">
-                                                        <button class="btn btn-block btn-outline-secondary btn-sm"  name="detail_name" value="{{ task.task_name }}">Details</button>
-                                                        <input type="hidden" name="detail_cat" value="{{ task.category }}"></input>
-                                                    </form>
-                                                </div>
-                                                <div class="col button-form">
-                                                    <form action="." method="POST"> {% csrf_token %}
-                                                        <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_name" value="{{ task.task_name }}">Delete</button>
-                                                        <input type="hidden" name="delete_cat" value="{{ task.category }}"></input>
-                                                    </form>  
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+<tbody>
+    {% for task in page_content %}
+        <tr>
+            <td class="pr-2" >{{ task.task_name }}</td>
+            <td class="pr-2">{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"G:i" }}</td>
+            <td class="pr-2">
+                {% if task.total_task_time_min < 10 %}
+                    {{ task.total_task_time_hr }}:0{{ task.total_task_time_min }}
+                {% else %}
+                    {{ task.total_task_time_hr }}:{{ task.total_task_time_min }}
+                {% endif %}</td>
+            <td class="pr-2">{{ task.sessions_count }}</td>
+            <td class="pr-2">{{ task.category }}</td>
+            <td>
+                <div class="container">
+                    <div class="row">
+                        <div class="col button-form">
+                            <form action="/task_detail" method="GET">
+                                <button class="btn btn-block btn-outline-secondary btn-sm"  name="detail_name" value="{{ task.task_name }}">Details</button>
+                                <input type="hidden" name="detail_cat" value="{{ task.category }}"></input>
+                            </form>
+                        </div>
+                        <div class="col button-form">
+                            <form action="." method="POST"> {% csrf_token %}
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_name" value="{{ task.task_name }}">Delete</button>
+                                <input type="hidden" name="delete_cat" value="{{ task.category }}"></input>
+                            </form>  
+                        </div>
+                    </div>
                 </div>
-            </div>                   
-
-            <div class="mt-2">
-                <div class="pagination justify-content-center">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination pagination-sm">                        
-                        {% if tasks_page.has_previous %}
-                        <li class="page-item">
-                        <a class="page-link" href="?page={{ tasks_page.previous_page_number }}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                        {% else %}
-                        <li class="page-item disabled">
-                        <a class="page-link" href="?page=#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                        {% endif %}
-                        </li>
-
-                        {% for i in tasks_page.paginator.page_range %}
-                            {% if i == tasks_page.number %}
-                                <li class="page-item active">
-                            {% else %}
-                                <li class="page-item">
-                            {% endif %}
-                                <a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                        {% endfor %}
-
-                        {% if tasks_page.has_next %}
-                        <li class="page-item">
-                        <a class="page-link" href="?page={{ tasks_page.next_page_number }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                        {% else %}
-                        <li class="page-item disabled">
-                        <a class="page-link" href="?page={{ tasks_page.number }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                        {% endif %}
-                        </li>
-                    </ul>
-                </nav>
-                </div>
-            </div>
-        </div>
-    
-        <div class="col-md-1"></div>
-    </div>
-    
-
-    
-</div>
-
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
 {% endblock %}

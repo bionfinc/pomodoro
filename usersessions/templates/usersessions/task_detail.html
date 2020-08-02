@@ -1,49 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'usersessions/table_detail_page.html' %}
 
-{% block body %}
-
-<div class="container">
-
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-12 col-md-10">
-                
-            <div class="d-flex justify-content-center mt-4">
-                <div class="card p-4">
-                    <div>
-                        <h2>{{ gen_task.task_name }}</h1>
-                        <p><b>Start Time:</b> {{ gen_task.time_start|date:"n-j-y" }}, {{ gen_task.time_start|time:"G:i" }} <br>
-                        <b>Category:</b> {{ gen_task.category }} <br></p>
-                    </div>
-
-                    <table class="table-sm table-hover mb-4">
-                        <h4>Tasks</h4>
-                        <thead class="">
-                            <tr >
-                                <th class="pr-4" scope="col">Session</th>
-                                <th class="pr-4" scope="col">Time Started</th>
-                                <th class="pr-4" scope="col">Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for task in subtasks %}
-                                <tr>
-                                    <td class="pr-4" >{{ task.usersession.session_name }}</td>
-                                    <td class="pr-4">{{ task.time_start|date:"n-j-y" }}, {{ task.time_start|time:"G:i" }}</td>                
-                                    <td class="pr-4">{{ task.task_time }} min</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <a href="/tasks" class="btn btn-search" role="button">Back to Tasks</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-1"></div>
-    </div>
-    
+{% block details %}
+<div>
+    <h2>{{ gen_task.task_name }}</h1>
+    <p><b>Start Time:</b> {{ gen_task.time_start|date:"n-j-y" }}, {{ gen_task.time_start|time:"G:i" }} <br>
+    <b>Category:</b> {{ gen_task.category }} <br></p>
 </div>
 
+<table class="table-sm table-hover mb-4">
+    <h4>Tasks</h4>
+    <thead class="">
+        <tr >
+            <th class="pr-4" scope="col">Session</th>
+            <th class="pr-4" scope="col">Time Started</th>
+            <th class="pr-4" scope="col">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in subtasks %}
+            <tr>
+                <td class="pr-4" >{{ task.usersession.session_name }}</td>
+                <td class="pr-4">{{ task.time_start|date:"n-j-y" }}, {{ task.time_start|time:"G:i" }}</td>                
+                <td class="pr-4">{{ task.task_time }} min</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="/tasks" class="btn btn-search" role="button">Back to Tasks</a>
 {% endblock %}

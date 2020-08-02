@@ -25,7 +25,7 @@ def tasks_view(request):
                                 usersession__user__username__exact=user,
                             ).delete()
 
-    # Display all of the users tasks, but groups by name and category. If the user specified a
+    # Display all of the user's tasks, but groups by name and category. If the user specified a
     # specific name or category it will be filtered to that.
     if searchquery != None:
         tasks = Task.objects.filter(
@@ -65,7 +65,7 @@ def tasks_view(request):
 
     context = {
         'user': user,
-        'tasks_page': tasks_page
+        'page_content': tasks_page
     }
 
     return render(request, 'usersessions/tasks.html', context)
@@ -98,16 +98,24 @@ def task_detail_view(request):
     return render(request, 'usersessions/task_detail.html', context)
 
 
+# View for the general session table page
 def sessions_view(request):
     user = User.objects.get(username=request.user.username)
 
+    # Get the GET request information
     searchquery = request.GET.get('search')
     page_num = request.GET.get('page')
 
-    #TODO add user validation
+    # If a delete request then remove the selected session from the database
     if request.POST.__contains__('delete'):
-        UserSession.objects.get(pk=request.POST.get('delete')).delete()
+        UserSession.objects.filter(
+                                    user__username__exact=user
+                                ).get(
+                                    pk=request.POST.get('delete')
+                                ).delete()
 
+    # Display all of the user's sessions. If the user specified a
+    # specific sessions name it will be filtered to that.
     if searchquery != None:
         sessions = UserSession.objects.filter(
                                             session_name__icontains=searchquery,
@@ -126,21 +134,31 @@ def sessions_view(request):
 
     context = {
         'user': user,
-        'sessions_page': sessions_page
+        'page_content': sessions_page
     }
 
     return render(request, 'usersessions/sessions.html', context)
 
 
+# View for the session detail page
 def session_detail_view(request):
     user = User.objects.get(username=request.user.username)
+
+    # Get the GET request information
     session_num = request.GET.get('action')
 
-    #TODO add user validation
+    # Get the specified session if it is accociated with this user
+    session = UserSession.objects.filter(
+                                    user__username__exact=user
+                                ).get(
+                                    pk=session_num
+                                )
 
-    session = UserSession.objects.get(pk=session_num)
-
-    tasks = Task.objects.filter(usersession__pk=session_num)
+    # Get the tasks of the session if it is accociated with this user
+    tasks = Task.objects.filter(
+                                    usersession__user__username__exact=user,
+                                    usersession__pk=session_num
+                                )
   
     context = {
         'user': user,
