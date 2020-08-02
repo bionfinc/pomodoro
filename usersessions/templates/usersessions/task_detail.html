@@ -3,7 +3,7 @@
 {% block details %}
 <div>
     <h2>{{ gen_task.task_name }}</h1>
-    <p><b>Start Time:</b> {{ gen_task.time_start|date:"n-j-y" }}, {{ gen_task.time_start|time:"G:i" }} <br>
+    <p><b>Start Time:</b> {{ gen_task.time_start|date:"n-j-y" }}, {{ gen_task.time_start|time:"g:i A" }} <br>
     <b>Category:</b> {{ gen_task.category }} <br></p>
 </div>
 
@@ -20,7 +20,7 @@
         {% for task in subtasks %}
             <tr>
                 <td class="pr-4" >{{ task.usersession.session_name }}</td>
-                <td class="pr-4">{{ task.time_start|date:"n-j-y" }}, {{ task.time_start|time:"G:i" }}</td>                
+                <td class="pr-4">{{ task.time_start|date:"n-j-y" }}, {{ task.time_start|time:"g:i A" }}</td>                
                 <td class="pr-4">{{ task.task_time }} min</td>
             </tr>
         {% endfor %}

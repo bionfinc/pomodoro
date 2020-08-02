@@ -21,7 +21,7 @@
     {% for task in page_content %}
         <tr>
             <td class="pr-2" >{{ task.task_name }}</td>
-            <td class="pr-2">{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"G:i" }}</td>
+            <td class="pr-2">{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"g:i A" }}</td>
             <td class="pr-2">
                 {% if task.total_task_time_min < 10 %}
                     {{ task.total_task_time_hr }}:0{{ task.total_task_time_min }}
