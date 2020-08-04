@@ -27,3 +27,12 @@ class Task(models.Model):
 	time_start = models.DateTimeField()
 	time_end = models.DateTimeField(null=True)
 	category = models.CharField(max_length=100, null=True)
+
+# Task Category Names for a user of pomodoro's intended to capture a period of activity
+class TaskCategory(models.Model):
+	user = models.ForeignKey(
+		User, 
+		on_delete=models.CASCADE, 
+		null=True
+	)
+	task_category_name = models.TextField(max_length=100, null=True)

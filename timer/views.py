@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from datetime import datetime
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
-from usersessions.models import UserSession, Task
+from usersessions.models import UserSession, Task, TaskCategory
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
@@ -30,8 +30,14 @@ def index_view(request):
 
     if request.user.is_authenticated:
         user = request.user
+        #get all of a user's task categories to display in the dropdown
+        task_categories = []
+        task_category_objects = TaskCategory.objects.filter(user_id=user.id)
+        for category in task_category_objects:
+            task_categories.append(category.task_category_name)
     else:
         user = False
+        task_categories = None
     
     user_session_description = ''
     # If logged in, check if the user has an active session. 
@@ -73,7 +79,8 @@ def index_view(request):
         'userSessionName': request.session['userSessionName'],
         'score': score,
         'user': user,
-        'description': user_session_description
+        'description': user_session_description,
+        'task_categories': task_categories
     })
 
 # get taskName first then edit it via post
