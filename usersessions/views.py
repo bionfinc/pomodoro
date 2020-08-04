@@ -1,10 +1,10 @@
 import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.db.models import Q, Count, Sum
 from django.core.paginator import Paginator
-
+from accounts.models import UserProfile
 from usersessions.models import Task, UserSession
 
 
@@ -167,3 +167,25 @@ def session_detail_view(request):
     }
 
     return render(request, 'usersessions/session_detail.html', context)
+
+
+def delete_all_data(request):
+    UserSession.objects.filter(user=request.user).delete()
+    del request.session['userSessionId']
+    del request.session['userSessionName']
+    del request.session['taskName']
+    
+    request.user.userprofile.task_length = 25
+    request.user.userprofile.short_rest_length = 5
+    request.user.userprofile.long_rest_length = 10
+    request.user.userprofile.score = 0
+    request.user.userprofile.plant1_stage = 1
+    request.user.userprofile.plant2_stage = 1
+    request.user.userprofile.plant3_stage = 1
+    request.user.userprofile.award_count = 0
+    request.user.userprofile.award1 = 0
+    request.user.userprofile.award2 = 0
+    request.user.userprofile.award3 = 0
+    request.user.userprofile.save()
+
+    return redirect('/')
