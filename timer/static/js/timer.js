@@ -52,17 +52,9 @@ function pomodoroModeOn() {
 
   // In case the timer was running, stop countdownClock function
   if (currentTimer != 'Pomodoro'){
-  clearInterval(countdownClock);
-
-  // Reset time and timer display
-  countdownMins = pomodoroMinutes;
-  countdownSecs = 0;
-  timerState = ''; // clear timer state
-  console.log(timerState);
-  resetTimer();
-
-  // Set timer to Pomodoro
-  currentTimer = "Pomodoro";
+    resetTimerDisplay(pomodoroMinutes);
+    resetTimer();
+    currentTimer = "Pomodoro";
   }
 }
 
@@ -111,17 +103,8 @@ function shortBreakModeOn() {
       pomodoroButton.className = "";
       longBreakButton.className = "";
 
-      // In case the timer was running, stop countdownClock function
-      clearInterval(countdownClock);
-
-      // Reset time and timer display
-      countdownMins = shortBreakMinutes;
-      countdownSecs = 0;
-      timerState = ''; // clear timer state
-      console.log(timerState);
+      resetTimerDisplay(shortBreakMinutes);
       resetTimer();
-
-      // Set timer to Short Break
       currentTimer = "Short Break";
     }
   }
@@ -175,17 +158,8 @@ function longBreakModeOn() {
       pomodoroButton.className = "";
       shortBreakButton.className = "";
 
-      // In case the timer was running, stop countdownClock function
-      clearInterval(countdownClock);
-
-      // Reset time and timer display
-      countdownMins = longBreakMinutes;
-      countdownSecs = 0;
-      timerState = ''; // clear timer state
-      console.log(timerState);
+      resetTimerDisplay(longBreakMinutes);
       resetTimer();
-
-      // Set timer to Short Break
       currentTimer = "Long Break";
     }
   }
@@ -392,17 +366,8 @@ function confirmShortBreak() {
     }
   });
 
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
-
-  // Reset time and timer display
-  countdownMins = shortBreakMinutes;
-  countdownSecs = 0;
-  timerState = ''; // clear timer state
-  console.log(timerState);
+  resetTimerDisplay(shortBreakMinutes);
   resetTimer();
-
-  // Set timer to Short Break
   currentTimer = "Short Break";
 
 }
@@ -425,17 +390,8 @@ function confirmLongBreak() {
     }
   });
 
-  // In case the timer was running, stop countdownClock function
-  clearInterval(countdownClock);
-
-  // Reset time and timer display
-  countdownMins = longBreakMinutes;
-  countdownSecs = 0;
-  timerState = ''; // clear timer state
-  console.log(timerState);
+  resetTimerDisplay(longBreakMinutes);
   resetTimer();
-
-  // Set timer to Short Break
   currentTimer = "Long Break";
 
 }
@@ -491,4 +447,15 @@ function checkLoggedInBool() {
       }
     });
   })
+}
+
+function resetTimerDisplay(minutesVar){
+  // In case the timer was running, stop the countdownClock function
+  clearInterval(countdownClock);
+
+  // Reset time to proper time and update timer display
+  countdownMins = minutesVar;
+  countdownSecs = 0;
+  timerState = ''; // Clear timer state
+  console.log(timerState);
 }
