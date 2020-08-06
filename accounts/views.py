@@ -10,7 +10,7 @@ from accounts.forms import SignUpForm, ChangeDefaultTimesForm
 
 
 # Create your views here.
-def create_account_view(request, *args, **kwargs):
+def show_create_account_view(request, *args, **kwargs):
     # Only process if a post request is sent
     if request.method == 'POST':
 
@@ -39,7 +39,7 @@ def create_account_view(request, *args, **kwargs):
     return render(request, 'accounts/create_account.html', my_context)
 
 
-def profile_view(request):
+def show_profile_view(request):
     user = User.objects.get(username=request.user.username)
     context = {
         'user': user
@@ -47,7 +47,7 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
-def change_default_times_view(request):
+def show_change_default_times_view(request):
     user_profile = User.objects.get(username=request.user.username).userprofile
     form = ChangeDefaultTimesForm(request.POST or None, instance=user_profile)
 
@@ -63,7 +63,7 @@ def change_default_times_view(request):
     return render(request, 'accounts/change_default_times.html', context)
 
 
-def upgrade(request):
+def upgrade_plant_stage(request):
     plant_number = int(request.GET["plant_id"])
     upgrade_cost = int(request.GET["plant_cost"])
     award_list = ["FALSE"]
@@ -79,7 +79,7 @@ def upgrade(request):
             else:
                 new_stage = 1
                 request.user.userprofile.plant1_stage = new_stage
-                award_list = award(request)
+                award_list = give_award(request)
 
         elif plant_number == 2:
             plant_stage = request.user.userprofile.plant2_stage
@@ -89,7 +89,7 @@ def upgrade(request):
             else:
                 new_stage = 1
                 request.user.userprofile.plant2_stage = new_stage
-                award_list = award(request)
+                award_list = give_award(request)
 
         elif plant_number == 3:
             plant_stage = request.user.userprofile.plant3_stage
@@ -99,7 +99,7 @@ def upgrade(request):
             else:
                 new_stage = 1
                 request.user.userprofile.plant3_stage = new_stage
-                award_list = award(request)
+                award_list = give_award(request)
 
         request.user.userprofile.save()
 
@@ -111,7 +111,7 @@ def upgrade(request):
         return HttpResponse('FALSE')
 
 
-def award(request):
+def give_award(request):
     award_count = request.user.userprofile.award_count = request.user.userprofile.award_count + 1
     award_type = random.randint(1, 5)
     if award_count == 1:
