@@ -1,5 +1,5 @@
 import datetime
-from .utils import getInfo
+from .utils import get_info
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -31,7 +31,7 @@ def tasks_view(request):
 
     # Display all of the user's tasks, but groups by name and category. If the user specified a
     # specific name or category it will be filtered to that.
-    if search_query != None:
+    if search_query is not None:
         tasks = Task.objects.filter(
                                     Q(task_name__icontains=search_query) 
                                     | Q(category__icontains=search_query),
@@ -116,7 +116,7 @@ def sessions_view(request):
 
     # Display all of the user's sessions. If the user specified a
     # specific sessions name it will be filtered to that.
-    if search_query != None:
+    if search_query is not None:
         sessions = UserSession.objects.filter(
                                             session_name__icontains=search_query,
                                             user__username__exact=user
