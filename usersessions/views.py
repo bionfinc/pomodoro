@@ -18,7 +18,7 @@ class CreatNewCategory(forms.Form):
 
 # View for the general task table page
 def tasks_view(request):
-    user, searchQuery, page_num = getInfo(request)
+    user, search_query, page_num = get_info(request)
 
     # If a delete request then remove all tasks that have that exact name and category.
     # Will only delete if also of the logged in user to protect against rigged POST requests
@@ -31,10 +31,10 @@ def tasks_view(request):
 
     # Display all of the user's tasks, but groups by name and category. If the user specified a
     # specific name or category it will be filtered to that.
-    if searchQuery != None:
+    if search_query != None:
         tasks = Task.objects.filter(
-                                    Q(task_name__icontains=searchQuery) 
-                                    | Q(category__icontains=searchQuery),
+                                    Q(task_name__icontains=search_query) 
+                                    | Q(category__icontains=search_query),
                                     usersession__user__username__exact=user
                                 )
     else:
@@ -104,7 +104,7 @@ def task_detail_view(request):
 
 # View for the general session table page
 def sessions_view(request):
-    user, searchQuery, page_num = getInfo(request)
+    user, search_query, page_num = get_info(request)
 
     # If a delete request then remove the selected session from the database
     if request.POST.__contains__('delete'):
@@ -116,9 +116,9 @@ def sessions_view(request):
 
     # Display all of the user's sessions. If the user specified a
     # specific sessions name it will be filtered to that.
-    if searchQuery != None:
+    if search_query != None:
         sessions = UserSession.objects.filter(
-                                            session_name__icontains=searchQuery,
+                                            session_name__icontains=search_query,
                                             user__username__exact=user
                                         )
 
@@ -170,7 +170,7 @@ def session_detail_view(request):
 
 # View for the general categories table page
 def categories_view(request):
-    user, searchQuery, page_num = getInfo(request)
+    user, search_query, page_num = get_info(request)
     
     # If a delete request then remove the selected category from the database
     if request.POST.__contains__('delete'):
@@ -181,9 +181,9 @@ def categories_view(request):
                                 ).delete()
     # Display all of the user's categories. If the user specified a
     # specific category name it will be filtered to that.
-    if searchQuery != None:
+    if search_query != None:
         sessions = TaskCategory.objects.filter(
-                                            task_category_name__icontains=searchQuery,
+                                            task_category_name__icontains=search_query,
                                             user__username__exact=user
                                         )
     else:

@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 
-def getInfo(request):
+
+def get_info(request):
     user = User.objects.get(username=request.user.username)
-    searchQuery = request.GET.get('search')
+    search_query = request.GET.get('search')
     page_num = request.GET.get('page')
-    return user, searchQuery, page_num
+    return user, search_query, page_num
