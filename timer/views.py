@@ -45,19 +45,9 @@ def index_view(request):
         userSessionId = request.session['userSessionId']
         user_session_description = UserSession.objects.get(id=userSessionId).description
 
-    if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
-        now = timezone.now()
-        request.session['defaultTaskName'] = True
-        request.session['taskNumber'] = 1
-        request.session['taskName'] = 'Task: ' + now.strftime(
-            "%Y-%m-%d: #1")  # creates a default taskName if they dont have one
-
-    if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
-        now = timezone.now()
-        request.session['userSessionName'] = 'Session: ' + now.strftime(
-            "%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
-        userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
-        request.session['userSessionId'] = userSessionObject.id
+    # Set defaults if missing current objects
+    set_task_default_if_missing(request)
+    set_user_session_default_if_missing(request)
 
     return render(request, 'index.html', {
         'taskName': request.session['taskName'],
@@ -67,7 +57,25 @@ def index_view(request):
         'description': user_session_description,
         'task_categories': task_categories
     })
-    
+
+
+# Checks if the request session has a taskname, if not populates the defaults for the session
+def set_task_default_if_missing(request):
+    if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
+        now = timezone.now()
+        request.session['defaultTaskName'] = True
+        request.session['taskNumber'] = 1
+        request.session['taskName'] = 'Task: ' + now.strftime("%Y-%m-%d: #1")  # creates a default taskName if they dont have one
+
+
+# Checks if the request session has a user session name, if not populates the defaults for the session
+def set_user_session_default_if_missing(request):
+    if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
+        now = timezone.now()
+        request.session['userSessionName'] = 'Session: ' + now.strftime("%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
+        userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
+        request.session['userSessionId'] = userSessionObject.id
+
 
 # get taskName first then edit it via post
 def editTask_view(request):
@@ -88,8 +96,8 @@ def editTask_view(request):
     return render(request, "editTask.html", {
         'form': EditTaskName
     })
-# get taskName first then edit it via post
 
+# get taskName first then edit it via post
 def editUserSession_view(request):
     #if its a post, it checks the validity of the form content
     if request.method == "POST":
@@ -112,6 +120,7 @@ def editUserSession_view(request):
         'form': EditUserSessionName
     })
 
+
 def editSessionDescription_view(request):
     if request.method == "POST":
         # Form instance populated from the request
@@ -130,8 +139,10 @@ def editSessionDescription_view(request):
             return HttpResponseRedirect(reverse('index'))  # Successfully updated the database, return to the timer page
         else:                                      
             return render(request, 'editSessionDescription.html', {'form': form }) # Unsuccessful, go back to try again
+
     # Show the form for the user to Edit
     context = {'form': EditSessionDescription}
+
     # If there is a current session, pre-populate with the saved session description
     if request.user.is_authenticated:
         if 'userSessionId' in request.session:
@@ -141,8 +152,8 @@ def editSessionDescription_view(request):
             context = {'form': form}
     return render(request, "editSessionDescription.html", context)
     
-# AJAX for adding points to the score
 
+# AJAX for adding points to the score
 def add_points(request):
     if request.user.is_authenticated:
         request.user.userprofile.score = request.user.userprofile.score + 10
@@ -168,6 +179,7 @@ def is_logged_in(request):
     else:
         return HttpResponse(False)
 
+
 # save task info to db when "Start" button clicked
 @csrf_exempt
 def save_task_info(request):
@@ -188,6 +200,7 @@ def save_task_info(request):
         print(errMessage)
         return HttpResponse(errMessage)
         
+
 # Update task category in the db when task category is changed
 @csrf_exempt
 def update_task_category(request):
@@ -205,6 +218,7 @@ def update_task_category(request):
         errMessage = 'Error: user not logged in.'
         print(errMessage)
         return HttpResponse(errMessage)
+
 
 # AJAX for updating task time_end in db
 def update_task_time_end(request):
