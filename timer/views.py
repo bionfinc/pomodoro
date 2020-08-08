@@ -46,8 +46,8 @@ def index_view(request):
         user_session_description = UserSession.objects.get(id=userSessionId).description
 
     # Set defaults if missing current objects
-    setTaskDefaultIfMissing(request)
-    setUserSessionDefaultIfMissing(request)
+    set_task_default_if_missing(request)
+    set_user_session_default_if_missing(request)
 
     return render(request, 'index.html', {
         'taskName': request.session['taskName'],
@@ -60,7 +60,7 @@ def index_view(request):
 
 
 # Checks if the request session has a taskname, if not populates the defaults for the session
-def setTaskDefaultIfMissing(request):
+def set_task_default_if_missing(request):
     if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
         now = timezone.now()
         request.session['defaultTaskName'] = True
@@ -69,7 +69,7 @@ def setTaskDefaultIfMissing(request):
 
 
 # Checks if the request session has a user session name, if not populates the defaults for the session
-def setUserSessionDefaultIfMissing(request):
+def set_user_session_default_if_missing(request):
     if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
         now = timezone.now()
         request.session['userSessionName'] = 'Session: ' + now.strftime("%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
