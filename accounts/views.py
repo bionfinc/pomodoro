@@ -5,29 +5,25 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from accounts.forms import SignUpForm, ChangeDefaultTimesForm, ChangeProfileInformationForm
 
-from accounts.forms import SignUpForm, ChangeDefaultTimesForm
 
-
-# Create your views here.
 def create_account_view(request, *args, **kwargs):
-    # Only process if a post request is sent
+
     if request.method == 'POST':
 
         create_account_form = SignUpForm(request.POST)
 
-        # If the form has correct information it can be stored
         if create_account_form.is_valid():
             create_account_form.save()
             username = create_account_form.cleaned_data.get('username')
             password = create_account_form.cleaned_data.get('password1')
             email = create_account_form.cleaned_data.get('email')
 
-            # Login to the account instantly
+            # Login to the account instantly to avoid having redirect to login page
             user = authenticate(username=username, password=password)
             login(request, user)
 
-            # Return back to the main screen
             return redirect('index')
     else:
         create_account_form = SignUpForm()
@@ -61,6 +57,22 @@ def change_default_times_view(request):
     }
 
     return render(request, 'accounts/change_default_times.html', context)
+
+
+def change_profile_information_view(request):
+    user = User.objects.get(username=request.user.username)
+    form = ChangeProfileInformationForm(request.POST or None, instance=user)
+
+    if form.is_valid():
+        form.save()
+        return redirect('profile')
+
+    context = {
+        'user': user,
+        'form': form
+    }
+
+    return render(request, 'accounts/change_profile_information.html', context)
 
 
 def upgrade(request):

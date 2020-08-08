@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from datetime import datetime
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
-from usersessions.models import UserSession, Task
+from usersessions.models import UserSession, Task, TaskCategory
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
@@ -23,59 +23,51 @@ class EditSessionDescription(forms.Form):
 
 # Create your views here.
 def index_view(request):
-    # add in user's current score if logged in
-    score = 0
-    if request.user.is_authenticated:
-        score = request.user.userprofile.score
 
-    if request.user.is_authenticated:
-        user = request.user
-    else:
-        user = False
-    
-    user_session_description = ''
-    # If logged in, check if the user has an active session. 
-    if request.user.is_authenticated:
-        if 'userSessionId' in request.session:  # If active session, get the current description
-            userSessionId = request.session['userSessionId']
-            if UserSession.objects.count() == 0:
-                user_session_description = UserSession.objects.get(id=userSessionId).description
-
-    if request.user.is_authenticated:
-        if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
-            now = timezone.now()
-            request.session['defaultTaskName'] = True
-            request.session['taskNumber'] = 1
-            request.session['taskName'] = 'Task: ' + now.strftime(
-                "%Y-%m-%d: #1")  # creates a default taskName if they dont have one
-        # elif request.session['defaultTaskName']:
-        #     now = datetime.now()
-        #     request.session['taskNumber'] += 1
-        #     request.session['taskName'] = 'Task: ' + now.strftime(
-        #         "%Y-%m-%d: #" + str(request.session['taskNumber']))  # creates a default taskName if they dont have one
-
-
-        if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
-            now = timezone.now()
-            request.session['userSessionName'] = 'Session: ' + now.strftime(
-                "%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
-            userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
-            request.session['userSessionId'] = userSessionObject.id
-
-    else:
+    # If not a active user then render with blank values
+    if not request.user.is_authenticated:
         return render(request, 'index.html', {
-        'score': score,
-        'user': user,
-        'description': user_session_description
+            'score': 0,
+            'user': False,
+            'description': ''
+        })
 
-    })
+    # Get all of a user's task categories to display in the dropdown
+    user = request.user
+    task_categories = []
+    task_category_objects = TaskCategory.objects.filter(user_id=user.id)
+    for category in task_category_objects:
+        task_categories.append(category.task_category_name)
+
+    # If logged in, check if the user has an active session. 
+    user_session_description = ''
+    if 'userSessionId' in request.session:  # If active session, get the current description
+        userSessionId = request.session['userSessionId']
+        user_session_description = UserSession.objects.get(id=userSessionId).description
+
+    if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
+        now = timezone.now()
+        request.session['defaultTaskName'] = True
+        request.session['taskNumber'] = 1
+        request.session['taskName'] = 'Task: ' + now.strftime(
+            "%Y-%m-%d: #1")  # creates a default taskName if they dont have one
+
+    if 'userSessionName' not in request.session:  # Takes advantage of user sessions, checks to see if the userSessionName is in their session
+        now = timezone.now()
+        request.session['userSessionName'] = 'Session: ' + now.strftime(
+            "%Y-%m-%d_%H:%M:%S")  # creates a default userSessionName if they dont have one
+        userSessionObject = UserSession.objects.create(user= request.user, session_time_start = now, session_name=request.session['userSessionName'])
+        request.session['userSessionId'] = userSessionObject.id
+
     return render(request, 'index.html', {
         'taskName': request.session['taskName'],
         'userSessionName': request.session['userSessionName'],
-        'score': score,
+        'score': request.user.userprofile.score,
         'user': user,
-        'description': user_session_description
+        'description': user_session_description,
+        'task_categories': task_categories
     })
+    
 
 # get taskName first then edit it via post
 def editTask_view(request):

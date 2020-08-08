@@ -59,11 +59,18 @@
                         {% if user.username %}
                         Task Category: 
                         <select name="taskCategory" id="taskCategory">
-                            <option value="general">General</option>
-                            <option value="homework">Homework</option>
-                            <option value="studying">Studying</option>
-                            <option value="work">Work</option>
+
+                            {% for category in task_categories %}
+                            <option value="{{ category}}">{{ category}}</option>
+                            {% empty %}
+                            <option value="General">General</option>
+                            <option value="Homework">Homework</option>
+                            <option value="Studying">Studying</option>
+                            <option value="Work">Work</option>
+                            <option value="Reading">Reading</option>
+                            {% endfor %}
                         </select>
+                        <a {% if request.resolver_match.url_name == "manageCategories" %}active{% endif %}" href="{% url 'manageCategories' %}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                     </div>
                     <div id="userSessionDescription">
