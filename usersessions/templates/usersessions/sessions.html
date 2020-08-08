@@ -1,50 +1,54 @@
 {% extends 'usersessions/table_page.html' %}
 
 {% block search %}
-<input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Session..."> 
-<button class="mx-2 btn btn-search" type="submit">Search</button>
+    <input class="form-control" aria-label="Search" type="search" name="search" placeholder="Search Session...">
+    <button class="mx-2 btn btn-search" type="submit">Search</button>
 {% endblock %}
 
 {% block table %}
-<thead>
+    <thead>
     <tr>
-      <th scope="col">Session</th>
-      <th scope="col">Date Started</th>
-      <th scope="col">Date Ended</th>
-      <th scope="col">Tasks</th>
-      <th scope="col">Actions</th>
+        <th scope="col">Session</th>
+        <th scope="col">Date Started</th>
+        <th scope="col">Date Ended</th>
+        <th scope="col">Tasks</th>
+        <th scope="col">Actions</th>
     </tr>
-  </thead>
-  <tbody>
-      {% for session in page_content %}
-          <tr>
-              <td>{{ session.session_name }}</td>
-              <td>{{ session.session_time_start|date:"n-j-y" }}, {{ session.session_time_start|time:"g:i A" }}</td>                
-              <td>
-                  {% if session.session_time_end %}
-                      {{ session.session_time_end|date:"n-j-y" }}, {{ session.session_time_end|time:"g:i A" }}
-                  {% else %}
-                      -
-                  {% endif %}
-              </td>
-              <td>{{ session.task__count }}</td>
-              <td>
-                  <div class="container">
-                      <div class="row">
-                          <div class="col button-form">
-                              <form action="/session_detail" method="GET">
-                                  <button class="btn btn-block btn-outline-secondary btn-sm"  name="action" value={{ session.pk }}>Details</button>
-                              </form>
-                          </div>
-                          <div class="col button-form">
-                              <form action="." method="POST"> {% csrf_token %}
-                                  <button class="btn btn-block btn-outline-secondary btn-sm" name="delete" value={{ session.pk }}>Delete</button>
-                              </form>  
-                          </div>
-                      </div>
-                  </div>
-              </td>
-          </tr>
-      {% endfor %}
-  </tbody>
+    </thead>
+    <tbody>
+    {% for session in page_content %}
+        <tr>
+            <td>{{ session.session_name }}</td>
+            <td>{{ session.session_time_start|date:"n-j-y" }}, {{ session.session_time_start|time:"g:i A" }}</td>
+            <td>
+                {% if session.session_time_end %}
+                    {{ session.session_time_end|date:"n-j-y" }}, {{ session.session_time_end|time:"g:i A" }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>{{ session.task__count }}</td>
+            <td>
+                <div class="container">
+                    <div class="row">
+                        <div class="col button-form">
+                            <form action="/session_detail" method="GET">
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="action"
+                                        value={{ session.pk }}>Details
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col button-form">
+                            <form action="." method="POST"> {% csrf_token %}
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete"
+                                        value={{ session.pk }}>Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
 {% endblock %}
