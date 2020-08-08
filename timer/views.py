@@ -43,7 +43,7 @@ def index_view(request):
     user_session_description = ''
     if 'userSessionId' in request.session:  # If active session, get the current description
         userSessionId = request.session['userSessionId']
-        user_session_description = UserSession.objects
+        user_session_description = UserSession.objects.get(id=userSessionId).description
 
     if 'taskName' not in request.session:  # Takes advantage of user sessions, checks to see if the taskName is in their session
         now = timezone.now()
