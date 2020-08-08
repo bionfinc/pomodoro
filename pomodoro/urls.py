@@ -50,7 +50,7 @@ urlpatterns = [
     path('upgrade/', upgrade, name='upgrade'),
     path('updateTaskTimeEnd/', update_task_time_end, name='updateTaskTimeEnd'),
     path('categories/', categories_view, name='categories'),
-    path('createCategory/', createCategory_view, name='createCategory'),
+    path('createCategory/', create_category_view, name='createCategory'),
     path('manageCategories/', manageCategories_view, name='manageCategories'),
     path('categoryDetail/', category_detail_view, name='categoryDetail'),
 ]
