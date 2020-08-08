@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
