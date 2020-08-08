@@ -1,45 +1,49 @@
 {% extends 'usersessions/table_page.html' %}
 {% block search %}
-<input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Categories..."> 
-<button class="mx-2 btn btn-search" type="submit">Search</button>
+    <input class="form-control" aria-label="Search" type="search" name="search" placeholder="Search Categories...">
+    <button class="mx-2 btn btn-search" type="submit">Search</button>
 {% endblock %}
 
 {% block table %}
-<thead>
+    <thead>
     <tr>
-      <th scope="col">Category Name</th>
-      <th scope="col">Total Time</th>
-      <th scope="col">Pomodoros</th>
+        <th scope="col">Category Name</th>
+        <th scope="col">Total Time</th>
+        <th scope="col">Pomodoros</th>
     </tr>
-  </thead>
-  <tbody>
-      {% for category in page_content %}
-          <tr>
-              <td>{{ category.category }}</td>
-              <td class="pr-2">
-                {% if category.total_task_time_min < 10 %}
-                    {{ category.total_task_time_hr }}:0{{ category.total_task_time_min }}
-                {% else %}
-                    {{ category.total_task_time_hr }}:{{ category.total_task_time_min }}
-                {% endif %}</td>
-              <td class="pr-2">{{ category.category_count }}</td>
-              <td>
-                  <div class="container">
-                      <div class="row">
+    </thead>
+    <tbody>
+    {% for category in page_content %}
+        <tr>
+            <td>{{ category.category }}</td>
+            <td class="pr-2">
+            {% if category.total_task_time_min < 10 %}
+                {{ category.total_task_time_hr }}:0{{ category.total_task_time_min }}
+            {% else %}
+                {{ category.total_task_time_hr }}:{{ category.total_task_time_min }}
+            {% endif %}</td>
+            <td class="pr-2">{{ category.category_count }}</td>
+            <td>
+                <div class="container">
+                    <div class="row">
                         <div class="col button-form">
                             <form action="{% url 'categoryDetail' %}" method="GET">
-                                <button class="btn btn-block btn-outline-secondary btn-sm"  name="detail_cat" value="{{ category.category }}">Details</button>
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="detail_cat"
+                                        value={{ category.category }}>Details
+                                </button>
                             </form>
                         </div>
                         <div class="col button-form">
                             <form action="." method="POST"> {% csrf_token %}
-                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_category" value= "{{ category.category }}">Delete</button>
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_category" 
+                                        value= "{{ category.category }}">Delete
+                                </button>
                             </form>  
                         </div>
-                      </div>
-                  </div>
-              </td>
-          </tr>
-      {% endfor %}
-  </tbody>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
 {% endblock %}

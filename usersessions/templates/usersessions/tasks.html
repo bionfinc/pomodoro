@@ -1,13 +1,14 @@
 {% extends 'usersessions/table_page.html' %}
 
 {% block search %}
-<input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Task or Category..."> 
-<button class="mx-2 btn btn-search" type="submit">Search</button>
+    <input class="form-control" aria-label="Search" type="search" name="search"
+           placeholder="Search Task or Category...">
+    <button class="mx-2 btn btn-search" type="submit">Search</button>
 {% endblock %}
 
 {% block table %}
-<thead>
-    <tr >
+    <thead>
+    <tr>
         <th class="pr-2" scope="col">Task Name</th>
         <th class="pr-2" scope="col">Date Started</th>
         <th class="pr-2" scope="col">Total Time</th>
@@ -15,12 +16,12 @@
         <th class="pr-2" scope="col">Category</th>
         <th scope="col">Actions</th>
     </tr>
-</thead>
+    </thead>
 
-<tbody>
+    <tbody>
     {% for task in page_content %}
         <tr>
-            <td class="pr-2" >{{ task.task_name }}</td>
+            <td class="pr-2">{{ task.task_name }}</td>
             <td class="pr-2">{{ task.first_time_start|date:"n-j-y" }}, {{ task.first_time_start|time:"g:i A" }}</td>
             <td class="pr-2">
                 {% if task.total_task_time_min < 10 %}
@@ -35,20 +36,24 @@
                     <div class="row">
                         <div class="col button-form">
                             <form action="/task_detail" method="GET">
-                                <button class="btn btn-block btn-outline-secondary btn-sm"  name="detail_name" value="{{ task.task_name }}">Details</button>
-                                <input type="hidden" name="detail_cat" value="{{ task.category }}"></input>
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="detail_name"
+                                        value="{{ task.task_name }}">Details
+                                </button>
+                                <input type="hidden" name="detail_cat" value="{{ task.category }}"/>
                             </form>
                         </div>
                         <div class="col button-form">
                             <form action="." method="POST"> {% csrf_token %}
-                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_name" value="{{ task.task_name }}">Delete</button>
-                                <input type="hidden" name="delete_cat" value="{{ task.category }}"></input>
-                            </form>  
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_name"
+                                        value="{{ task.task_name }}">Delete
+                                </button>
+                                <input type="hidden" name="delete_cat" value="{{ task.category }}"/>
+                            </form>
                         </div>
                     </div>
                 </div>
             </td>
         </tr>
     {% endfor %}
-</tbody>
+    </tbody>
 {% endblock %}
