@@ -148,31 +148,58 @@ def session_detail_view(request):
 
 
 def categories_view(request):
-    user, search_query, page_num = get_info(request)
 
-    if request.POST.__contains__('delete'):
-        TaskCategory.objects.filter(
-            user__username__exact=user
-        ).get(
-            pk=request.POST.get('delete')
-        ).delete()
+    user = User.objects.get(username=request.user.username)
+    # Get the GET request information
+    searchquery = request.GET.get('search')
+    page_num = request.GET.get('page')
+    # If a delete request then remove all tasks that have that exact name and category.
+    # Will only delete if also of the logged in user to protect against rigged POST requests
+    if request.POST.__contains__('delete_category'):
+        del_success =Task.objects.filter(
+                    category__exact=request.POST.get('delete_category'),
+                    usersession__user__username__exact=user,
+                ).delete()
+        if del_success[0] == 0:
+            delete_tasks = Task.objects.filter(
+                    category__exact=None,
+                    usersession__user__username__exact=user)
+            delete_tasks.delete()
+    # Display all of the user's categories grouped by category name. If the user specified a
+    # specific category name it will be filtered to that.
+    if searchquery != None:
+        categories = Task.objects.filter(
+                                    Q(category__icontains=searchquery),
+                                    usersession__user__username__exact=user
+                                )
 
-    if search_query is not None:
-        sessions = TaskCategory.objects.filter(
-            task_category_name__icontains=search_query,
-            user__username__exact=user
-        )
     else:
-        sessions = TaskCategory.objects.filter(user__username__exact=user)
+        categories = Task.objects.filter(usersession__user__username__exact=user)
+    # Determines cumulative values for the category groups
+    categories = categories.values(
+                    'category'
+                ).annotate(
+                    category_count=Count('category'), 
+                    total_task_time=Sum('task_time')
+                )
+    for category in categories:
+        # Determine the first start date for the task group
+        # Format the total task time display
+        category['total_task_time_hr'] = int(category['total_task_time'] / 60)
+        category['total_task_time_min'] = category['total_task_time'] % 60
+        if category['category'] == None:            # this takes care of the case where categories is null and count is 0 even though tasks exist
+            count = 0
+            for q in Task.objects.raw('SELECT id FROM usersessions_task WHERE category IS NULL '): # runs sql to find the null categories and sums them
+                count +=1
+            category['category_count'] = count
+    # Set up the page system for displaying data
+    paginator = Paginator(categories, 10) # Show 10 tasks per page.
+    categories_page = paginator.get_page(page_num)
 
-    paginator = Paginator(sessions, 10)
-
-    sessions_page = paginator.get_page(page_num)
     context = {
         'user': user,
-        'page_content': sessions_page
+        'page_content': categories_page
     }
-
     return render(request, 'usersessions/categories.html', context)
 
 
@@ -186,11 +213,61 @@ def create_category_view(request):
                                              task_category_name=new_category)
             new_task_category.save()
             return HttpResponseRedirect(
-                reverse(
-                    'categories'))  # returns the user to the timer, is not hard coded, uses the index name and reverses
-        else:
+
+                reverse('manageCategories'))  # returns the user to the timer, is not hard coded, uses the index name and reverses
+        else:                                       # if not, it sends them back to the for with their invalid input
             return HttpResponseRedirect(
-                reverse('categories'))
-            # if it wasnt a post render them the page
+                reverse('manageCategories'))            
+    # if it wasnt a post (was a get) render them the page
     return HttpResponseRedirect(
-        reverse('categories'))
+        reverse('manageCategories'))  
+
+# View for the general categories table page
+def manageCategories_view(request):
+    user = User.objects.get(username=request.user.username)
+    # Get the GET request information
+    searchquery = request.GET.get('search')
+    page_num = request.GET.get('page')
+    # If a delete request then remove the selected category from the database
+    if request.POST.__contains__('delete'):
+        TaskCategory.objects.filter(
+                                    user__username__exact=user
+                                ).get(
+                                    pk=request.POST.get('delete')
+                                ).delete()
+    # Display all of the user's categories. If the user specified a
+    # specific category name it will be filtered to that.
+    if searchquery != None:
+        sessions = TaskCategory.objects.filter(
+                                            task_category_name__icontains=searchquery,
+                                            user__username__exact=user
+                                        )
+    else:
+        sessions = TaskCategory.objects.filter(user__username__exact=user)
+    # Set up the page system for displaying data
+    paginator = Paginator(sessions, 10) # Show 10 sessions per page.
+    sessions_page = paginator.get_page(page_num)
+    context = {
+        'user': user,
+        'page_content': sessions_page
+    }
+    return render(request, 'usersessions/manage_categories.html', context)
+
+# View for the category detail page
+def category_detail_view(request):
+    user = User.objects.get(username=request.user.username)
+    # Get the GET request information
+    task_category = request.GET.get('detail_cat')
+    # Gets all the tasks associated with this selection and account
+    if task_category == 'None':
+        tasks = Task.objects.filter(category__exact=None,
+                            usersession__user__username__exact=user)
+    else:
+        tasks = Task.objects.filter(category__exact=task_category,
+                                    usersession__user__username__exact=user)
+    context = {
+        'user': user,
+        'tasks' : tasks
+    }
+    return render(request, 'usersessions/category_detail.html', context)    
+
