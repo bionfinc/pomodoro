@@ -316,6 +316,10 @@ b {
   align-items: center;
 }
 
+#reset-button{
+  color: white;
+}
+
 @media only screen and (max-width: 767px) {
   .sm-column-reverse {
     display: flex;
