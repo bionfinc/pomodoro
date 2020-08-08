@@ -17,3 +17,9 @@ class ChangeDefaultTimesForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['task_length', 'short_rest_length', 'long_rest_length']
+
+
+class ChangeProfileInformationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
