@@ -122,8 +122,12 @@
                     {% csrf_token %}
 
                     <div>
-                        Username: {{ user.username }} <br>
-                        Email: {{ user.email }} <br>
+                        Username: {{ user.username }}
+                        <a href="{% url 'change-profile-information' %}"><i
+                                class="fas fa-edit"></i></a><br>
+                        Email: {{ user.email }}
+                        <a href="{% url 'change-profile-information' %}"><i
+                                class="fas fa-edit"></i></a><br>
                         <div id="profile-score"><b>Score: {{ user.userprofile.score }}</b></div>
                         Date joined: {{ user.date_joined }} <br>
                         Default task length: {{ user.userprofile.task_length }} <a
