@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from accounts.forms import SignUpForm, ChangeDefaultTimesForm
+from accounts.forms import SignUpForm, ChangeDefaultTimesForm, ChangeProfileInformationForm
 
 
 def show_create_account_view(request, *args, **kwargs):
@@ -58,7 +58,20 @@ def show_change_default_times_view(request):
 
     return render(request, 'accounts/change_default_times.html', context)
 
+def change_profile_information_view(request):
+    user = User.objects.get(username=request.user.username)
+    form = ChangeProfileInformationForm(request.POST or None, instance=user)
 
+    if form.is_valid():
+        form.save()
+        return redirect('profile')
+
+    context = {
+        'user': user,
+        'form': form
+    }
+
+    return render(request, 'accounts/change_profile_information.html', context)
 def upgrade_plant_stage(request):
     plant_number = int(request.GET["plant_id"])
     upgrade_cost = int(request.GET["plant_cost"])

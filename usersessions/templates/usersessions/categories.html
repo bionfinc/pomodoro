@@ -1,63 +1,49 @@
 {% extends 'usersessions/table_page.html' %}
 {% block search %}
-<input class="form-control" type="text" aria-label="Search" type="search" name="search" placeholder="Search Categories..."> 
-<button class="mx-2 btn btn-search" type="submit">Search</button>
+    <input class="form-control" aria-label="Search" type="search" name="search" placeholder="Search Categories...">
+    <button class="mx-2 btn btn-search" type="submit">Search</button>
 {% endblock %}
 
 {% block table %}
-<thead>
+    <thead>
     <tr>
-      <th scope="col">Category Name</th>
-      <th scope="col">Action</th>
+        <th scope="col">Category Name</th>
+        <th scope="col">Total Time</th>
+        <th scope="col">Pomodoros</th>
     </tr>
-  </thead>
-  <tbody>
-      {% for session in page_content %}
-          <tr>
-              <td>{{ session.task_category_name }}</td>
-              <!-- <td>{{ session.session_time_start|date:"n-j-y" }}, {{ session.session_time_start|time:"g:i A" }}</td>                
-              <td>
-                  {% if session.session_time_end %}
-                      {{ session.session_time_end|date:"n-j-y" }}, {{ session.session_time_end|time:"g:i A" }}
-                  {% else %}
-                      -
-                  {% endif %}
-              </td>
-              <td>{{ session.task__count }}</td> -->
-              <td>
-                  <div class="container">
-                      <div class="row">
-                          <div class="col button-form">
-                              <form action="." method="POST"> {% csrf_token %}
-                                  <button class="btn btn-block btn-outline-secondary btn-sm" name="delete" value={{ session.pk }}>Delete</button>
-                              </form>  
-                          </div>
-                      </div>
-                  </div>
-              </td>
-          </tr>
-      {% endfor %}
-      <tr>
-          <!-- <td>
-
-          </td>
-          <td> -->
-            <div class="container">
-                <div class="row">
-                    <div class="col button-form">
-                        <form action="{% url 'createCategory' %}" method="POST"> {% csrf_token %}
-                            <td>
-                                New Category Name: 
-                                <input type="text" id="new_category" name="newCategory" maxlength="100">
-                            </td>
-                            <td>
-                                <button type="submit" class="btn-submit btn" >Add New Category</button>
-                            </td>
-                        </form>  
+    </thead>
+    <tbody>
+    {% for category in page_content %}
+        <tr>
+            <td>{{ category.category }}</td>
+            <td class="pr-2">
+            {% if category.total_task_time_min < 10 %}
+                {{ category.total_task_time_hr }}:0{{ category.total_task_time_min }}
+            {% else %}
+                {{ category.total_task_time_hr }}:{{ category.total_task_time_min }}
+            {% endif %}</td>
+            <td class="pr-2">{{ category.category_count }}</td>
+            <td>
+                <div class="container">
+                    <div class="row">
+                        <div class="col button-form">
+                            <form action="{% url 'categoryDetail' %}" method="GET">
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="detail_cat"
+                                        value={{ category.category }}>Details
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col button-form">
+                            <form action="." method="POST"> {% csrf_token %}
+                                <button class="btn btn-block btn-outline-secondary btn-sm" name="delete_category" 
+                                        value= "{{ category.category }}">Delete
+                                </button>
+                            </form>  
+                        </div>
                     </div>
                 </div>
-            </div>
-          <!-- </td> -->
-      </tr>
-  </tbody>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
 {% endblock %}
