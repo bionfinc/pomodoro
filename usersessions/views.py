@@ -110,6 +110,7 @@ def delete_all_data(request):
     
     if request.user.is_authenticated:
         UserSession.objects.filter(user=request.user).delete()
+        TaskCategory.objects.filter(user=request.user).delete()
         del request.session['userSessionId']
         del request.session['userSessionName']
         del request.session['taskName']
@@ -125,7 +126,11 @@ def delete_all_data(request):
         request.user.userprofile.award1 = 0
         request.user.userprofile.award2 = 0
         request.user.userprofile.award3 = 0
-        request.user.userprofile.save()
+        request.user.userprofile.save();
+
+        # request.taskcategory = [];
+        # request.taskcategory.save();
+ 
 
         return HttpResponse('True')
     else:
