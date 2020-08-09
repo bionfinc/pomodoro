@@ -64,8 +64,8 @@ function shortBreakModeOn() {
     if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
       //show window prompt message
       async function showMessage() {
-        let logged_in_message = "Are you sure you want to end your task early? You'll lose 10 points.short";
-        let logged_out_message = "Are you sure you want to end your task early? short";
+        let logged_in_message = "Are you sure you want to end your task early? You'll lose 10 points.";
+        let logged_out_message = "Are you sure you want to end your task early?";
         const message = await pomodoroEventMessage(logged_in_message, logged_out_message);
         $('#short-break-modal-text').text(message);
         $('#shortBreakModal').modal()
@@ -96,8 +96,8 @@ function longBreakModeOn() {
     if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
         //show window prompt message
         async function showMessage() {
-          let logged_in_message = "Are you sure you want to end your task early? You'll lose 10 points.longgg";
-          let logged_out_message = "Are you sure you want to end your task early? long";
+          let logged_in_message = "Are you sure you want to end your task early? You'll lose 10 points.";
+          let logged_out_message = "Are you sure you want to end your task early?";
           const message = await pomodoroEventMessage(logged_in_message, logged_out_message);
           $('#long-break-modal-text').text(message);
           
@@ -352,7 +352,6 @@ function updateCategory() {
 async function updateTimeEnd(){
   console.log('updateTimeEnd() called...')
   let is_user_logged_in = await checkLoggedInBool();
-  console.log("is_user_logged_in :", is_user_logged_in);
   if(is_user_logged_in){
     // save task task to db only if a promodoro task 
     if(currentTimer == "Pomodoro" && timerState != 'STOPPED' && timerState != ''){
@@ -371,7 +370,6 @@ function checkLoggedInBool() {
     $.ajax({
       url: '/isLoggedIn',
       success: function (data) {
-        console.log("data in checkedlogedinbool is: ", data);
         if (data == 'True') {
           resolve(true);
         }
@@ -401,12 +399,9 @@ function resetTimerDisplay(minutesVar){
         url: '/isLoggedIn',
         success: function (data) {
           console.log(data);
-          //resolve(data);
-          //logged in
           if (data == 'True') {
             resolve(logged_in_message);
           }
-          //not logged in
           else {
             resolve(logged_out_message);
           }
