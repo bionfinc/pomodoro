@@ -190,6 +190,7 @@ i:hover{
   background: rgb(172, 36, 36);
   color: white;
   border: 0;
+  cursor: pointer;
 }
 
 .btn-secondary{
@@ -212,7 +213,8 @@ i:hover{
 .btn-search:hover{
   background: rgb(2, 153, 27);
   border: 1px solid rgb(2, 153, 27);
-  color: white
+  color: white;
+  cursor: pointer;
 }
 
 /* pagination for sessions/tasks */
@@ -316,7 +318,7 @@ b {
   align-items: center;
 }
 
-#reset-button{
+#reset-button, #reset-account-button-close{
   color: white;
 }
 

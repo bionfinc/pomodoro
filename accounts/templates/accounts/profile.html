@@ -3,7 +3,7 @@
 {% bootstrap_css %}
 
 {% block body %}
-    <script src="../../static/js/profile.js" type="text/javascript"></script>
+<script src="../../static/js/profile.js" type="text/javascript"></script>    
     <div class="container-fluid">
         <div class="row p-4 justify-content-center sm-column-reverse">
             <div class="container col-12 col-md-7 col-lg-8 col-xl-9 garden-section">
@@ -133,14 +133,14 @@
 
                         <div class="mt-3 d-flex justify-content-around">
                             {% buttons %}
-                                <a id="reset-button" class="btn-search btn-sm" data-toggle="modal" data-target="#resetModal">Reset Account</a>
+                                <a id="reset-button" class="btn-search btn" data-toggle="modal" data-target="#resetModal">Reset Account</a>
                             {% endbuttons %}
                         </div>
 
                         <div class="modal fade" id="resetModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header modal-header-warning">
                                   <h5 class="modal-title" id="staticBackdropLabel">Reset Account</h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -151,7 +151,30 @@
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                  <button type="button" class="btn-search btn" data-dismiss="modal" data-toggle="modal" data-target="#resetModalComplete">Reset Account</button>
+                                  <button id="confirmDeleteAccountButton"type="button" class="modal-btn btn">
+                                    <script type="text/javascript">
+                                        $('#confirmDeleteAccountButton').click(function(){
+                                            $.ajax({
+                                                url: '/deleteAllData',
+                                                // dataType: 'json',
+                                                // data: JSON.stringify({
+                                                //     'category' : currentCategory,
+                                                //   }),
+                                                success: function(data) {
+                                                    
+                                                    if(data == "True"){
+                                                        $('#resetModal').modal('hide');
+                                                        $('#resetModalComplete').modal();
+                                                    }
+                                                    else{
+                                                        console.log("false");
+                                                    }
+                                                }
+                                            });
+                                        })
+
+                                    </script>  
+                                    Reset Account</button>
                                 </div>
                               </div>
                             </div>
@@ -160,7 +183,7 @@
                         <div class="modal fade" id="resetModalComplete" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header modal-header-warning">
                                 <h5 class="modal-title" id="staticBackdropLabel">Reset Account</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -170,7 +193,13 @@
                                 Account reset has been completed!
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn-search btn" data-dismiss="modal">Close</button>
+                                <a id="reset-account-button-close" class="modal-btn btn ">
+                                    <script type="text/javascript">
+                                        $('#resetModalComplete').click(function(){
+                                            window.location.href = '/';
+                                        })
+                                    </script>
+                                    Close</a>
                             </div>
                             </div>
                         </div>
@@ -189,11 +218,7 @@
                             <a class="btn-search btn" href="{% url 'index' %}">Return To Timer</a>
                         {% endbuttons %}
                     </div>
-                    <div class="mt-3 d-flex justify-content-around">
-                        {% buttons %}
-                            <a class="btn-search btn " href="/deleteAllData">Delete Account</a>
-                        {% endbuttons %}
-                    </div>
+                    
 
                 </div>
             </div>
