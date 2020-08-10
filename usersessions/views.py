@@ -128,10 +128,6 @@ def delete_all_data(request):
         request.user.userprofile.award3 = 0
         request.user.userprofile.save();
 
-        # request.taskcategory = [];
-        # request.taskcategory.save();
- 
-
         return HttpResponse('True')
     else:
         return HttpResponse('False')

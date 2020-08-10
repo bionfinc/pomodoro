@@ -156,10 +156,6 @@
                                         $('#confirmDeleteAccountButton').click(function(){
                                             $.ajax({
                                                 url: '/deleteAllData',
-                                                // dataType: 'json',
-                                                // data: JSON.stringify({
-                                                //     'category' : currentCategory,
-                                                //   }),
                                                 success: function(data) {
                                                     
                                                     if(data == "True"){
