@@ -42,14 +42,9 @@ if (longBreakButton.value <= 0) {
 }
 
 function pomodoroModeOn() {
-
-  // Set button color to selected
   if (pomodoroButton.className != "button-selected"){
-    pomodoroButton.className = "button-selected";
-    shortBreakButton.className = "";
-    longBreakButton.className = "";
+    setTaskButtonColorToCurrentMode(pomodoroButton);
   }
-
   // In case the timer was running, stop countdownClock function
   if (currentTimer != 'Pomodoro'){
     resetTimerDisplay(pomodoroMinutes);
@@ -79,10 +74,7 @@ function shortBreakModeOn() {
       showMessage();
     }
     else {
-      //set button color
-      shortBreakButton.className = "button-selected";
-      pomodoroButton.className = "";
-      longBreakButton.className = "";
+      setTaskButtonColorToCurrentMode(shortBreakButton);
       resetTimerDisplay(shortBreakMinutes);
       resetTimer();
       currentTimer = "Short Break";
@@ -112,10 +104,7 @@ function longBreakModeOn() {
         showMessage();
     }
     else {
-      //set button color
-      longBreakButton.className = "button-selected";
-      pomodoroButton.className = "";
-      shortBreakButton.className = "";
+      setTaskButtonColorToCurrentMode(longBreakButton);
       resetTimerDisplay(longBreakMinutes);
       resetTimer();
       currentTimer = "Long Break";
@@ -281,15 +270,8 @@ function countdownTimer() {
 
 // handles if user decides to quit a task early for a short break
 function confirmShortBreak() {
-
   $('#shortBreakModal').modal('hide');
-
-  // Set button color to selected
-  shortBreakButton.className = "button-selected";
-  pomodoroButton.className = "";
-  longBreakButton.className = "";
-  
-
+  setTaskButtonColorToCurrentMode(shortBreakButton);
   //deduct 10 points from score
   $.ajax({
     url: '/deductPoints',
@@ -297,23 +279,15 @@ function confirmShortBreak() {
       $("#score_span").html(data)
     }
   });
-
   resetTimerDisplay(shortBreakMinutes);
   resetTimer();
   currentTimer = "Short Break";
-
 }
 
 //handles if a user quits a task early for a long break
 function confirmLongBreak() {
-
   $('#longBreakModal').modal('hide');
-
-  //set button color
-  longBreakButton.className = "button-selected";
-  pomodoroButton.className = "";
-  shortBreakButton.className = "";
-
+  setTaskButtonColorToCurrentMode(longBreakButton);
   //deduct 10 points from score
   $.ajax({
     url: '/deductPoints',
@@ -408,4 +382,11 @@ function resetTimerDisplay(minutesVar){
         }
       });
     })
+  }
+  //Changes the color of the buttons so that the button for the active task is updated to the active button color
+  function setTaskButtonColorToCurrentMode(activeButton){
+    longBreakButton.className = "";
+    pomodoroButton.className = "";
+    shortBreakButton.className = "";
+    activeButton.className = "button-selected";
   }
