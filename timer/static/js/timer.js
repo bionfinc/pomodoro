@@ -62,31 +62,12 @@ function shortBreakModeOn() {
   if (currentTimer != 'Short Break'){
     // check if Pomodoro mode is on and timer is running
     if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-
-      //format prompt message depending if user is logged in or not
-      function checkLoggedIn() {
-        return new Promise(resolve => {
-          $.ajax({
-            url: '/isLoggedIn',
-            success: function (data) {
-              //logged in
-              if (data == 'True') {
-                resolve("Are you sure you want to end your task early? You'll lose 10 points.");
-              }
-              //not logged in
-              else {
-                resolve("Are you sure you want to end your task early?");
-              }
-            }
-          });
-        })
-      }
-
       //show window prompt message
       async function showMessage() {
-        const message = await checkLoggedIn();
+        let logged_in_message = "Are you sure you want to end your task early? You'll lose 10 points.";
+        let logged_out_message = "Are you sure you want to end your task early?";
+        const message = await pomodoroEventMessage(logged_in_message, logged_out_message);
         $('#short-break-modal-text').text(message);
-        
         $('#shortBreakModal').modal()
         pauseTimer();
         $('#shortBreakModal').on('hide.bs.modal', function (e) {
@@ -102,7 +83,6 @@ function shortBreakModeOn() {
       shortBreakButton.className = "button-selected";
       pomodoroButton.className = "";
       longBreakButton.className = "";
-
       resetTimerDisplay(shortBreakMinutes);
       resetTimer();
       currentTimer = "Short Break";
@@ -114,30 +94,11 @@ function longBreakModeOn() {
   if (currentTimer != 'Long Break'){
     // check if Pomodoro mode is on and timer is running
     if (currentTimer == "Pomodoro" && timeRemaining < (pomodoroMinutes * 60) && timeRemaining != 0) {
-      
-
-        //format prompt message depending if user is logged in or not
-        function checkLoggedIn() {
-          return new Promise(resolve => {
-            $.ajax({
-              url: '/isLoggedIn',
-              success: function (data) {
-                //logged in
-                if (data == 'True') {
-                  resolve("Are you sure you want to end your task early? You'll lose 10 points.");
-                }
-                //not logged in
-                else {
-                  resolve("Are you sure you want to end your task early?");
-                }
-              }
-            });
-          })
-        }
-
         //show window prompt message
         async function showMessage() {
-          const message = await checkLoggedIn();
+          let logged_in_message = "Are you sure you want to end your task early? You'll lose 10 points.";
+          let logged_out_message = "Are you sure you want to end your task early?";
+          const message = await pomodoroEventMessage(logged_in_message, logged_out_message);
           $('#long-break-modal-text').text(message);
           
           $('#longBreakModal').modal()
@@ -148,16 +109,13 @@ function longBreakModeOn() {
             }
           });
           }
-
         showMessage();
-      
     }
     else {
       //set button color
       longBreakButton.className = "button-selected";
       pomodoroButton.className = "";
       shortBreakButton.className = "";
-
       resetTimerDisplay(longBreakMinutes);
       resetTimer();
       currentTimer = "Long Break";
@@ -224,9 +182,7 @@ function startTimer() {
 
 function pauseTimer() {
   // update the task end time in db if user is logged in
-  if (checkLoggedInBool()){
-    updateTimeEnd();
-  };
+  updateTimeEnd();
   if (timerState == 'STARTED') {
     document.getElementById("pauseButton").classList.add("control-button-selected");
     document.getElementById("startButton").classList.remove("control-button-selected");
@@ -291,48 +247,24 @@ function padValue(integerValue) {
 function countdownTimer() {
   timeRemaining--;
   displayTimer();
-  //console.log(timerState)
   // If time is up, stop the timer and display notification
   if (timeRemaining == 0 && currentTimer == "Pomodoro") {
 
     document.title = "Time is up!";
     pauseTimer();
-
-    //format prompt message depending if user is logged in
-    function checkLoggedIn() {
-      return new Promise(resolve => {
-        $.ajax({
-          url: '/isLoggedIn',
-          success: function (data) {
-            console.log(data);
-            //logged in
-            if (data == 'True') {
-              resolve("You won 10 points for completing your task!");
-            }
-            //not logged in
-            else {
-              resolve("Log in to track rewards for completing your tasks.");
-            }
-          }
-        });
-      })
-    }
-
-    //display alert message
     async function showMessage() {
-      const message = await checkLoggedIn();
-      // add points to score
+      let logged_in_message = "You won 10 points for completing your task!";
+      let logged_out_message = "Log in to track rewards for completing your tasks.";
+      const message = await pomodoroEventMessage(logged_in_message, logged_out_message);
       $.ajax({
         url: '/addPoints',
         success: function (data) {
           $("#score_span").html(data)
         }
       });
-
       setTimeout(function () {
         $('#finished-task-modal-text').text(message);
         $('#finished-task-modal').modal()
-        // alert(message);
       }, 0)
     }
 
@@ -417,8 +349,10 @@ function updateCategory() {
 }
 
 // update the task time_end in the db
-function updateTimeEnd(){
-  console.log('updateTimeEndy() called...')
+async function updateTimeEnd(){
+  console.log('updateTimeEnd() called...')
+  let is_user_logged_in = await checkLoggedInBool();
+  if(is_user_logged_in){
     // save task task to db only if a promodoro task 
     if(currentTimer == "Pomodoro" && timerState != 'STOPPED' && timerState != ''){
       $.ajax({
@@ -428,6 +362,7 @@ function updateTimeEnd(){
         }
       });
     }
+  }  
 }
 // checks if a user is logged in and returns true/false
 function checkLoggedInBool() {
@@ -435,14 +370,11 @@ function checkLoggedInBool() {
     $.ajax({
       url: '/isLoggedIn',
       success: function (data) {
-        console.log(data);
-        //logged in
         if (data == 'True') {
-          return true;
+          resolve(true);
         }
-        //not logged in
         else {
-          return false;
+          resolve(false);
         }
       }
     });
@@ -459,3 +391,21 @@ function resetTimerDisplay(minutesVar){
   timerState = ''; // Clear timer state
   console.log(timerState);
 }
+
+  //format prompt message depending if user is logged in
+  function pomodoroEventMessage(logged_in_message, logged_out_message) {
+    return new Promise(resolve => {
+      $.ajax({
+        url: '/isLoggedIn',
+        success: function (data) {
+          console.log(data);
+          if (data == 'True') {
+            resolve(logged_in_message);
+          }
+          else {
+            resolve(logged_out_message);
+          }
+        }
+      });
+    })
+  }
