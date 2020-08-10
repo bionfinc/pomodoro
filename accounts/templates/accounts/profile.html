@@ -128,6 +128,10 @@
                         <b>Email:</b> {{ user.email }}
                         <a href="{% url 'change-profile-information' %}"><i
                                 class="fas fa-edit"></i></a><br>
+                        <b>Password</b>
+                        <a href="{% url 'change-password' %}"><i
+                                class="fas fa-edit"></i></a><br> 
+
                         <div id="profile-score"><b>Score: {{ user.userprofile.score }}</b></div>
                         <b>Date joined:</b> {{ user.date_joined }} <br>
 

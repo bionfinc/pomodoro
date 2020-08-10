@@ -20,7 +20,7 @@ from django.contrib.auth import views as auth_views
 from usersessions.views import tasks_view, sessions_view, session_detail_view, task_detail_view, categories_view, \
     create_category_view, manageCategories_view, category_detail_view, delete_all_data
 from accounts.views import show_create_account_view, show_profile_view, show_change_default_times_view, upgrade_plant_stage, \
-    change_profile_information_view
+    change_profile_information_view, change_password_view
 from timer.views import index_view, editTask_view, add_points, deduct_points, is_logged_in, editUserSession_view, \
     save_task_info, editSessionDescription_view, update_task_category, update_task_time_end
 
@@ -37,6 +37,7 @@ urlpatterns = [
     path('profile/change-default-times/', show_change_default_times_view,
          name='change-default-times'),
     path('profile/change-profile-information/', change_profile_information_view, name='change-profile-information'),
+    path('profile/change-password/', change_password_view, name='change-password'),
     path('tasks/', tasks_view, name='tasks'),
     path('task_detail/', task_detail_view, name='taskDetail'),
     path('sessions/', sessions_view, name='sessions'),
