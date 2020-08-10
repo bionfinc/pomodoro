@@ -1,15 +1,15 @@
 import json
 import random
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from accounts.forms import SignUpForm, ChangeDefaultTimesForm, ChangeProfileInformationForm
 
 
 def show_create_account_view(request, *args, **kwargs):
-    
     if request.method == 'POST':
 
         create_account_form = SignUpForm(request.POST)
@@ -58,6 +58,7 @@ def show_change_default_times_view(request):
 
     return render(request, 'accounts/change_default_times.html', context)
 
+
 def change_profile_information_view(request):
     user = User.objects.get(username=request.user.username)
     form = ChangeProfileInformationForm(request.POST or None, instance=user)
@@ -72,6 +73,30 @@ def change_profile_information_view(request):
     }
 
     return render(request, 'accounts/change_profile_information.html', context)
+
+
+def change_password_view(request):
+    if request.method == 'POST':
+
+        change_password_form = PasswordChangeForm(request.user, request.POST)
+
+        if change_password_form.is_valid():
+            user = change_password_form.save()
+
+            # Updates the current session hash to maintain the account being logged in
+            update_session_auth_hash(request, user)
+
+            return redirect('profile')
+    else:
+        change_password_form = PasswordChangeForm(request.user)
+
+    my_context = {
+        'form': change_password_form,
+    }
+
+    return render(request, 'accounts/change_password.html', my_context)
+
+
 def upgrade_plant_stage(request):
     plant_number = int(request.GET["plant_id"])
     upgrade_cost = int(request.GET["plant_cost"])
