@@ -178,7 +178,10 @@ def categories_view(request):
         category['total_task_time_min'] = category['total_task_time'] % 60
         if category['category'] == None:            # this takes care of the case where categories is null and count is 0 even though tasks exist
             count = 0
-            for q in Task.objects.raw('SELECT id FROM usersessions_task WHERE category IS NULL '): # runs sql to find the null categories and sums them
+            userid = request.user.id
+            for q in Task.objects.raw("SELECT t.id FROM usersessions_task t "
+                                        "LEFT JOIN usersessions_usersession u ON t.usersession_id = u.id "
+                                        "WHERE t.category IS NULL AND u.user_id = %s", [userid]): # runs sql to find the null categories for the logged in user and sums them
                 count +=1
             category['category_count'] = count
     # Set up the page system for displaying data
