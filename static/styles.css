@@ -57,6 +57,11 @@ a.btn-submit:hover, button.btn-submit:hover{
   width: 500px; 
 }
 
+.timerTableDiv {
+  max-width:210px; 
+  overflow-wrap:break-word;
+}
+
 /* task and control buttons on home page */
 #pomodoroModeButton, #shortBreakModeButton, #longBreakModeButton,
 #startButton, #pauseButton, #resetButton {

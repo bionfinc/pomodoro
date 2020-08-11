@@ -48,14 +48,14 @@
                     <table class="table timerInformation">
                       <tr>
                         <td><strong>Session:</strong></td> 
-                        <td><div id="userSessionName">{{ userSessionName }} </div></td>
+                        <td><div class="timerTableDiv" id="userSessionName">{{ userSessionName }} </div></td>
                         <td><a role="button" class="editbtn" href="{% url 'editUserSession' %}">
                           <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
                         </td> 
                       </tr>
                       <tr>
                         <td><strong>Task:</strong></td>
-                        <td><div id="taskName">{{ taskName }}</div></td>
+                        <td><div class="timerTableDiv" id="taskName">{{ taskName }}</div></td>
                         <td> <a role="button" class="editbtn" href="{% url 'editTask' %}">
                           <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
                         </td>
@@ -83,7 +83,7 @@
                         <td><strong>Session Description:</strong></td>
                         <td> 
                         {% if description %}
-                         <div style="max-width:200px; overflow-wrap:break-word;" id="userSessionDescription">{{ description }} </div> 
+                         <div class="timerTableDiv" id="userSessionDescription">{{ description }} </div> 
                         {% endif %}
                         </td>
                         <td><a role="button" class="editbtn" href="{% url 'editSessionDescription' %}">
