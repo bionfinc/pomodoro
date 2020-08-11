@@ -28,8 +28,33 @@ body {
   border-color: black;
 }
 
-a.btn-submit:hover, button.btn-submit:hover {
+a.btn-submit:hover, button.btn-submit:hover{
   color: white;
+}
+
+.btn-outline-success:hover {
+  color: white;
+}
+
+.editbtn {
+  color: #28a745;
+  border: solid #28a745;
+  padding: 4px 8px;
+  font-size: 14px;
+  line-height: normal;
+  border-radius: 4.8px;
+  border-width: thin;
+}
+
+.editbtn:hover {
+  color: white;
+  background-color: rgba(41, 168, 71, 0.431);
+  text-decoration: none;
+}
+
+/* Table styling on timer page */
+.timerInformation {
+  width: 500px; 
 }
 
 /* task and control buttons on home page */
@@ -162,11 +187,11 @@ i:hover{
 
 /* edit icon */
 .fa-edit {
-  color:rgb(228, 55, 55);
+  color:tomato;
 }
 
-.fa-edit:hover {
-  color:rgb(172, 36, 36);
+.disable{
+  pointer-events:none;
 }
 
 /* modal */

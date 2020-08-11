@@ -43,23 +43,26 @@
                         <button type="button" id="resetButton">Reset</button>
                     </div>
                     <br>
-                
-                    
-                    <div>
-                        {% if user.username %}
-                        Session: <span id="userSessionName">{{ userSessionName }} </span><a href="{% url 'editUserSession' %}"><i class="fas fa-edit"></i></a>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if user.username %}
-                        Task: <span id="taskName">{{ taskName }}</span> <a href="{% url 'editTask' %}"><i class="fas fa-edit"></i></a>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if user.username %}
-                        Task Category: 
-                        <select name="taskCategory" id="taskCategory">
-
+                    <br>
+                    {% if user.username %}
+                    <table class="table timerInformation">
+                      <tr>
+                        <td><strong>Session:</strong></td> 
+                        <td><div id="userSessionName">{{ userSessionName }} </div></td>
+                        <td><a role="button" class="editbtn" href="{% url 'editUserSession' %}">
+                          <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
+                        </td> 
+                      </tr>
+                      <tr>
+                        <td><strong>Task:</strong></td>
+                        <td><div id="taskName">{{ taskName }}</div></td>
+                        <td> <a role="button" class="editbtn" href="{% url 'editTask' %}">
+                          <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Task Category:</strong></td> 
+                        <td><select name="taskCategory" id="taskCategory">
                             {% for category in task_categories %}
                             <option value="{{ category}}">{{ category}}</option>
                             {% empty %}
@@ -69,18 +72,31 @@
                             <option value="Work">Work</option>
                             <option value="Reading">Reading</option>
                             {% endfor %}
-                        </select>
-                        <a {% if request.resolver_match.url_name == "manageCategories" %}active{% endif %}" href="{% url 'manageCategories' %}"><i class="fas fa-edit"></i></a>
+                          </select>
+                        </td>
+                        <td><a role="button" class="editbtn" 
+                            {% if request.resolver_match.url_name == "manageCategories" %}active{% endif %}" href="{% url 'manageCategories' %}">
+                            <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
+
+                      </tr>
+                      <tr>
+                        <td><strong>Session Description:</strong></td>
+                        <td> 
+                        {% if description %}
+                         <div style="max-width:200px; overflow-wrap:break-word;" id="userSessionDescription">{{ description }} </div> 
                         {% endif %}
-                    </div>
-                    <div id="userSessionDescription">
-                        {% if user.username %}
-                            Session Description: <a href="{% url 'editSessionDescription' %}"><i class="fas fa-edit"></i></a> <br>
-                            {% if description %}
-                                <textarea class="form-control" style="height:100%;" readonly id="description" >{{ description }}</textarea> 
-                            {% endif %}
-                        {% endif %}
-                    </div>
+                        </td>
+                        <td><a role="button" class="editbtn" href="{% url 'editSessionDescription' %}">
+                          <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
+                        </td>
+                      </tr>
+                      <tr display="hidden">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                    {% endif %}
                 </div>               
             </div>
             
