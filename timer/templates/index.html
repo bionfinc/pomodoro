@@ -47,14 +47,14 @@
                     {% if user.username %}
                     <table class="table timerInformation">
                       <tr>
-                        <td><strong>Session:</strong></td> 
+                        <td><strong>Session Name:</strong></td> 
                         <td><div class="timerTableDiv" id="userSessionName">{{ userSessionName }} </div></td>
                         <td><a role="button" class="editbtn" href="{% url 'editUserSession' %}">
                           <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
                         </td> 
                       </tr>
                       <tr>
-                        <td><strong>Task:</strong></td>
+                        <td><strong>Task Name:</strong></td>
                         <td><div class="timerTableDiv" id="taskName">{{ taskName }}</div></td>
                         <td> <a role="button" class="editbtn" href="{% url 'editTask' %}">
                           <i class="fas fa-edit disable"></i> <strong>Edit</strong></a>
