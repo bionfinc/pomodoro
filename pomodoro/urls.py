@@ -18,7 +18,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from usersessions.views import tasks_view, sessions_view, session_detail_view, task_detail_view, categories_view, \
-    create_category_view, manageCategories_view, category_detail_view
+    create_category_view, manageCategories_view, category_detail_view, delete_all_data
 from accounts.views import show_create_account_view, show_profile_view, show_change_default_times_view, upgrade_plant_stage, \
     change_profile_information_view, change_password_view
 from timer.views import index_view, editTask_view, add_points, deduct_points, is_logged_in, editUserSession_view, \
@@ -49,6 +49,7 @@ urlpatterns = [
     path('updateTaskCategory/', update_task_category, name="updateTaskCategory"),
     path('upgrade/', upgrade_plant_stage, name='upgrade'),
     path('updateTaskTimeEnd/', update_task_time_end, name='updateTaskTimeEnd'),
+    path('deleteAllData/', delete_all_data, name="deleteAllData"),
     path('categories/', categories_view, name='categories'),
     path('createCategory/', create_category_view, name='createCategory'),
     path('manageCategories/', manageCategories_view, name='manageCategories'),
