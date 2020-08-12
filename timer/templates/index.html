@@ -63,15 +63,18 @@
                       <tr>
                         <td><strong>Task Category:</strong></td> 
                         <td><select name="taskCategory" id="taskCategory">
-                            {% for category in task_categories %}
-                            <option value="{{ category}}">{{ category}}</option>
-                            {% empty %}
-                            <option value="General">General</option>
-                            <option value="Homework">Homework</option>
-                            <option value="Studying">Studying</option>
-                            <option value="Work">Work</option>
-                            <option value="Reading">Reading</option>
-                            {% endfor %}
+                          <option value="General">General</option>
+                          <option value="Homework">Homework</option>
+                          <option value="Studying">Studying</option>
+                          <option value="Work">Work</option>
+                          <option value="Reading">Reading</option>
+                          {% for category in task_categories %}
+                            {% if category not in "General,Homework,Studying,Work,Reading" %}
+                              {% if category not in "general,homework,studying,work,reading" %}
+                                <option value="{{ category}}">{{ category}}</option>
+                              {% endif %}
+                            {% endif %}
+                          {% endfor %}
                           </select>
                         </td>
                         <td><a role="button" class="editbtn" 
