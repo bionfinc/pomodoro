@@ -22,6 +22,8 @@ var pomodoroMinutes;
 var shortBreakMinutes;
 var longBreakMinutes;
 var timerState = '';
+var audio = new Audio('./static/sounds/timesUpSound.mp3');
+
 
 if (pomodoroButton.value <= 0) {
   pomodoroMinutes = 25
@@ -241,6 +243,7 @@ function countdownTimer() {
 
     document.title = "Time is up!";
     pauseTimer();
+    playSound(audio);
     async function showMessage() {
       let logged_in_message = "You won 10 points for completing your task!";
       let logged_out_message = "Log in to track rewards for completing your tasks.";
@@ -263,6 +266,7 @@ function countdownTimer() {
   }
   else if (timeRemaining == 0) {
     pauseTimer();
+    playSound(audio);
     timerState = ''
     console.log(timerState)
   }
@@ -383,10 +387,16 @@ function resetTimerDisplay(minutesVar){
       });
     })
   }
+
   //Changes the color of the buttons so that the button for the active task is updated to the active button color
   function setTaskButtonColorToCurrentMode(activeButton){
     longBreakButton.className = "";
     pomodoroButton.className = "";
     shortBreakButton.className = "";
     activeButton.className = "button-selected";
+  }
+
+  function playSound(audio) {
+    audio.loop = false;
+    audio.play();
   }
