@@ -22,7 +22,7 @@ var pomodoroMinutes;
 var shortBreakMinutes;
 var longBreakMinutes;
 var timerState = '';
-var audio = new Audio('./static/sounds/timesUpSound.mp3');
+var audio = new Audio('./static/sounds/BellDing.mp3');
 
 
 if (pomodoroButton.value <= 0) {
