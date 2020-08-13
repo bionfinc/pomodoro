@@ -37,13 +37,14 @@ a.btn-submit:hover, button.btn-submit:hover{
 }
 
 .editbtn {
+    display: block;
+    min-width: 65px;
   color: #28a745;
-  border: solid #28a745;
-  padding: 4px 8px;
+    padding: 4px 8px;
   font-size: 14px;
   line-height: normal;
-  border-radius: 4.8px;
-  border-width: thin;
+  border-radius: 5px;
+    border: thin solid #28a745;
 }
 
 .editbtn:hover {
@@ -54,7 +55,7 @@ a.btn-submit:hover, button.btn-submit:hover{
 
 /* Table styling on timer page */
 .timerInformation {
-  width: 500px; 
+  width: 100%;
 }
 
 .timerTableDiv {
@@ -149,7 +150,7 @@ i:hover{
     right: 0;
     background-color: #f9f9f9;
     min-width: 160px;
-    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     z-index: 1;
 
 }
@@ -261,7 +262,7 @@ i:hover{
 
 .button-form{
   padding: 1px;
-  margin: 0px;
+  margin: 0;
 }
 
 .page-link{
@@ -393,4 +394,15 @@ b {
     font-size: 20px;
 }
 
+}
+@media only screen and (max-width: 450px) {
+    #taskCategory {
+        max-width: 100px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    #taskCategory {
+        max-width: 75px;
+    }
 }
